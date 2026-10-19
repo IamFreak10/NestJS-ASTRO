@@ -118,12 +118,12 @@ export async function toggleUpvote(
  */
 export async function getMe(): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+    const res = await fetch(`${API_BASE_URL}/auth/get-session`, {
       credentials: 'include',
     });
     if (!res.ok) return null;
     const json = await res.json();
-    return json.data;
+    return json?.user || null;
   } catch {
     return null;
   }

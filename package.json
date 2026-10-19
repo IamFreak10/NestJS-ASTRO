@@ -14,7 +14,11 @@
     "db:migrate": "npm --prefix backend run db:migrate",
     "db:push": "npm --prefix backend run db:push",
     "db:generate": "npm --prefix backend run db:generate",
-    "db:studio": "npm --prefix backend run db:studio"
+    "db:studio": "npm --prefix backend run db:studio",
+    "db:seed": "npm --prefix backend run db:seed",
+    "zip:backend": "npm --prefix backend run zip",
+    "zip:frontend": "npm --prefix frontend run zip",
+    "zip:all": "npm run zip:backend && npm run zip:frontend"
   }
 }
 

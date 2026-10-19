@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "zip": "astro build && (cd dist && zip -r -q ../../frontend-dist.zip .)"
   },
   "dependencies": {
     "astro": "^5.4.2"

@@ -19,7 +19,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/database/seed.ts",
+    "zip": "nest build && zip -r -q ../backend-deploy.zip dist app.js package.json package-lock.json .env.production.example"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",

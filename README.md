@@ -71,10 +71,14 @@ npm run dev:frontend
 | `npm run dev:backend` | NestJS ব্যাকএন্ড ওয়াচ মোডে রান করে (`localhost:3000`) |
 | `npm run dev:frontend` | Astro ফ্রন্টএন্ড ডেভ মোডে রান করে (`localhost:4321`) |
 | `npm run build` | ব্যাকএন্ড এবং ফ্রন্টএন্ড দুটোই একসাথে প্রোডাকশন বিল্ড করে |
-| `npm run test:backend` | ব্যাকএন্ডের Vitest ইউনিট টেস্টগুলো চালায় |
-| `npm run lint:backend` | ব্যাকএন্ডের oxlint লিন্টার চালায় |
+| `npm run zip:backend` | ব্যাকএন্ড বিল্ড করে cPanel-এর জন্য `backend-deploy.zip` তৈরি করে |
+| `npm run zip:frontend` | ফ্রন্টএন্ড বিল্ড করে `public_html`-এর জন্য `frontend-dist.zip` তৈরি করে |
+| `npm run zip:all` | ব্যাকএন্ড ও ফ্রন্টএন্ড উভয়টির ডিপ্লয়মেন্ট জিপ তৈরি করে |
+| `npm run db:seed` | ডাটাবেজে ইউজার, প্রক্টর, টেকনিশিয়ান ও কমপ্লেইন্টস সিড করে |
 | `npm run db:migrate` | MySQL ডাটাবেজে Drizzle মাইগ্রেশন রান করে |
 | `npm run db:studio` | ডাটাবেজ ভিউয়ারের জন্য Drizzle Studio ওপেন করে |
+| `npm run test:backend` | ব্যাকএন্ডের Vitest ইউনিট টেস্টগুলো চালায় |
+| `npm run lint:backend` | ব্যাকএন্ডের oxlint লিন্টার চালায় |
 
 ---
 

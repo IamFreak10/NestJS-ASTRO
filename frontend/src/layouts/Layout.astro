@@ -77,12 +77,12 @@ const {
         if (!authBtnText) return;
 
         try {
-          const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+          const res = await fetch(`${API_URL}/auth/get-session`, { credentials: 'include' });
           if (res.ok) {
-            const json = await res.json();
-            const user = json.data;
+            const data = await res.json();
+            const user = data?.user;
             if (user && user.name) {
-              authBtnText.textContent = `👤 ${user.name.split(' ')[0]} (${user.role})`;
+              authBtnText.textContent = `👤 ${user.name.split(' ')[0]} (${user.role || 'student'})`;
               openAuthModalBtn?.setAttribute('data-logged-in', 'true');
             }
           }
@@ -184,15 +184,25 @@ const {
           });
 
           if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.message || 'Invalid email or password');
+            let errorMsg = 'Invalid email or password';
+            try {
+              const err = await res.json();
+              errorMsg = err.message || err.statusText || errorMsg;
+            } catch {
+              if (res.status === 500) {
+                errorMsg = 'Backend DB error. Ensure MySQL is running & seeded.';
+              } else {
+                errorMsg = `Server error (${res.status}). Check backend logs.`;
+              }
+            }
+            throw new Error(errorMsg);
           }
 
           showToast('Welcome back! Login successful ✨');
           authModal?.close();
           setTimeout(() => window.location.reload(), 600);
         } catch (err: any) {
-          showToast(err.message || 'Login failed', true);
+          showToast(err.message || 'Login failed. Check server connection.', true);
         }
       });
 
@@ -215,8 +225,18 @@ const {
           });
 
           if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.message || 'Registration failed');
+            let errorMsg = 'Registration failed';
+            try {
+              const err = await res.json();
+              errorMsg = err.message || err.statusText || errorMsg;
+            } catch {
+              if (res.status === 500) {
+                errorMsg = 'Backend DB error. Ensure MySQL is running.';
+              } else {
+                errorMsg = `Server error (${res.status}). Check backend logs.`;
+              }
+            }
+            throw new Error(errorMsg);
           }
 
           showToast('Account created! Logged in as student 🎉');

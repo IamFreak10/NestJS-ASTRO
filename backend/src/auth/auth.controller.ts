@@ -55,7 +55,7 @@ export class AuthController {
   /**
    * Better Auth endpoints (/api/auth/sign-in/email, /api/auth/sign-up/email, /api/auth/sign-out, etc.)
    */
-  @All('*')
+  @All('{*path}')
   async handleBetterAuthCatchAll(@Req() req: Request, @Res() res: Response) {
     return this.authHandler(req, res);
   }

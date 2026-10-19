@@ -1,0 +1,151 @@
+---
+---
+
+<section class="how-it-works-section">
+  <div class="section-header-centered">
+    <span class="retro-badge" style="background: var(--pastel-mint)">⚡ FAST & TRANSPARENT</span>
+    <h3 class="section-title">Campus Redressal Pipeline</h3>
+    <p class="section-subtitle">
+      From initial submission to verified maintenance fix, every ticket follows a strict 4-step university protocol.
+    </p>
+  </div>
+
+  <div class="steps-grid">
+    <!-- Step 1 -->
+    <div class="neo-card step-card">
+      <div class="step-badge-tag">STEP 01</div>
+      <div class="step-icon-wrap" style="background: var(--pastel-yellow)">
+        <span>📝</span>
+      </div>
+      <h4 class="step-heading">File Complaint</h4>
+      <p class="step-desc">
+        Submit issue with location and priority. Toggle <strong>Public Wall</strong> or sealed <strong>Confidential Vault</strong> with 🕶️ Anonymous Protection.
+      </p>
+      <div class="step-footer-tag">Instant Ticket ID</div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="neo-card step-card">
+      <div class="step-badge-tag">STEP 02</div>
+      <div class="step-icon-wrap" style="background: var(--pastel-lavender)">
+        <span>🛡️</span>
+      </div>
+      <h4 class="step-heading">Proctorial Triage</h4>
+      <p class="step-desc">
+        Proctor Office verifies ticket validity within 2 hours. Ragging, harassment, and electrical hazards trigger emergency dispatch.
+      </p>
+      <div class="step-footer-tag">&lt; 2h Response SLA</div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="neo-card step-card">
+      <div class="step-badge-tag">STEP 03</div>
+      <div class="step-icon-wrap" style="background: var(--pastel-cyan)">
+        <span>👷</span>
+      </div>
+      <h4 class="step-heading">Technician Action</h4>
+      <p class="step-desc">
+        Campus electricians, plumbers, or transport mechanics are assigned. Real-time updates and parts orders are logged on your ticket.
+      </p>
+      <div class="step-footer-tag">Live Activity Log</div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="neo-card step-card">
+      <div class="step-badge-tag">STEP 04</div>
+      <div class="step-icon-wrap" style="background: var(--pastel-mint)">
+        <span>✅</span>
+      </div>
+      <h4 class="step-heading">Verified Fix</h4>
+      <p class="step-desc">
+        Once inspected and completed, an official written resolution note is published. The ticket gets the green <strong>RESOLVED ✔</strong> stamp.
+      </p>
+      <div class="step-footer-tag">Official Sign-off</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-it-works-section {
+    margin-bottom: 3.5rem;
+  }
+  .section-header-centered {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--border-black);
+    letter-spacing: -0.02em;
+  }
+  .section-subtitle {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.25rem;
+  }
+  .step-card {
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+  }
+  .step-badge-tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: var(--font-retro);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #6b7280;
+  }
+  .step-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+  .step-heading {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    color: var(--border-black);
+  }
+  .step-desc {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #4b5563;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+  .step-footer-tag {
+    font-family: var(--font-retro);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border-black);
+    border-radius: var(--radius-sm);
+    background: #f8fafc;
+    align-self: flex-start;
+  }
+</style>

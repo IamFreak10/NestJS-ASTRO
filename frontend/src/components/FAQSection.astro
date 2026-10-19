@@ -1,0 +1,120 @@
+---
+const faqs = [
+  {
+    q: '🕶️ Can I file a complaint completely anonymously?',
+    a: 'YES! When creating a complaint, simply check "Submit Anonymously 🕶️". The KCKU Privacy Gate strips your name, student ID, and email from the public board and API responses. Even other students will only see "Anonymous Student 🕶️".',
+  },
+  {
+    q: '🔒 What is the difference between Public Notice and Confidential Vault?',
+    a: 'Public complaints appear on the main campus bulletin board where fellow students can vote "+1 Me Too" to raise visibility. Confidential Vault complaints (such as ragging, harassment, or sensitive disputes) are completely sealed and dispatched exclusively to the Proctor Office triage desk.',
+  },
+  {
+    q: '👍 How does the "+1 Me Too" upvote system work?',
+    a: 'If an issue also affects you (like a broken water purifier or delayed bus), click "+1 Me Too". Issues with more upvotes automatically rise to the top of the priority queue for faster department resource allocation.',
+  },
+  {
+    q: '⏱️ What is the average resolution time for campus complaints?',
+    a: 'For urgent safety and electrical issues, response time is under 2 hours. Routine classroom and hostel repairs are typically resolved within 24–48 hours, monitored strictly by university administration.',
+  },
+  {
+    q: '🚨 What should I do if I am facing immediate ragging or safety threats?',
+    a: 'Immediately dial the 24/7 Proctor Hotline at +880-1700-KCKU-SOS or contact your Hall Warden. You can also file an emergency ticket with priority "Urgent" which triggers an instant alert on the proctor dashboard.',
+  },
+];
+---
+
+<section class="faq-section">
+  <div class="faq-header-centered">
+    <span class="retro-badge" style="background: var(--pastel-rose)">💬 STUDENT HELPDESK</span>
+    <h3 class="section-title">Frequently Asked Questions</h3>
+    <p class="section-subtitle">
+      Common questions regarding student rights, grievance filing, and confidential whistleblower protections.
+    </p>
+  </div>
+
+  <div class="faq-accordion-list">
+    {faqs.map((faq, index) => (
+      <details class="neo-card faq-card" open={index === 0}>
+        <summary class="faq-summary">
+          <span class="faq-q-text">{faq.q}</span>
+          <span class="faq-arrow">▼</span>
+        </summary>
+        <div class="faq-a-body">
+          <p>{faq.a}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    margin-bottom: 3.5rem;
+  }
+  .faq-header-centered {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--border-black);
+    letter-spacing: -0.02em;
+  }
+  .section-subtitle {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+  .faq-accordion-list {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .faq-card {
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .faq-card[open] {
+    box-shadow: var(--shadow-neo);
+  }
+  .faq-summary {
+    padding: 1rem 1.35rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    color: var(--border-black);
+  }
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-arrow {
+    font-size: 0.75rem;
+    font-family: monospace;
+    transition: transform 0.2s ease;
+    color: #6b7280;
+  }
+  .faq-card[open] .faq-arrow {
+    transform: rotate(180deg);
+  }
+  .faq-a-body {
+    padding: 0 1.35rem 1.15rem 1.35rem;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #4b5563;
+    border-top: 1px dashed #e5e7eb;
+    padding-top: 0.85rem;
+  }
+</style>

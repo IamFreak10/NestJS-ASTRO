@@ -1,0 +1,197 @@
+---
+---
+
+<dialog id="createComplaintModal" class="retro-modal">
+  <div class="retro-window modal-window">
+    <div class="retro-titlebar pink">
+      <span class="retro-title">📝 FILE_CAMPUS_COMPLAINT.EXE</span>
+      <div class="retro-controls">
+        <button type="button" class="modal-close-btn" id="closeCreateModalBtn">✕</button>
+      </div>
+    </div>
+
+    <form id="createComplaintForm" class="modal-body">
+      <div class="form-group">
+        <label for="complaintTitle" class="form-label">
+          📌 Problem Title <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="complaintTitle"
+          name="title"
+          class="retro-input"
+          placeholder="e.g. AC not cooling in CSE Lab 4, Hall 2 WiFi down..."
+          required
+          minlength="5"
+          maxlength="255"
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="complaintCategory" class="form-label">
+            🏢 Category <span class="required">*</span>
+          </label>
+          <select id="complaintCategory" name="category" class="retro-input retro-select" required>
+            <option value="facilities">🏢 Facilities & Classrooms</option>
+            <option value="hostel_canteen">🛏️ Hostel & Mess/Canteen</option>
+            <option value="transport">🚌 Bus & Campus Transport</option>
+            <option value="academics">📚 Academics & Lab Exam</option>
+            <option value="safety_bullying">🛡️ Safety & Anti-Bullying</option>
+            <option value="administration">📑 Administration & ID Cards</option>
+          </select>
+        </div>
+
+        <div class="form-group half">
+          <label for="complaintPriority" class="form-label">
+            ⚡ Urgency Level
+          </label>
+          <select id="complaintPriority" name="priority" class="retro-input retro-select">
+            <option value="low">🟢 Low (Routine maintenance)</option>
+            <option value="medium" selected>🟡 Medium (Standard priority)</option>
+            <option value="high">🟠 High (Impacting classes)</option>
+            <option value="urgent">🔴 Urgent (Immediate safety hazard)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="complaintDescription" class="form-label">
+          📄 Detailed Description <span class="required">*</span>
+        </label>
+        <textarea
+          id="complaintDescription"
+          name="description"
+          class="retro-input retro-textarea"
+          rows="4"
+          placeholder="Describe the exact location, symptoms, and how long this issue has persisted..."
+          required
+          minlength="10"
+        ></textarea>
+      </div>
+
+      <!-- Privacy & Anonymity Controls (Special KCKU Feature) -->
+      <div class="privacy-box">
+        <div class="privacy-title">🛡️ Student Privacy & Anonymity Gate</div>
+        
+        <label class="privacy-toggle-label">
+          <input type="checkbox" id="complaintIsAnonymous" name="isAnonymous" value="true" class="retro-checkbox" />
+          <div>
+            <strong>Submit Anonymously 🕶️</strong>
+            <p class="privacy-hint">Hides your name and student ID on the public campus board. Your identity remains protected.</p>
+          </div>
+        </label>
+
+        <label class="privacy-toggle-label mt-2">
+          <input type="checkbox" id="complaintIsPrivate" name="isPrivate" value="true" class="retro-checkbox" />
+          <div>
+            <strong>Confidential Grievance (Sealed from Public) 🔒</strong>
+            <p class="privacy-hint">For sensitive issues (ragging, personal harassment, exam disputes). Sent directly to the Proctor Office; not visible on public feed.</p>
+          </div>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="retro-btn" id="cancelCreateModalBtn">Cancel</button>
+        <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink" id="submitComplaintBtn">
+          🚀 SUBMIT COMPLAINT
+        </button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<style>
+  .retro-modal {
+    margin: auto;
+    border: none;
+    background: transparent;
+    padding: 1rem;
+    max-width: 620px;
+    width: 100%;
+  }
+  .retro-modal::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+  }
+  .modal-window {
+    width: 100%;
+  }
+  .modal-close-btn {
+    background: var(--pastel-rose);
+    border: 1.5px solid var(--border-black);
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 0.75rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .modal-body {
+    padding: 1.5rem;
+    background: var(--card-bg);
+  }
+  .form-group {
+    margin-bottom: 1.1rem;
+  }
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+  .form-group.half {
+    flex: 1;
+  }
+  .form-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .required {
+    color: #e11d48;
+  }
+  .privacy-box {
+    background: var(--pastel-yellow);
+    border: var(--border-width) solid var(--border-black);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 2px 2px 0px var(--border-black);
+  }
+  .privacy-title {
+    font-family: var(--font-retro);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .privacy-toggle-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .privacy-hint {
+    font-size: 0.72rem;
+    color: #4b5563;
+    margin-top: 0.15rem;
+    line-height: 1.3;
+  }
+  .retro-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--border-black);
+    cursor: pointer;
+    margin-top: 2px;
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: var(--border-width) solid var(--border-black);
+    padding-top: 1rem;
+  }
+</style>
+

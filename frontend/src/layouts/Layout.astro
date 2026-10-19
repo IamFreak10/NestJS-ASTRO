@@ -1,0 +1,484 @@
+---
+import '../styles/global.css';
+import NoticeMarquee from '../components/NoticeMarquee.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import CreateComplaintModal from '../components/CreateComplaintModal.astro';
+import AuthModal from '../components/AuthModal.astro';
+import ComplaintDetailModal from '../components/ComplaintDetailModal.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+}
+
+const {
+  title = 'CampusFix — KCKU Student Welfare & Grievance Portal',
+  description = 'Y2K Retro Neobrutalist Complaint & Grievance Resolution Portal for Kauwar Chor Kindergarten University (KCKU).',
+  currentPath = '/',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <!-- Retro Toast Notification -->
+    <div id="toast" class="retro-toast"></div>
+
+    <!-- Live Announcement Marquee -->
+    <NoticeMarquee />
+
+    <!-- Desktop Navbar -->
+    <Navbar currentPath={currentPath} />
+
+    <!-- Main Page Content Slot -->
+    <main class="container main-content">
+      <slot />
+    </main>
+
+    <!-- University Footer -->
+    <Footer />
+
+    <!-- Modals (Native HTML5 Dialogs) -->
+    <CreateComplaintModal />
+    <AuthModal />
+    <ComplaintDetailModal />
+
+    <!-- Core Interactive Client Script (<120 lines pure Vanilla JS) -->
+    <script>
+      import { SAMPLE_COMPLAINTS, SAMPLE_TIMELINES } from '../services/sampleData.js';
+
+      const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+      let currentActiveTicketId: number | null = null;
+
+      // Toast Notification Helper
+      function showToast(msg: string, isError = false) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.className = `retro-toast show ${isError ? 'error' : ''}`;
+        setTimeout(() => {
+          toast.className = 'retro-toast';
+        }, 3200);
+      }
+
+      // Check current login state on page load
+      async function checkAuthSession() {
+        const authBtnText = document.getElementById('authBtnText');
+        const openAuthModalBtn = document.getElementById('openAuthModalBtn');
+        if (!authBtnText) return;
+
+        try {
+          const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+          if (res.ok) {
+            const json = await res.json();
+            const user = json.data;
+            if (user && user.name) {
+              authBtnText.textContent = `👤 ${user.name.split(' ')[0]} (${user.role})`;
+              openAuthModalBtn?.setAttribute('data-logged-in', 'true');
+            }
+          }
+        } catch {
+          // Keep default login text
+        }
+      }
+
+      // Modals Setup
+      const createModal = document.getElementById('createComplaintModal') as HTMLDialogElement | null;
+      const authModal = document.getElementById('authModal') as HTMLDialogElement | null;
+      const detailModal = document.getElementById('complaintDetailModal') as HTMLDialogElement | null;
+
+      document.getElementById('openCreateModalBtn')?.addEventListener('click', () => {
+        createModal?.showModal();
+      });
+      document.getElementById('closeCreateModalBtn')?.addEventListener('click', () => {
+        createModal?.close();
+      });
+      document.getElementById('cancelCreateModalBtn')?.addEventListener('click', () => {
+        createModal?.close();
+      });
+
+      document.getElementById('openAuthModalBtn')?.addEventListener('click', async () => {
+        const isLogged = document.getElementById('openAuthModalBtn')?.getAttribute('data-logged-in') === 'true';
+        if (isLogged) {
+          if (confirm('Do you want to log out of CampusFix?')) {
+            try {
+              await fetch(`${API_URL}/auth/sign-out`, { method: 'POST', credentials: 'include' });
+              showToast('Logged out successfully');
+              setTimeout(() => window.location.reload(), 600);
+            } catch {
+              showToast('Logout failed', true);
+            }
+          }
+        } else {
+          authModal?.showModal();
+        }
+      });
+
+      document.getElementById('closeAuthModalBtn')?.addEventListener('click', () => {
+        authModal?.close();
+      });
+
+      // Detail Modal Close
+      document.getElementById('closeDetailModalBtn')?.addEventListener('click', () => {
+        detailModal?.close();
+      });
+      document.getElementById('closeDetailActionBtn')?.addEventListener('click', () => {
+        detailModal?.close();
+      });
+
+      // 1-Click Demo Accounts Handler
+      document.querySelectorAll('.demo-acc-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const email = btn.getAttribute('data-email');
+          const pass = btn.getAttribute('data-pass');
+          const emailInput = document.getElementById('loginEmail') as HTMLInputElement | null;
+          const passInput = document.getElementById('loginPassword') as HTMLInputElement | null;
+          if (emailInput && email) emailInput.value = email;
+          if (passInput && pass) passInput.value = pass;
+          showToast(`Applied ${email?.split('@')[0]} demo login!`);
+        });
+      });
+
+      // Auth Tabs Toggle
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+
+      tabLoginBtn?.addEventListener('click', () => {
+        tabLoginBtn.classList.add('active');
+        tabRegisterBtn?.classList.remove('active');
+        loginForm?.classList.remove('hidden');
+        registerForm?.classList.add('hidden');
+      });
+
+      tabRegisterBtn?.addEventListener('click', () => {
+        tabRegisterBtn.classList.add('active');
+        tabLoginBtn?.classList.remove('active');
+        registerForm?.classList.remove('hidden');
+        loginForm?.classList.add('hidden');
+      });
+
+      // Handle Login Form Submit
+      loginForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm as HTMLFormElement);
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        try {
+          const res = await fetch(`${API_URL}/auth/sign-in/email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || 'Invalid email or password');
+          }
+
+          showToast('Welcome back! Login successful ✨');
+          authModal?.close();
+          setTimeout(() => window.location.reload(), 600);
+        } catch (err: any) {
+          showToast(err.message || 'Login failed', true);
+        }
+      });
+
+      // Handle Register Form Submit
+      registerForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm as HTMLFormElement);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const studentId = formData.get('studentId');
+        const department = formData.get('department');
+
+        try {
+          const res = await fetch(`${API_URL}/auth/sign-up/email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ name, email, password, studentId, department }),
+          });
+
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || 'Registration failed');
+          }
+
+          showToast('Account created! Logged in as student 🎉');
+          authModal?.close();
+          setTimeout(() => window.location.reload(), 600);
+        } catch (err: any) {
+          showToast(err.message || 'Registration failed', true);
+        }
+      });
+
+      // Handle Create Complaint Submit
+      const complaintForm = document.getElementById('createComplaintForm');
+      complaintForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(complaintForm as HTMLFormElement);
+
+        const title = formData.get('title');
+        const category = formData.get('category');
+        const priority = formData.get('priority');
+        const description = formData.get('description');
+        const isAnonymous = formData.get('isAnonymous') === 'true';
+        const isPrivate = formData.get('isPrivate') === 'true';
+
+        try {
+          const res = await fetch(`${API_URL}/complaints`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              title,
+              category,
+              priority,
+              description,
+              isAnonymous,
+              visibility: isPrivate ? 'private' : 'public',
+            }),
+          });
+
+          if (!res.ok) {
+            if (res.status === 401) {
+              createModal?.close();
+              authModal?.showModal();
+              throw new Error('Please login to file a complaint');
+            }
+            const err = await res.json();
+            throw new Error(err.message || 'Failed to submit');
+          }
+
+          showToast('Complaint submitted successfully! 🚀');
+          createModal?.close();
+          (complaintForm as HTMLFormElement).reset();
+          setTimeout(() => window.location.reload(), 800);
+        } catch (err: any) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Handle Upvote Buttons
+      document.querySelectorAll('.upvote-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const complaintId = btn.getAttribute('data-id');
+          if (!complaintId) return;
+
+          try {
+            const res = await fetch(`${API_URL}/complaints/${complaintId}/upvote`, {
+              method: 'POST',
+              credentials: 'include',
+            });
+
+            if (!res.ok) {
+              if (res.status === 401) {
+                authModal?.showModal();
+                throw new Error('Please login to upvote complaints');
+              }
+              const err = await res.json();
+              throw new Error(err.message || 'Upvote failed');
+            }
+
+            const json = await res.json();
+            const data = json.data;
+
+            const countEl = btn.querySelector('.upvote-count');
+            if (countEl) countEl.textContent = `(${data.upvotesCount})`;
+
+            if (data.upvoted) {
+              btn.classList.add('upvoted');
+              showToast('Upvoted! +1 recorded 👍');
+            } else {
+              btn.classList.remove('upvoted');
+              showToast('Upvote removed');
+            }
+          } catch (err: any) {
+            showToast(err.message, true);
+          }
+        });
+      });
+
+      // Handle Open Detail & Timeline Modal
+      async function openDetailModal(id: number) {
+        if (!detailModal) return;
+        currentActiveTicketId = id;
+        detailModal.showModal();
+
+        const titleEl = document.getElementById('detailTicketTitle');
+        const descEl = document.getElementById('detailTicketDesc');
+        const catBadge = document.getElementById('detailCategoryBadge');
+        const priBadge = document.getElementById('detailPriorityBadge');
+        const visBadge = document.getElementById('detailVisibilityBadge');
+        const statusStamp = document.getElementById('detailStatusStamp');
+        const filedDateEl = document.getElementById('detailTicketFiledDate');
+        const resBox = document.getElementById('detailResolutionBox');
+        const resText = document.getElementById('detailResolutionText');
+        const resDate = document.getElementById('detailResolvedDate');
+        const timelineList = document.getElementById('detailTimelineList');
+        const commentsFeed = document.getElementById('detailCommentsFeed');
+
+        let ticket: any = null;
+        let timelines: any[] = [];
+
+        try {
+          const res = await fetch(`${API_URL}/complaints/${id}`, { credentials: 'include' });
+          if (res.ok) {
+            const json = await res.json();
+            ticket = json.data;
+          }
+        } catch {
+          // Fallback
+        }
+
+        if (!ticket) {
+          ticket = SAMPLE_COMPLAINTS.find((c) => c.id === id) || SAMPLE_COMPLAINTS[0];
+          timelines = SAMPLE_TIMELINES[id] || [
+            {
+              time: '10:00 AM',
+              author: 'System',
+              role: 'Automated',
+              content: 'Ticket created and assigned initial priority.',
+            },
+          ];
+        }
+
+        if (titleEl) titleEl.textContent = ticket.title;
+        if (descEl) descEl.textContent = ticket.description;
+        if (catBadge) catBadge.textContent = `🏢 ${ticket.category.toUpperCase()}`;
+        if (priBadge) priBadge.textContent = `⚡ ${ticket.priority.toUpperCase()}`;
+        if (visBadge) visBadge.textContent = ticket.visibility === 'private' ? '🔒 CONFIDENTIAL' : '📢 PUBLIC BOARD';
+        if (statusStamp) {
+          statusStamp.textContent = ticket.status.replace('_', ' ').toUpperCase();
+          statusStamp.className = `status-stamp stamp-${ticket.status}`;
+        }
+        if (filedDateEl) filedDateEl.textContent = `Filed: ${new Date(ticket.createdAt).toLocaleDateString()}`;
+
+        // Update Stepper
+        const isReview = ticket.status === 'under_review' || ticket.status === 'in_progress' || ticket.status === 'resolved';
+        const isProgress = ticket.status === 'in_progress' || ticket.status === 'resolved';
+        const isResolved = ticket.status === 'resolved';
+
+        document.getElementById('stepNode2')?.classList.toggle('active', isReview);
+        document.getElementById('stepLine1')?.classList.toggle('active', isReview);
+        document.getElementById('stepNode3')?.classList.toggle('active', isProgress);
+        document.getElementById('stepLine2')?.classList.toggle('active', isProgress);
+        document.getElementById('stepNode4')?.classList.toggle('active', isResolved);
+        document.getElementById('stepLine3')?.classList.toggle('active', isResolved);
+
+        // Resolution note
+        if (ticket.resolutionNote && resBox && resText) {
+          resBox.classList.remove('hidden');
+          resText.textContent = ticket.resolutionNote;
+          if (resDate && ticket.resolvedAt) resDate.textContent = new Date(ticket.resolvedAt).toLocaleDateString();
+        } else if (resBox) {
+          resBox.classList.add('hidden');
+        }
+
+        // Timeline list
+        if (timelineList) {
+          timelineList.innerHTML = timelines
+            .map(
+              (t) => `
+            <div class="timeline-event-item">
+              <div class="timeline-event-header">
+                <span>${t.author} (${t.role})</span>
+                <span class="font-mono text-gray-500">${t.time}</span>
+              </div>
+              <p class="text-gray-700">${t.content}</p>
+            </div>
+          `,
+            )
+            .join('');
+        }
+
+        // Comments feed
+        if (commentsFeed) {
+          if (ticket.comments && ticket.comments.length > 0) {
+            commentsFeed.innerHTML = ticket.comments
+              .map(
+                (comm: any) => `
+              <div class="p-2 border-b border-gray-100 text-xs">
+                <div class="flex justify-between font-bold">
+                  <span>👤 ${comm.author?.name || 'Student'}</span>
+                  <span class="text-gray-400 font-mono text-[10px]">${new Date(comm.createdAt).toLocaleTimeString()}</span>
+                </div>
+                <p class="text-gray-600 mt-1">${comm.content}</p>
+              </div>
+            `,
+              )
+              .join('');
+          } else {
+            commentsFeed.innerHTML = `<p class="text-xs text-gray-500 italic py-2">No comments yet. Be the first to share an update.</p>`;
+          }
+        }
+      }
+
+      document.querySelectorAll('.open-detail-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          if (id) openDetailModal(parseInt(id, 10));
+        });
+      });
+
+      // Handle Adding Comment
+      const commentForm = document.getElementById('addCommentForm');
+      commentForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('commentTextInput') as HTMLInputElement | null;
+        if (!input || !input.value.trim() || !currentActiveTicketId) return;
+
+        try {
+          const res = await fetch(`${API_URL}/complaints/${currentActiveTicketId}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ content: input.value.trim() }),
+          });
+
+          if (!res.ok) {
+            if (res.status === 401) {
+              detailModal?.close();
+              authModal?.showModal();
+              throw new Error('Please login to leave a comment');
+            }
+            throw new Error('Could not submit comment');
+          }
+
+          showToast('Comment posted! 💬');
+          input.value = '';
+          openDetailModal(currentActiveTicketId);
+        } catch (err: any) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Share Link Button
+      document.getElementById('shareTicketBtn')?.addEventListener('click', () => {
+        if (!currentActiveTicketId) return;
+        const shareUrl = `${window.location.origin}/track?id=${currentActiveTicketId}`;
+        navigator.clipboard.writeText(shareUrl);
+        showToast('Ticket tracking link copied to clipboard! 📋');
+      });
+
+      // Run on init
+      checkAuthSession();
+    </script>
+  </body>
+</html>

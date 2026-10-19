@@ -1,0 +1,121 @@
+---
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'all' } = Astro.props;
+
+const categories = [
+  { id: 'all', label: 'All Issues 📋' },
+  { id: 'facilities', label: 'Facilities 🏢' },
+  { id: 'hostel_canteen', label: 'Hostel & Mess 🛏️' },
+  { id: 'transport', label: 'Transport 🚌' },
+  { id: 'academics', label: 'Academics 📚' },
+  { id: 'safety_bullying', label: 'Safety & Ragging 🛡️' },
+  { id: 'administration', label: 'Admin 📑' },
+];
+---
+
+<div class="filter-toolbar neo-card">
+  <!-- Left: Category Pills -->
+  <div class="category-pills-row">
+    {categories.map((cat) => (
+      <a
+        href={cat.id === 'all' ? '/' : `/?category=${cat.id}`}
+        class={`category-chip ${activeCategory === cat.id ? 'active' : ''}`}
+      >
+        {cat.label}
+      </a>
+    ))}
+  </div>
+
+  <!-- Right: Search Bar -->
+  <form action="/" method="GET" class="filter-search-form">
+    {activeCategory !== 'all' && (
+      <input type="hidden" name="category" value={activeCategory} />
+    )}
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        name="search"
+        placeholder="Search keywords, rooms, buses..."
+        class="search-input"
+      />
+    </div>
+  </form>
+</div>
+
+<style>
+  .filter-toolbar {
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+  }
+  .category-pills-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .category-chip {
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border-black);
+    background: #f8fafc;
+    color: var(--border-black);
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .category-chip:hover {
+    background: var(--pastel-yellow);
+    transform: translateY(-1px);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+  }
+  .category-chip.active {
+    background: var(--pastel-lavender);
+    border-color: var(--border-black);
+    box-shadow: 2px 2px 0px var(--border-black);
+  }
+  .filter-search-form {
+    min-width: 260px;
+  }
+  .search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 0.45rem 0.85rem 0.45rem 2.2rem;
+    font-size: 0.82rem;
+    border-radius: var(--radius-pill);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+  }
+  @media (max-width: 900px) {
+    .filter-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .filter-search-form {
+      min-width: 100%;
+    }
+  }
+</style>

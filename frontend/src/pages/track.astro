@@ -1,0 +1,244 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Track Campus Complaint by ID — CampusFix | KCKU" currentPath="/track">
+  <!-- Page Header -->
+  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
+    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-yellow)">⚡ INSTANT TICKET RADAR</span>
+    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">Track Complaint Progress</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">
+      Enter any complaint ticket number (or click a test ticket below) to inspect real-time maintenance dispatches, proctorial triage notes, and verified resolution sign-offs.
+    </p>
+  </section>
+
+  <!-- Search Input Box -->
+  <div class="neo-card p-6 md:p-8 bg-white mb-8 max-w-3xl mx-auto">
+    <form id="trackForm" class="flex flex-col sm:flex-row gap-3 items-stretch">
+      <div class="flex-1 relative">
+        <input
+          type="number"
+          id="trackInput"
+          placeholder="Enter Ticket ID (e.g. 101, 103, 105)..."
+          class="retro-input text-base font-bold pl-10"
+          min="1"
+          required
+        />
+        <span class="absolute left-3 top-3 text-base text-gray-500 font-bold">#</span>
+      </div>
+      <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink">
+        🚀 SCAN TICKET STATUS
+      </button>
+    </form>
+
+    <!-- Quick Demo Chips -->
+    <div class="flex items-center gap-2 mt-4 flex-wrap text-xs">
+      <span class="font-bold text-gray-500">Quick Test Tickets:</span>
+      <button type="button" class="quick-chip" data-id="101">#101 Water Filter (In Progress)</button>
+      <button type="button" class="quick-chip" data-id="102">#102 Canteen Hygiene (Under Review)</button>
+      <button type="button" class="quick-chip" data-id="103">#103 Bus Delay (Resolved ✔)</button>
+      <button type="button" class="quick-chip" data-id="105">#105 North Gate Lights (Resolved ✔)</button>
+    </div>
+  </div>
+
+  <!-- Result Container -->
+  <div id="trackResultContainer" class="hidden max-w-3xl mx-auto">
+    <div class="retro-window">
+      <div class="retro-titlebar yellow" id="resultTitlebar">
+        <span class="retro-title" id="resultTitle">TICKET DETAILS</span>
+      </div>
+      <div class="p-6 bg-white" id="resultBody">
+        <!-- Injected via client script -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="trackLoading" class="hidden text-center py-12">
+    <span class="inline-block animate-spin text-3xl mb-2">⚙️</span>
+    <p class="font-mono text-xs font-bold">RADAR SCANNING KCKU DATABASE...</p>
+  </div>
+</Layout>
+
+<style>
+  .quick-chip {
+    background: #f3f4f6;
+    border: 1.5px solid var(--border-black);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 1px 1px 0px var(--border-black);
+    transition: all 0.1s ease;
+  }
+  .quick-chip:hover {
+    background: var(--pastel-yellow);
+    transform: translateY(-1px);
+  }
+</style>
+
+<script>
+  import { SAMPLE_COMPLAINTS, SAMPLE_TIMELINES } from '../services/sampleData.js';
+
+  const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+  const trackForm = document.getElementById('trackForm');
+  const trackInput = document.getElementById('trackInput') as HTMLInputElement | null;
+  const resultContainer = document.getElementById('trackResultContainer');
+  const resultBody = document.getElementById('resultBody');
+  const resultTitle = document.getElementById('resultTitle');
+  const loading = document.getElementById('trackLoading');
+
+  async function searchTicket(id: number) {
+    if (!resultContainer || !resultBody || !loading) return;
+
+    loading.classList.remove('hidden');
+    resultContainer.classList.add('hidden');
+
+    let ticket: any = null;
+    let timelines: any[] = [];
+
+    try {
+      const res = await fetch(`${API_URL}/complaints/${id}`, { credentials: 'include' });
+      if (res.ok) {
+        const json = await res.json();
+        ticket = json.data;
+      }
+    } catch {
+      // API fallback
+    }
+
+    if (!ticket) {
+      ticket = SAMPLE_COMPLAINTS.find((c) => c.id === id);
+      timelines = SAMPLE_TIMELINES[id] || [];
+    }
+
+    loading.classList.add('hidden');
+
+    if (!ticket) {
+      resultContainer.classList.remove('hidden');
+      if (resultTitle) resultTitle.textContent = `⚠️ TICKET #${id} NOT FOUND`;
+      resultBody.innerHTML = `
+        <div class="text-center py-8">
+          <div class="text-4xl mb-2">🕵️‍♂️</div>
+          <h4 class="font-extrabold text-base mb-1">No ticket found with ID #${id}</h4>
+          <p class="text-xs text-gray-600 mb-4">Please verify the ticket number or check if it was filed under private whistleblower status.</p>
+          <a href="/" class="retro-btn retro-btn-pixel retro-btn-yellow">Browse Public Feed</a>
+        </div>
+      `;
+      return;
+    }
+
+    const isResolved = ticket.status === 'resolved';
+    const isProgress = ticket.status === 'in_progress';
+    const isReview = ticket.status === 'under_review';
+
+    resultContainer.classList.remove('hidden');
+    if (resultTitle) resultTitle.textContent = `📋 TICKET #${ticket.id} • ${ticket.category.toUpperCase()}`;
+
+    resultBody.innerHTML = `
+      <div class="flex flex-col gap-5">
+        <!-- Top Details -->
+        <div class="flex justify-between items-center gap-3 flex-wrap border-b border-gray-200 pb-4">
+          <div>
+            <div class="flex gap-2 mb-1">
+              <span class="retro-badge text-xs font-bold">⚡ ${ticket.priority.toUpperCase()}</span>
+              <span class="retro-badge text-xs font-bold" style="background: var(--pastel-mint)">🏢 ${ticket.category.toUpperCase()}</span>
+            </div>
+            <h3 class="font-extrabold text-lg text-black">${ticket.title}</h3>
+          </div>
+          <div class="font-mono text-xs font-bold px-3 py-1.5 border-2 border-black rounded ${
+            isResolved ? 'bg-emerald-300' : isProgress ? 'bg-sky-200' : 'bg-amber-200'
+          }">
+            ${ticket.status.replace('_', ' ').toUpperCase()} ${isResolved ? '✔' : ''}
+          </div>
+        </div>
+
+        <!-- Progress Lifecycle -->
+        <div class="border-2 border-black rounded-lg p-4 bg-orange-50/40">
+          <div class="text-xs font-mono font-bold mb-3">CURRENT RESOLUTION STAGE</div>
+          <div class="grid grid-cols-4 gap-2 text-center text-xs">
+            <div class="p-2 border-2 border-black rounded bg-emerald-200 font-bold">
+              1. Submitted ✔
+            </div>
+            <div class="p-2 border-2 border-black rounded ${isReview || isProgress || isResolved ? 'bg-emerald-200 font-bold' : 'bg-gray-100 text-gray-400'}">
+              2. Triage ${isReview || isProgress || isResolved ? '✔' : ''}
+            </div>
+            <div class="p-2 border-2 border-black rounded ${isProgress || isResolved ? 'bg-emerald-200 font-bold' : 'bg-gray-100 text-gray-400'}">
+              3. Repair ${isProgress ? '🔨' : isResolved ? '✔' : ''}
+            </div>
+            <div class="p-2 border-2 border-black rounded ${isResolved ? 'bg-emerald-300 font-extrabold text-emerald-900' : 'bg-gray-100 text-gray-400'}">
+              4. Resolved ${isResolved ? '✔' : ''}
+            </div>
+          </div>
+        </div>
+
+        <p class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 border border-gray-300 rounded">
+          ${ticket.description}
+        </p>
+
+        ${
+          ticket.resolutionNote
+            ? `
+          <div class="bg-emerald-50 border-2 border-emerald-600 rounded-lg p-4 text-emerald-900">
+            <div class="font-mono text-xs font-extrabold mb-1">🛠️ OFFICIAL VERIFIED RESOLUTION:</div>
+            <p class="text-sm leading-relaxed">${ticket.resolutionNote}</p>
+          </div>
+        `
+            : ''
+        }
+
+        <!-- Timelines -->
+        ${
+          timelines.length > 0
+            ? `
+          <div class="border-t border-gray-200 pt-4">
+            <h4 class="font-mono text-xs font-extrabold mb-3">⏱️ DISPATCH & TECHNICIAN LOGS:</h4>
+            <div class="flex flex-col gap-2">
+              ${timelines
+                .map(
+                  (t) => `
+                <div class="bg-white border-2 border-black rounded p-3 text-xs flex flex-col gap-1 shadow-sm">
+                  <div class="flex justify-between font-bold text-gray-800">
+                    <span>${t.author} (${t.role})</span>
+                    <span class="text-gray-500 font-mono">${t.time}</span>
+                  </div>
+                  <p class="text-gray-600">${t.content}</p>
+                </div>
+              `,
+                )
+                .join('')}
+            </div>
+          </div>
+        `
+            : ''
+        }
+      </div>
+    `;
+  }
+
+  trackForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (trackInput && trackInput.value) {
+      searchTicket(parseInt(trackInput.value, 10));
+    }
+  });
+
+  document.querySelectorAll('.quick-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const id = chip.getAttribute('data-id');
+      if (id && trackInput) {
+        trackInput.value = id;
+        searchTicket(parseInt(id, 10));
+      }
+    });
+  });
+
+  // Check URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const ticketParam = urlParams.get('id');
+  if (ticketParam) {
+    if (trackInput) trackInput.value = ticketParam;
+    searchTicket(parseInt(ticketParam, 10));
+  }
+</script>
+

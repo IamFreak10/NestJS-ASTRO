@@ -1,6 +1,8 @@
-# ⚡ NestJS-ASTRO Fullstack Portal
+# ⚡ CampusFix — Fullstack Complaint & Welfare Portal
+> **Institution:** Kauwar Chor Kindergarten University (KCKU)  
+> Fullstack campus grievance & welfare resolution portal combining **NestJS + MySQL (Drizzle ORM) + Better Auth** with a **Pure Astro 5 (Zero-JS overhead)** retro Y2K neobrutalist frontend.
 
-> Modern fullstack helpdesk ticket portal combining a robust **NestJS + MySQL (Drizzle ORM)** backend with a **Pure Astro (Zero-JS overhead)** retro Y2K neobrutalist frontend.
+📖 **Detailed System Architecture & Diagrams:** See [ARCHITECTURE.md](ARCHITECTURE.md) for Markdown specs, or open [ARCHITECTURE_DASHBOARD.html](ARCHITECTURE_DASHBOARD.html) for the interactive graphical dashboard.
 
 ---
 
@@ -82,3 +84,16 @@ npm run dev:frontend
 - **Astro Power:** Zero client JS runtime overhead — পেজের সমস্ত ডেটা সার্ভার-সাইড রেন্ডার হয়।
 - **ব্রাউজার নেটিভ মোডাল:** থার্ড পার্টি ভারী প্লাগইন ছাড়া ব্রাউজারের নেটিভ `<dialog>` ব্যবহার করে তৈরি।
 - **লাইভ ডিপ্লয়মেন্ট:** cPanel MySQL এবং LiteSpeed-এ সফলভাবে পরীক্ষিত ও ডিপ্লয়ড।
+
+---
+
+## 📅 Phased Implementation Plan & Status
+
+| Phase | Module | Status | Deliverables |
+| :--- | :--- | :---: | :--- |
+| **Phase 1** | **Multi-Folder Drizzle Schema** | ✅ **COMPLETED** | Multi-file schema (`auth`, `complaints`, `upvotes`, `comments`), migration generated & executed on MySQL `nest_db`. |
+| **Phase 2** | **Better Auth & NestJS Auth Integration** | ✅ **COMPLETED** | Better Auth 1.7.11 with Drizzle MySQL adapter, sliding session cookies, Bearer support, simplified `AuthGuard`, `RolesGuard`, `OptionalAuthGuard`, `@CurrentUser()`, 34/34 passing tests. |
+| **Phase 3** | **Complaints API Expansion** | ✅ **COMPLETED** | Public notice board (`GET /api/complaints/public`), confidential grievances (`GET /api/complaints/my`), anonymous identity masking, "Me Too (+1)" upvote toggle, staff timeline notes, 48/48 tests passing. |
+| **Phase 4** | **Astro Y2K Retro Frontend** | ✅ **COMPLETED** | Category navigation tabs, anonymous complaint dialog, live upvote counter buttons, retro login/register window, sub-20ms page loads. |
+| **Phase 5** | **Multi-Page Experience, Navbar & Footer** | ✅ **COMPLETED** | Desktop titlebar navbar, `/my-complaints` confidential vault, `/architecture` interactive ERD viewer, emergency triage footer, 48/48 unit tests, 0 lint errors, production build verified. |
+

@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const emergencyContacts = [
+  {
+    role: '🛡️ Anti-Ragging Special Taskforce',
+    hotline: '+880-1700-KCKU-SOS',
+    ext: 'Room 102, Proctor Building',
+    desc: 'Confidential reporting hotline for fresher harassment, bullying, or dorm intimidation. Rapid mobile response units dispatched 24/7.',
+    color: 'rose',
+    tag: '24/7 EMERGENCY',
+  },
+  {
+    role: '🏛️ Chief Proctor Office & Campus Security',
+    hotline: '+880-1700-KCKU-PRO',
+    ext: 'Ext: 101 / Central Security Desk',
+    desc: 'Official university law, safety, boundary patrol, student disciplinary matters, and outside interference protection.',
+    color: 'yellow',
+    tag: 'SECURITY & LAW',
+  },
+  {
+    role: '🛏️ Hall Provost & Wardens Council',
+    hotline: '+880-1700-HALL-DESK',
+    ext: 'Hall 1, 2 & 3 Wardens Office',
+    desc: 'Room allocation issues, water/electricity emergency cuts, meal disputes, and residential conflict resolution.',
+    color: 'mint',
+    tag: 'RESIDENTIAL',
+  },
+  {
+    role: '🩺 Campus Red Cross Medical & Ambulance',
+    hotline: '+880-1700-CHOR-MED',
+    ext: 'Medical Center Ground Floor',
+    desc: 'Immediate first-aid, emergency oxygen, campus ambulance dispatch, and doctor on-call for sudden illness or accidents.',
+    color: 'pink',
+    tag: 'HEALTH & AMBULANCE',
+  },
+  {
+    role: '🚌 Campus Transport Directorate',
+    hotline: '+880-1700-BUS-DISP',
+    ext: 'Bus Depot / Central Terminal',
+    desc: 'Bus delays, overcrowding, emergency shuttle requests, lost & found on university buses.',
+    color: 'cyan',
+    tag: 'TRANSPORT',
+  },
+  {
+    role: '🧠 Student Counseling & Mental Wellbeing',
+    hotline: '+880-1700-CARE-HELP',
+    ext: 'Counseling Cell, Student Center',
+    desc: 'Certified campus psychologists providing free, completely anonymous guidance for academic stress, anxiety, and depression.',
+    color: 'lavender',
+    tag: 'CONFIDENTIAL COUNSELING',
+  },
+];
+---
+
+<Layout title="Emergency Contacts & Student Welfare Desk — CampusFix | KCKU" currentPath="/emergency">
+  <!-- Page Header -->
+  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
+    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-rose); color: #881337">🚨 24/7 RAPID TRIAGE</span>
+    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">Emergency Hotlines & Student Welfare</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">
+      Direct rapid-response telephone hotlines and confidential support desks across Kauwar Chor Kindergarten University. All safety reports receive immediate emergency dispatch.
+    </p>
+  </section>
+
+  <!-- SOS Callout Banner -->
+  <div class="neo-card p-6 mb-8 bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-500">
+    <div class="flex items-start md:items-center justify-between gap-4 flex-col md:flex-row">
+      <div>
+        <div class="flex items-center gap-2 text-red-700 font-extrabold text-sm mb-1">
+          <span class="text-xl">⚠️</span> FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?
+        </div>
+        <p class="text-xs text-gray-700 max-w-2xl leading-relaxed">
+          Do not wait for standard ticket processing. Call the Proctorial Mobile Patrol immediately or file a Sealed Confidential Grievance.
+        </p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <a href="tel:+8801700525876" class="retro-btn retro-btn-pixel retro-btn-pink">
+          📞 CALL SOS HOTLINE
+        </a>
+        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-yellow">
+          🔒 FILE CONFIDENTIAL TICKET
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contacts Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    {emergencyContacts.map((contact) => (
+      <div class="neo-card flex flex-col justify-between h-full bg-white">
+        <div class="p-6 flex flex-col justify-between flex-1 gap-4">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="retro-badge text-xs font-bold" style={`background: var(--pastel-${contact.color})`}>
+                {contact.tag}
+              </span>
+            </div>
+            <h3 class="font-extrabold text-base mb-1.5">{contact.role}</h3>
+            <p class="text-xs text-gray-600 mb-3 leading-relaxed">{contact.desc}</p>
+            <div class="text-xs font-mono text-gray-500 mb-1">📍 {contact.ext}</div>
+          </div>
+
+          <div class="border-t border-gray-200 pt-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-sm font-extrabold text-black">{contact.hotline}</span>
+              <button
+                type="button"
+                class="copy-phone-btn retro-btn retro-btn-sm"
+                data-phone={contact.hotline}
+              >
+                📋 Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Student Rights Policy Accordion -->
+  <div class="retro-window p-6 bg-white mb-8">
+    <h3 class="font-extrabold text-base mb-3 flex items-center gap-2">
+      <span>📜</span> KCKU Student Welfare Charter & Whistleblower Protections
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-700 leading-relaxed">
+      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+        <strong>1. Protection from Retaliation:</strong> Any senior student, staff member, or administration official found retaliating against a complainant faces immediate disciplinary suspension under University Statute Section 14.
+      </div>
+      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+        <strong>2. Cryptographic Anonymity:</strong> Anonymous tickets mask all identifying student credentials in public database views while maintaining internal tamper-proof logs for proctorial verification.
+      </div>
+      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+        <strong>3. Mandatory 24h Triage:</strong> Safety, electrical hazards, and water outages are flagged with top priority and must receive technician dispatch within 24 hours.
+      </div>
+      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+        <strong>4. Verified Resolution Sign-off:</strong> No maintenance ticket can be marked resolved without an official written resolution note detailing the repair actions taken.
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.querySelectorAll('.copy-phone-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const phone = btn.getAttribute('data-phone');
+      if (phone) {
+        navigator.clipboard.writeText(phone);
+        const originalText = btn.textContent;
+        btn.textContent = '✔ Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 1500);
+      }
+    });
+  });
+</script>
+

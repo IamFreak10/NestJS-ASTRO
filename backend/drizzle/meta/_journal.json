@@ -8,6 +8,13 @@
       "when": 1792392919962,
       "tag": "0000_safe_apocalypse",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1792435882426,
+      "tag": "0001_spicy_bastion",
+      "breakpoints": true
     }
   ]
 }

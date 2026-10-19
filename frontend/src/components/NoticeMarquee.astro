@@ -1,0 +1,87 @@
+---
+---
+
+<div class="marquee-wrapper">
+  <div class="marquee-badge">
+    <span class="live-dot"></span> LIVE TICKER
+  </div>
+  <div class="marquee-track">
+    <div class="marquee-content">
+      <span>🚨 <strong>ANNOUNCEMENT:</strong> Hall 2 & 3 Drinking Water Purifiers underwent bi-weekly chemical sanitization</span>
+      <span class="separator">★</span>
+      <span>🚌 <strong>TRANSPORT:</strong> Route 4 morning peak dispatch frequency increased to every 10 minutes</span>
+      <span class="separator">★</span>
+      <span>🛡️ <strong>ANTI-RAGGING CELL:</strong> Confidential 24/7 Hotline <code>404-CHOR-HELP</code> is actively monitored</span>
+      <span class="separator">★</span>
+      <span>⚡ <strong>RESOLUTION ENGINE:</strong> 94.8% of reported issues resolved in under 24 hours this week</span>
+      <span class="separator">★</span>
+      <span>📚 <strong>LIBRARY:</strong> Central Reading Room 3rd floor Wi-Fi bandwidth doubled for Midterm Exams</span>
+      <span class="separator">★</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-wrapper {
+    background: var(--pastel-yellow);
+    border-bottom: var(--border-width) solid var(--border-black);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 36px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--border-black);
+  }
+  .marquee-badge {
+    background: var(--border-black);
+    color: #ffffff;
+    padding: 0 0.85rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-retro);
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    z-index: 2;
+    box-shadow: 2px 0px 0px var(--border-black);
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulseDot 1.5s infinite;
+  }
+  .marquee-track {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .marquee-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marqueeScroll 32s linear infinite;
+  }
+  .marquee-content:hover {
+    animation-play-state: paused;
+  }
+  .separator {
+    margin: 0 1rem;
+    color: #e11d48;
+    font-size: 0.85rem;
+  }
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.75); }
+  }
+</style>
+

@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="My Grievances & Confidential Vault — CampusFix | KCKU" currentPath="/my-complaints">
+  <!-- Page Header -->
+  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
+    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-lavender)">🔒 CONFIDENTIAL STUDENT VAULT</span>
+    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">My Complaints & Grievances</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">
+      Track real-time status and technician updates for all tickets you have lodged, including both your <strong>Public Notice Board</strong> issues and your <strong>Sealed Confidential Reports</strong>.
+    </p>
+  </section>
+
+  <!-- Login Gate Notice (shown when unauthenticated) -->
+  <div id="unauthNotice" class="neo-card max-w-lg mx-auto text-center p-8 bg-white my-8">
+    <div class="text-4xl mb-3">🔑</div>
+    <h3 class="font-extrabold text-lg mb-2">Student Authentication Required</h3>
+    <p class="text-xs text-gray-600 mb-4">Please log in with your university account to access your personal dashboard and private grievances.</p>
+    <div class="flex flex-col gap-2 justify-center items-center">
+      <button onclick="document.getElementById('authModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-yellow">
+        🚀 LOGIN TO VIEW MY COMPLAINTS
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="loadingState" class="hidden text-center py-12">
+    <span class="inline-block animate-spin text-3xl mb-2">⚙️</span>
+    <p class="font-mono text-xs font-bold">DECRYPTING PERSONAL DASHBOARD...</p>
+  </div>
+
+  <!-- My Complaints Container -->
+  <div id="myComplaintsList" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+  <!-- Empty State for Logged-in User -->
+  <div id="emptyMyComplaints" class="hidden retro-window max-w-md mx-auto text-center p-8 bg-white my-8">
+    <div class="text-4xl mb-2">✨</div>
+    <h3 class="font-extrabold text-base mb-1">No Complaints Filed Yet!</h3>
+    <p class="text-xs text-gray-600 mb-4">You haven't filed any complaints or grievances yet. Need maintenance or facing campus issues?</p>
+    <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink">
+      ✉️ + FILE A NEW TICKET
+    </button>
+  </div>
+</Layout>
+
+<script>
+  const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+
+  async function loadMyComplaints() {
+    const unauthNotice = document.getElementById('unauthNotice');
+    const loadingState = document.getElementById('loadingState');
+    const complaintsList = document.getElementById('myComplaintsList');
+    const emptyState = document.getElementById('emptyMyComplaints');
+
+    try {
+      loadingState?.classList.remove('hidden');
+      unauthNotice?.classList.add('hidden');
+
+      const res = await fetch(`${API_URL}/complaints/my`, { credentials: 'include' });
+      loadingState?.classList.add('hidden');
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          unauthNotice?.classList.remove('hidden');
+          return;
+        }
+        throw new Error('Could not load personal complaints');
+      }
+
+      const json = await res.json();
+      const items = json.data || [];
+
+      if (items.length === 0) {
+        emptyState?.classList.remove('hidden');
+        return;
+      }
+
+      complaintsList?.classList.remove('hidden');
+      if (!complaintsList) return;
+
+      complaintsList.innerHTML = items
+        .map((c: any) => {
+          const isResolved = c.status === 'resolved';
+          const isPrivate = c.visibility === 'private';
+          const dateStr = new Date(c.createdAt).toLocaleDateString();
+
+          return `
+            <div class="retro-window">
+              <div class="retro-titlebar ${isPrivate ? 'pink' : 'cyan'}">
+                <span class="retro-title">#${c.id} • ${c.category.toUpperCase()}</span>
+                <div class="retro-controls">
+                  <span class="retro-ctrl-btn">_</span>
+                  <span class="retro-ctrl-btn">□</span>
+                </div>
+              </div>
+              <div class="p-5 bg-white flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex gap-2">
+                    <span class="retro-badge text-xs font-bold">⚡ ${c.priority.toUpperCase()}</span>
+                    ${isPrivate ? '<span class="retro-badge text-xs font-bold" style="background: #f3e8ff; color: #6b21a8">🔒 CONFIDENTIAL</span>' : '<span class="retro-badge text-xs font-bold">📢 PUBLIC WALL</span>'}
+                    ${c.isAnonymous ? '<span class="retro-badge text-xs font-bold" style="background: #f1f5f9">🕶️ ANONYMOUS</span>' : ''}
+                  </div>
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 border-2 border-black rounded ${isResolved ? 'bg-emerald-300' : 'bg-amber-200'}">
+                    ${c.status.replace('_', ' ').toUpperCase()} ${isResolved ? '✔' : ''}
+                  </span>
+                </div>
+
+                <div>
+                  <h4 class="font-extrabold text-base mb-1">${c.title}</h4>
+                  <p class="text-xs text-gray-700 leading-relaxed">${c.description}</p>
+                </div>
+
+                ${c.resolutionNote ? `
+                  <div class="bg-emerald-50 border border-emerald-500 rounded p-3 text-xs text-emerald-800">
+                    <strong>🛠️ Resolution Note:</strong> ${c.resolutionNote}
+                  </div>
+                ` : ''}
+
+                <div class="pt-3 border-t border-gray-200 flex justify-between items-center text-xs text-gray-500">
+                  <span>Filed on: ${dateStr}</span>
+                  <span>👍 Upvotes: <strong>${c.upvotesCount}</strong></span>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    } catch {
+      loadingState?.classList.add('hidden');
+      unauthNotice?.classList.remove('hidden');
+    }
+  }
+
+  loadMyComplaints();
+</script>
+

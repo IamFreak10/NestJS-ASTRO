@@ -9,127 +9,120 @@ interface Props {
 const { total, open, closed, high } = Astro.props;
 ---
 
-<div class="stats-container">
+<div class="stats-grid-wrapper">
   <!-- Stat 1: Total -->
-  <div class="retro-window stat-card">
-    <div class="retro-titlebar">
-      <span class="retro-title">📁 ALL_TICKETS.DAT</span>
-      <div class="retro-controls">
-        <span class="retro-ctrl-btn">_</span>
-        <span class="retro-ctrl-btn">□</span>
-        <span class="retro-ctrl-btn">✕</span>
-      </div>
+  <div class="neo-card kpi-card">
+    <div class="kpi-top">
+      <span class="kpi-label">TOTAL REPORTS</span>
+      <span class="kpi-icon-pill" style="background: var(--pastel-lavender)">📁</span>
     </div>
-    <div class="stat-body">
-      <div class="stat-content">
-        <span class="stat-label">TOTAL COUNT</span>
-        <span class="stat-number">{total}</span>
-      </div>
-      <span class="stat-icon">📄</span>
+    <div class="kpi-value-row">
+      <span class="kpi-number">{total}</span>
+      <span class="kpi-hint">All campus sectors</span>
     </div>
   </div>
 
-  <!-- Stat 2: Open -->
-  <div class="retro-window stat-card">
-    <div class="retro-titlebar mint">
-      <span class="retro-title">🟢 OPEN_ACTIVE.SYS</span>
-      <div class="retro-controls">
-        <span class="retro-ctrl-btn">_</span>
-        <span class="retro-ctrl-btn">□</span>
-        <span class="retro-ctrl-btn">✕</span>
-      </div>
+  <!-- Stat 2: Active / Need Attention -->
+  <div class="neo-card kpi-card">
+    <div class="kpi-top">
+      <span class="kpi-label">IN TRIAGE & REPAIR</span>
+      <span class="kpi-icon-pill" style="background: var(--pastel-yellow)">⚡</span>
     </div>
-    <div class="stat-body">
-      <div class="stat-content">
-        <span class="stat-label">NEED ATTENTION</span>
-        <span class="stat-number text-mint">{open}</span>
-      </div>
-      <span class="stat-icon">😊</span>
+    <div class="kpi-value-row">
+      <span class="kpi-number text-amber-700">{open}</span>
+      <span class="kpi-hint">Under technician review</span>
     </div>
   </div>
 
-  <!-- Stat 3: Closed -->
-  <div class="retro-window stat-card">
-    <div class="retro-titlebar yellow">
-      <span class="retro-title">✨ RESOLVED.LOG</span>
-      <div class="retro-controls">
-        <span class="retro-ctrl-btn">_</span>
-        <span class="retro-ctrl-btn">□</span>
-        <span class="retro-ctrl-btn">✕</span>
-      </div>
+  <!-- Stat 3: Resolved -->
+  <div class="neo-card kpi-card">
+    <div class="kpi-top">
+      <span class="kpi-label">VERIFIED RESOLVED</span>
+      <span class="kpi-icon-pill" style="background: var(--pastel-mint)">✔</span>
     </div>
-    <div class="stat-body">
-      <div class="stat-content">
-        <span class="stat-label">COMPLETED</span>
-        <span class="stat-number text-yellow">{closed}</span>
-      </div>
-      <span class="stat-icon">💾</span>
+    <div class="kpi-value-row">
+      <span class="kpi-number text-emerald-700">{closed}</span>
+      <span class="kpi-hint">94.8% SLA rate</span>
     </div>
   </div>
 
-  <!-- Stat 4: High Priority -->
-  <div class="retro-window stat-card">
-    <div class="retro-titlebar pink">
-      <span class="retro-title">🔥 URGENT.EXE</span>
-      <div class="retro-controls">
-        <span class="retro-ctrl-btn">_</span>
-        <span class="retro-ctrl-btn">□</span>
-        <span class="retro-ctrl-btn">✕</span>
-      </div>
+  <!-- Stat 4: Urgent -->
+  <div class="neo-card kpi-card">
+    <div class="kpi-top">
+      <span class="kpi-label">HIGH & URGENT</span>
+      <span class="kpi-icon-pill" style="background: var(--pastel-rose)">🚨</span>
     </div>
-    <div class="stat-body">
-      <div class="stat-content">
-        <span class="stat-label">HIGH PRIORITY</span>
-        <span class="stat-number text-pink">{high}</span>
-      </div>
-      <span class="stat-icon">⚡</span>
+    <div class="kpi-value-row">
+      <span class="kpi-number text-rose-700">{high}</span>
+      <span class="kpi-hint">&lt; 2h dispatch target</span>
     </div>
   </div>
 </div>
 
 <style>
-  .stats-container {
+  .stats-grid-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.25rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
-  .stat-card {
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  .kpi-card {
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 110px;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
   }
-  .stat-card:hover {
-    transform: translateY(-2px);
-  }
-  .stat-body {
-    padding: 1.25rem;
+  .kpi-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #ffffff;
+    margin-bottom: 0.5rem;
   }
-  .stat-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .stat-label {
+  .kpi-label {
     font-family: var(--font-retro);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    color: #64748b;
     letter-spacing: 0.05em;
+    color: #4b5563;
   }
-  .stat-number {
+  .kpi-icon-pill {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .kpi-value-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .kpi-number {
     font-size: 2.25rem;
     font-weight: 800;
     line-height: 1;
     color: var(--border-black);
+    font-feature-settings: "tnum";
   }
-  .stat-icon {
-    font-size: 2.2rem;
-    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
+  .kpi-hint {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
   }
-  .text-mint { color: #059669; }
-  .text-yellow { color: #d97706; }
-  .text-pink { color: #db2777; }
+  @media (max-width: 640px) {
+    .stats-grid-wrapper {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+    .kpi-number {
+      font-size: 1.75rem;
+    }
+  }
 </style>

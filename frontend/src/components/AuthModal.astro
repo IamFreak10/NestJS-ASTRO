@@ -1,0 +1,176 @@
+---
+---
+
+<dialog id="authModal" class="retro-modal">
+  <div class="retro-window modal-window">
+    <div class="retro-titlebar lavender">
+      <span class="retro-title">🔑 KCKU_STUDENT_IDENTITY.SYS</span>
+      <div class="retro-controls">
+        <button type="button" class="modal-close-btn" id="closeAuthModalBtn">✕</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <!-- Auth Switcher Tabs -->
+      <div class="auth-tabs">
+        <button type="button" id="tabLoginBtn" class="auth-tab-btn active">Sign In (লগইন)</button>
+        <button type="button" id="tabRegisterBtn" class="auth-tab-btn">Register (নতুন একাউন্ট)</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm" class="auth-form-panel">
+        <div class="form-group">
+          <label for="loginEmail" class="form-label">University Email</label>
+          <input
+            type="email"
+            id="loginEmail"
+            name="email"
+            class="retro-input"
+            placeholder="student@kcku.edu"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            class="retro-input"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <!-- 1-Click Demo Accounts -->
+        <div class="demo-login-box mb-4 p-3 bg-gray-50 border border-gray-300 rounded text-xs">
+          <div class="font-bold text-gray-700 mb-1.5 flex items-center gap-1">
+            <span>⚡</span> Quick Demo Test Accounts (Click to Fill):
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="student@kcku.edu" data-pass="student123">
+              👤 Student
+            </button>
+            <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="technician@kcku.edu" data-pass="tech1234">
+              👷 Staff/Tech
+            </button>
+            <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="proctor@kcku.edu" data-pass="admin123">
+              👑 Proctor/Admin
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-yellow w-full" id="submitLoginBtn">
+            🚀 LOGIN TO CAMPUSFIX
+          </button>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form-panel hidden">
+        <div class="form-group">
+          <label for="regName" class="form-label">Full Name</label>
+          <input
+            type="text"
+            id="regName"
+            name="name"
+            class="retro-input"
+            placeholder="e.g. Tanvir Ahmed"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail" class="form-label">University Email</label>
+          <input
+            type="email"
+            id="regEmail"
+            name="email"
+            class="retro-input"
+            placeholder="tanvir@kcku.edu"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="regStudentId" class="form-label">Student ID</label>
+            <input
+              type="text"
+              id="regStudentId"
+              name="studentId"
+              class="retro-input"
+              placeholder="KCKU-2024-089"
+            />
+          </div>
+
+          <div class="form-group half">
+            <label for="regDepartment" class="form-label">Department</label>
+            <input
+              type="text"
+              id="regDepartment"
+              name="department"
+              class="retro-input"
+              placeholder="e.g. CSE, EEE"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword" class="form-label">Password (Min 8 chars)</label>
+          <input
+            type="password"
+            id="regPassword"
+            name="password"
+            class="retro-input"
+            placeholder="••••••••"
+            required
+            minlength="8"
+          />
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink w-full" id="submitRegisterBtn">
+            ✨ CREATE STUDENT ACCOUNT
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .auth-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    border-bottom: var(--border-width) solid var(--border-black);
+    padding-bottom: 0.5rem;
+  }
+  .auth-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-retro);
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .auth-tab-btn.active {
+    background: var(--pastel-yellow);
+    border: 1.5px solid var(--border-black);
+    box-shadow: 2px 2px 0px var(--border-black);
+  }
+  .hidden {
+    display: none !important;
+  }
+  .w-full {
+    width: 100%;
+    justify-content: center;
+  }
+</style>
+

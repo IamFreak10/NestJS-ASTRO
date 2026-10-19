@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="System Architecture & ERD — CampusFix | KCKU" currentPath="/architecture">
+  <!-- Page Header -->
+  <section class="page-intro-header text-center max-w-3xl mx-auto mb-8">
+    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-cyan)">🗺️ FULLSTACK ARCHITECTURE BLUEPRINT</span>
+    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">System Architecture & Schema Design</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">
+      Complete documentation showcasing the multi-folder Drizzle MySQL database schema, Better Auth session cookies, anonymous privacy routing, and the 5-phase engineering implementation.
+    </p>
+  </section>
+
+  <!-- Interactive Embedded Dashboard -->
+  <div class="retro-window mb-8">
+    <div class="retro-titlebar mint flex justify-between items-center">
+      <span class="retro-title">📊 INTERACTIVE_DASHBOARD_IFRAME.HTML</span>
+      <a
+        href="/ARCHITECTURE_DASHBOARD.html"
+        target="_blank"
+        class="text-xs font-bold underline text-black hover:text-purple-700"
+      >
+        [↗ Open Fullscreen]
+      </a>
+    </div>
+    <div class="bg-white p-2">
+      <iframe
+        src="/ARCHITECTURE_DASHBOARD.html"
+        class="w-full h-[680px] border-none rounded-lg"
+        title="Interactive System Architecture Dashboard"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- Highlights Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="neo-card p-6 bg-white">
+      <div class="text-2xl mb-2">🛡️</div>
+      <h3 class="font-bold text-base mb-1">Strict Privacy Gate</h3>
+      <p class="text-xs text-gray-600 leading-relaxed">
+        Complaints filed with <code>isAnonymous: true</code> have all author identifiers redacted on public feeds, while maintaining internal cryptographic ownership for administrative safety triage.
+      </p>
+    </div>
+
+    <div class="neo-card p-6 bg-white">
+      <div class="text-2xl mb-2">👍</div>
+      <h3 class="font-bold text-base mb-1">Atomic Upvoting</h3>
+      <p class="text-xs text-gray-600 leading-relaxed">
+        The <code>complaint_upvotes</code> table enforces a compound unique constraint on <code>(complaintId, userId)</code> to prevent double voting, backed by atomic database transactions.
+      </p>
+    </div>
+
+    <div class="neo-card p-6 bg-white">
+      <div class="text-2xl mb-2">⚡</div>
+      <h3 class="font-bold text-base mb-1">Pure Astro Power</h3>
+      <p class="text-xs text-gray-600 leading-relaxed">
+        Zero runtime framework JS overhead. Native HTML5 <code>&lt;dialog&gt;</code> elements, server-rendered components, and sub-20ms page loads.
+      </p>
+    </div>
+  </div>
+</Layout>
+

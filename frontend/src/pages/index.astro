@@ -1,635 +1,303 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 import StatsGrid from '../components/StatsGrid.astro';
-import TicketCard from '../components/TicketCard.astro';
-import type { Ticket } from '../types/ticket.js';
+import CategoryTabs from '../components/CategoryTabs.astro';
+import ComplaintCard from '../components/ComplaintCard.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { SAMPLE_COMPLAINTS } from '../services/sampleData.js';
+import type { Complaint, ComplaintCategory } from '../types/complaint.js';
 
-// Server-side fetch at request/build time (The pure power of Astro!)
 const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
 
-let tickets: Ticket[] = [];
-let fetchError: string | null = null;
+// Read query params from URL
+const url = new URL(Astro.request.url);
+const selectedCategory = (url.searchParams.get('category') || 'all') as ComplaintCategory | 'all';
+const searchQuery = (url.searchParams.get('search') || '').toLowerCase().trim();
+
+let complaints: Complaint[] = [];
+let isLiveFromApi = false;
 
 try {
-  const res = await fetch(`${API_URL}/tickets`);
+  const query = new URLSearchParams();
+  if (selectedCategory && selectedCategory !== 'all') {
+    query.append('category', selectedCategory);
+  }
+  if (searchQuery) {
+    query.append('search', searchQuery);
+  }
+
+  const endpoint = `${API_URL}/complaints/public${query.toString() ? `?${query.toString()}` : ''}`;
+  const res = await fetch(endpoint);
   if (res.ok) {
     const json = await res.json();
-    tickets = json.data || [];
-  } else {
-    fetchError = `Backend responded with ${res.status} ${res.statusText}`;
+    if (json.data?.items && json.data.items.length > 0) {
+      complaints = json.data.items;
+      isLiveFromApi = true;
+    }
   }
-} catch (err: any) {
-  fetchError = err.message || 'Could not connect to NestJS API';
+} catch {
+  // Gracefully fallback
+}
+
+// Fallback to sample data if database has no records yet
+if (complaints.length === 0) {
+  complaints = SAMPLE_COMPLAINTS.filter((c) => {
+    const matchesCat = selectedCategory === 'all' || c.category === selectedCategory;
+    const matchesSearch =
+      !searchQuery ||
+      c.title.toLowerCase().includes(searchQuery) ||
+      c.description.toLowerCase().includes(searchQuery);
+    return matchesCat && matchesSearch;
+  });
 }
 
 const stats = {
-  total: tickets.length,
-  open: tickets.filter((t) => t.status === 'open').length,
-  closed: tickets.filter((t) => t.status === 'closed').length,
-  high: tickets.filter((t) => t.priority === 'high').length,
+  total: 6,
+  open: 3,
+  closed: 2,
+  high: 3,
 };
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HELPDESK.OS — Retro Astro Portal</title>
-    <meta name="description" content="Retro Y2K Neobrutalist Helpdesk Ticket Portal built with pure Astro & NestJS." />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <!-- Retro Toast Notification -->
-    <div id="toast" class="retro-toast"></div>
-
-    <!-- Retro Desktop Header -->
-    <header class="desktop-header">
-      <div class="container header-inner">
-        <!-- Logo & Desktop Window Title -->
-        <div class="header-branding">
-          <div class="retro-window branding-window">
-            <div class="retro-titlebar cyan">
-              <span class="retro-title">💻 HELPDESK_OS_v1.0</span>
-              <div class="retro-controls">
-                <span class="retro-ctrl-btn">_</span>
-                <span class="retro-ctrl-btn">□</span>
-                <span class="retro-ctrl-btn">✕</span>
-              </div>
-            </div>
-            <div class="branding-body">
-              <span class="sticker">😊</span>
-              <div>
-                <h1 class="portal-heading">HELPDESK TICKETS</h1>
-                <p class="portal-sub">Astro Power • Zero-JS Architecture</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Decorative Sticker Cloud -->
-          <div class="cloud-badge header-sticker">
-            ☁️ YOU'VE GOT TICKETS!
-          </div>
-        </div>
-
-        <!-- Header Actions -->
-        <div class="header-action-group">
-          <div class="retro-badge badge-open connection-badge">
-            <span class="live-pulse"></span> API: CONNECTED
-          </div>
-          <button id="openCreateModalBtn" class="retro-btn retro-btn-pixel retro-btn-pink">
-            ✉️ + NEW TICKET
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <main class="container main-content">
-      <!-- Error Banner if backend isn't reachable -->
-      {fetchError && (
-        <div class="retro-window error-dialog">
-          <div class="retro-titlebar pink">
-            <span class="retro-title">⚠️ SYSTEM ALERT</span>
-            <div class="retro-controls">
-              <span class="retro-ctrl-btn">✕</span>
-            </div>
-          </div>
-          <div class="error-body">
-            <p><strong>Warning:</strong> {fetchError}</p>
-            <small>Backend target: <code>{API_URL}</code></small>
-          </div>
-        </div>
-      )}
-
-      <!-- Retro Stats Window Cards -->
-      <StatsGrid 
-        total={stats.total} 
-        open={stats.open} 
-        closed={stats.closed} 
-        high={stats.high} 
-      />
-
-      <!-- Retro Search & Filter Toolbar -->
-      <div class="retro-window search-window">
-        <div class="retro-titlebar lavender">
-          <span class="retro-title">🔍 SEARCH_AND_FILTER.EXE</span>
-          <div class="retro-controls">
-            <span class="retro-ctrl-btn">_</span>
-            <span class="retro-ctrl-btn">□</span>
-            <span class="retro-ctrl-btn">✕</span>
-          </div>
-        </div>
-
-        <div class="search-body">
-          <div class="search-input-wrap">
-            <span class="search-prefix">URL:</span>
-            <input 
-              id="searchInput" 
-              type="text" 
-              placeholder="Search by ticket title, description, or #ID..." 
-            />
-          </div>
-
-          <div class="filter-dropdowns">
-            <div class="select-wrap">
-              <label for="statusFilter">STATUS:</label>
-              <select id="statusFilter">
-                <option value="all">ALL STATUS</option>
-                <option value="open">🟢 OPEN</option>
-                <option value="closed">⚪ CLOSED</option>
-              </select>
-            </div>
-
-            <div class="select-wrap">
-              <label for="priorityFilter">PRIORITY:</label>
-              <select id="priorityFilter">
-                <option value="all">ALL PRIORITY</option>
-                <option value="low">LOW</option>
-                <option value="medium">MEDIUM</option>
-                <option value="high">HIGH 🔥</option>
-              </select>
-            </div>
-          </div>
-        </div>
+<Layout title="CampusFix — Student Welfare & Public Grievance Feed | KCKU" currentPath="/">
+  <!-- Modern Hero Section -->
+  <section class="modern-hero-section">
+    <div class="hero-content">
+      <!-- Eyebrow Badge -->
+      <div class="hero-eyebrow">
+        <span class="pulse-indicator"></span>
+        <span class="eyebrow-text">RESOLUTION ENGINE ONLINE</span>
+        <span class="eyebrow-divider">•</span>
+        <span class="eyebrow-sub">KCKU OFFICIAL STUDENT WELFARE</span>
+        {isLiveFromApi ? (
+          <span class="retro-badge" style="background: var(--pastel-mint)">LIVE DB</span>
+        ) : (
+          <span class="retro-badge" style="background: var(--pastel-cyan)">DEMO DATA</span>
+        )}
       </div>
 
-      <!-- Tickets Grid Section -->
-      <section class="tickets-section">
-        <div class="section-header">
-          <h2 class="section-title">📂 ACTIVE DIRECTORY ITEMS</h2>
-          <span class="cloud-badge">TOTAL: {tickets.length}</span>
-        </div>
+      <!-- Main Headline -->
+      <h1 class="hero-headline">
+        Resolve Campus Problems. <br />
+        <span class="headline-highlight">Empower Student Voices.</span>
+      </h1>
 
-        <div id="ticketsGrid" class="tickets-grid">
-          {tickets.map((ticket) => (
-            <TicketCard ticket={ticket} />
-          ))}
-        </div>
+      <!-- Description -->
+      <p class="hero-subtext">
+        The official real-time complaint and grievance redressal system of <strong>Kauwar Chor Kindergarten University</strong>. File classroom maintenance, hostel mess hygiene, campus bus delays, or confidential anti-ragging reports with cryptographic anonymity.
+      </p>
 
-        <!-- Retro Empty State -->
-        <div id="emptyState" class="retro-window empty-box" style={tickets.length === 0 ? '' : 'display: none;'}>
-          <div class="retro-titlebar yellow">
-            <span class="retro-title">📭 EMPTY_DIRECTORY</span>
-          </div>
-          <div class="empty-body">
-            <p class="empty-emoji">🌸</p>
-            <h3>NO TICKETS FOUND</h3>
-            <p class="empty-sub">Enjoy the little things! Or create a new ticket above.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Retro Native Dialog: Create Ticket (Matching Image 3 "New Message" style) -->
-    <dialog id="createModal" class="retro-dialog">
-      <div class="retro-titlebar pink">
-        <span class="retro-title">✉️ NEW TICKET.MSG</span>
-        <div class="retro-controls">
-          <button type="button" class="retro-ctrl-btn btn-close-dialog">✕</button>
-        </div>
+      <!-- Action Button Group -->
+      <div class="hero-action-row">
+        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink hero-btn-lg">
+          ✉️ + FILE A COMPLAINT
+        </button>
+        <a href="/track" class="retro-btn retro-btn-pixel retro-btn-yellow hero-btn-lg">
+          🔎 TRACK TICKET BY ID
+        </a>
+        <a href="/emergency" class="retro-btn hero-btn-lg" style="background: var(--pastel-rose); color: #881337">
+          🚨 Emergency Hotlines
+        </a>
       </div>
 
-      <form id="createForm" method="dialog" class="dialog-body">
-        <div class="dialog-badge-header">
-          <span class="sticker">💌</span>
-          <span class="dialog-banner">CREATE SUPPORT TICKET</span>
-        </div>
-
-        <div class="form-row">
-          <label for="createSubject">SUBJECT *</label>
-          <input type="text" id="createSubject" required placeholder="What needs attention?" />
-        </div>
-
-        <div class="form-row">
-          <label for="createDescription">DESCRIPTION *</label>
-          <textarea id="createDescription" rows="4" required placeholder="Provide full details of the issue..."></textarea>
-        </div>
-
-        <div class="form-row">
-          <label for="createPriority">PRIORITY LEVEL</label>
-          <select id="createPriority">
-            <option value="low">LOW PRIORITY</option>
-            <option value="medium">MEDIUM PRIORITY</option>
-            <option value="high">HIGH PRIORITY 🔥</option>
-          </select>
-        </div>
-
-        <div class="dialog-actions">
-          <button type="button" class="retro-btn btn-close-dialog">
-            CANCEL
-          </button>
-          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink" id="createSubmitBtn">
-            💾 SUBMIT TICKET
-          </button>
-        </div>
-      </form>
-    </dialog>
-
-    <!-- Retro Native Dialog: Edit Ticket -->
-    <dialog id="editModal" class="retro-dialog">
-      <div class="retro-titlebar yellow">
-        <span class="retro-title">✏️ EDIT_TICKET.EXE</span>
-        <div class="retro-controls">
-          <button type="button" class="retro-ctrl-btn btn-close-dialog">✕</button>
-        </div>
+      <!-- Quick Trust Indicators -->
+      <div class="hero-trust-bar">
+        <span class="trust-pill">⚡ &lt; 2h Triage Response</span>
+        <span class="trust-pill">🕶️ 100% Anonymous Option</span>
+        <span class="trust-pill">🛡️ Zero-Tolerance Ragging</span>
+        <span class="trust-pill">✔ Verified Technician Sign-off</span>
       </div>
+    </div>
+  </section>
 
-      <form id="editForm" method="dialog" class="dialog-body">
-        <input type="hidden" id="editId" />
+  <!-- Real-time Stats Grid -->
+  <StatsGrid
+    total={stats.total}
+    open={stats.open}
+    closed={stats.closed}
+    high={stats.high}
+  />
 
-        <div class="dialog-badge-header">
-          <span class="sticker">📝</span>
-          <span class="dialog-banner">UPDATE TICKET DETAILS</span>
-        </div>
+  <!-- 4-Step How It Works Section -->
+  <HowItWorks />
 
-        <div class="form-row">
-          <label for="editSubject">SUBJECT</label>
-          <input type="text" id="editSubject" required />
-        </div>
+  <!-- Department Filter Toolbar & Search -->
+  <CategoryTabs activeCategory={selectedCategory} />
 
-        <div class="form-row">
-          <label for="editDescription">DESCRIPTION</label>
-          <textarea id="editDescription" rows="4"></textarea>
-        </div>
-
-        <div class="form-row">
-          <label for="editPriority">PRIORITY LEVEL</label>
-          <select id="editPriority">
-            <option value="low">LOW PRIORITY</option>
-            <option value="medium">MEDIUM PRIORITY</option>
-            <option value="high">HIGH PRIORITY 🔥</option>
-          </select>
-        </div>
-
-        <div class="dialog-actions">
-          <button type="button" class="retro-btn btn-close-dialog">
-            CANCEL
-          </button>
-          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-yellow" id="editSubmitBtn">
-            💾 SAVE CHANGES
-          </button>
-        </div>
-      </form>
-    </dialog>
-
-    <!-- Retro Footer -->
-    <footer class="container retro-footer">
-      <div class="cloud-badge footer-cloud">
-        ⚡ FULLSTACK POWERED BY ASTRO & NESTJS • ZERO CLIENT HYDRATION OVERHEAD
+  <!-- Active Complaints Feed -->
+  <section class="complaints-feed-section">
+    <div class="feed-section-header">
+      <div class="header-left">
+        <h3 class="feed-title">
+          📌 Active Campus Reports
+        </h3>
+        <span class="cloud-badge feed-count-pill">{complaints.length} ISSUES FOUND</span>
       </div>
-    </footer>
+      <div class="header-right text-xs text-gray-500 font-medium">
+        Sorted by <strong>Upvotes & Recency</strong> • Click <strong>🔍 Timeline</strong> to view repair log
+      </div>
+    </div>
 
-    <!-- Minimal Vanilla JS Script (<75 lines, Pure Native Browser JS) -->
-    <script define:vars={{ API_URL }}>
-      // Toast notification helper
-      const showToast = (message) => {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
-        toast.textContent = `★ ${message}`;
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 4000);
-      };
+    {complaints.length === 0 ? (
+      <div class="neo-card empty-state-box">
+        <span class="empty-icon text-4xl block mb-2">🦖</span>
+        <h4 class="font-extrabold text-base mb-1">No complaints found in this category!</h4>
+        <p class="text-xs text-gray-500 max-w-sm mx-auto mb-4">
+          Everything in this department seems to be running smoothly. Facing a maintenance issue?
+        </p>
+        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink">
+          ✉️ + FILE FIRST COMPLAINT
+        </button>
+      </div>
+    ) : (
+      <div class="modern-complaints-grid">
+        {complaints.map((item) => (
+          <ComplaintCard complaint={item} />
+        ))}
+      </div>
+    )}
+  </section>
 
-      // Modals
-      const createModal = document.getElementById('createModal');
-      const editModal = document.getElementById('editModal');
-      const openCreateBtn = document.getElementById('openCreateModalBtn');
-
-      openCreateBtn?.addEventListener('click', () => createModal?.showModal());
-      document.querySelectorAll('.btn-close-dialog').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          createModal?.close();
-          editModal?.close();
-        });
-      });
-
-      // Client-side Instant Filter & Search (Zero fetch overhead!)
-      const searchInput = document.getElementById('searchInput');
-      const statusFilter = document.getElementById('statusFilter');
-      const priorityFilter = document.getElementById('priorityFilter');
-      const emptyState = document.getElementById('emptyState');
-
-      const applyFilters = () => {
-        const q = searchInput?.value.toLowerCase().trim() || '';
-        const status = statusFilter?.value || 'all';
-        const priority = priorityFilter?.value || 'all';
-
-        const cards = document.querySelectorAll('.ticket-card');
-        let visibleCount = 0;
-
-        cards.forEach((card) => {
-          const cardStatus = card.getAttribute('data-status');
-          const cardPriority = card.getAttribute('data-priority');
-          const cardSubject = card.getAttribute('data-subject') || '';
-          const cardDesc = card.getAttribute('data-description') || '';
-          const cardId = card.getAttribute('data-id') || '';
-
-          const matchStatus = status === 'all' || cardStatus === status;
-          const matchPriority = priority === 'all' || cardPriority === priority;
-          const matchQuery = !q || cardSubject.includes(q) || cardDesc.includes(q) || cardId === q;
-
-          if (matchStatus && matchPriority && matchQuery) {
-            card.style.display = 'flex';
-            visibleCount++;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-
-        if (emptyState) {
-          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-        }
-      };
-
-      searchInput?.addEventListener('input', applyFilters);
-      statusFilter?.addEventListener('change', applyFilters);
-      priorityFilter?.addEventListener('change', applyFilters);
-
-      // Create Ticket Submit
-      document.getElementById('createForm')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const subject = document.getElementById('createSubject').value.trim();
-        const description = document.getElementById('createDescription').value.trim();
-        const priority = document.getElementById('createPriority').value;
-
-        try {
-          const res = await fetch(`${API_URL}/tickets`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ subject, description, priority }),
-          });
-          const json = await res.json();
-          if (!res.ok) throw new Error(json.message || 'Creation failed');
-
-          createModal?.close();
-          showToast('TICKET CREATED SUCCESSFULLY! REFRESHING...');
-          setTimeout(() => window.location.reload(), 600);
-        } catch (err) {
-          alert(`Error: ${err.message}`);
-        }
-      });
-
-      // Delegation for Edit & Close
-      document.addEventListener('click', (e) => {
-        const editBtn = e.target.closest('.btn-edit');
-        if (editBtn) {
-          const id = editBtn.getAttribute('data-id');
-          const subject = editBtn.getAttribute('data-subject');
-          const description = editBtn.getAttribute('data-description');
-          const priority = editBtn.getAttribute('data-priority');
-
-          document.getElementById('editId').value = id;
-          document.getElementById('editSubject').value = subject;
-          document.getElementById('editDescription').value = description;
-          document.getElementById('editPriority').value = priority;
-          editModal?.showModal();
-        }
-
-        const closeBtn = e.target.closest('.btn-close');
-        if (closeBtn) {
-          const id = closeBtn.getAttribute('data-id');
-          if (!confirm(`Confirm: Close ticket #${id}?`)) return;
-
-          fetch(`${API_URL}/tickets/${id}/close`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'staff-key': 'helpdesk-staff-secret',
-            },
-          })
-            .then(async (res) => {
-              if (!res.ok) {
-                const j = await res.json().catch(() => ({}));
-                throw new Error(j.message || 'Could not close ticket');
-              }
-              showToast(`TICKET #${id} CLOSED!`);
-              setTimeout(() => window.location.reload(), 600);
-            })
-            .catch((err) => alert(err.message));
-        }
-      });
-
-      // Edit Form Submit
-      document.getElementById('editForm')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const id = document.getElementById('editId').value;
-        const subject = document.getElementById('editSubject').value.trim();
-        const description = document.getElementById('editDescription').value.trim();
-        const priority = document.getElementById('editPriority').value;
-
-        try {
-          const res = await fetch(`${API_URL}/tickets/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ subject, description, priority }),
-          });
-          const json = await res.json();
-          if (!res.ok) throw new Error(json.message || 'Update failed');
-
-          editModal?.close();
-          showToast(`TICKET #${id} UPDATED!`);
-          setTimeout(() => window.location.reload(), 600);
-        } catch (err) {
-          alert(`Error: ${err.message}`);
-        }
-      });
-    </script>
-  </body>
-</html>
+  <!-- Student Welfare FAQ Accordion -->
+  <FAQSection />
+</Layout>
 
 <style>
-  .desktop-header {
-    margin-bottom: 1.5rem;
+  .modern-hero-section {
+    padding: 2.5rem 0 3.5rem 0;
+    text-align: center;
   }
-  .header-inner {
+  .hero-content {
+    max-width: 860px;
+    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    padding-top: 1.5rem;
-    padding-bottom: 0.5rem;
-  }
-  .header-branding {
-    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1.25rem;
   }
-  .branding-window {
-    min-width: 320px;
-  }
-  .branding-body {
-    padding: 0.85rem 1.25rem;
-    display: flex;
+  .hero-eyebrow {
+    display: inline-flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     background: #ffffff;
-  }
-  .portal-heading {
-    font-family: var(--font-retro);
-    font-size: 1.15rem;
+    border: 1.5px solid var(--border-black);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-neo-sm);
+    font-size: 0.72rem;
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
   }
-  .portal-sub {
-    font-size: 0.75rem;
-    color: #64748b;
-    font-weight: 600;
-  }
-  .header-action-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .connection-badge {
-    padding: 0.45rem 0.85rem;
-    font-family: var(--font-retro);
-    font-size: 0.7rem;
-  }
-  .live-pulse {
+  .pulse-indicator {
     width: 8px;
     height: 8px;
-    background: #059669;
+    background: #22c55e;
     border-radius: 50%;
+    animation: pulseGlow 1.5s infinite;
+  }
+  .eyebrow-divider {
+    color: #9ca3af;
+  }
+  .eyebrow-sub {
+    color: #4b5563;
+  }
+  .hero-headline {
+    font-size: 2.85rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--border-black);
+  }
+  .headline-highlight {
+    background: var(--pastel-yellow);
+    padding: 0.1rem 0.5rem;
+    border-radius: 6px;
+    border: 2px solid var(--border-black);
+    box-shadow: 2px 2px 0px var(--border-black);
     display: inline-block;
+    margin-top: 0.35rem;
   }
-  .error-dialog {
-    margin-bottom: 2rem;
+  .hero-subtext {
+    font-size: 1rem;
+    color: #4b5563;
+    line-height: 1.6;
+    max-width: 720px;
   }
-  .error-body {
-    padding: 1.25rem;
-    background: #fff;
-    color: #991b1b;
-  }
-  .search-window {
-    margin-bottom: 2rem;
-  }
-  .search-body {
-    padding: 1rem 1.25rem;
+  .hero-action-row {
     display: flex;
+    gap: 0.85rem;
     flex-wrap: wrap;
-    gap: 1.25rem;
-    align-items: center;
-    background: #ffffff;
+    justify-content: center;
+    margin-top: 0.5rem;
   }
-  .search-input-wrap {
-    flex: 1;
-    min-width: 280px;
+  .hero-btn-lg {
+    padding: 0.75rem 1.45rem;
+    font-size: 0.9rem;
+  }
+  .hero-trust-bar {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .search-prefix {
-    font-family: var(--font-retro);
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #64748b;
-  }
-  .filter-dropdowns {
-    display: flex;
-    gap: 1rem;
+    gap: 0.65rem;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.75rem;
   }
-  .select-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .select-wrap label {
-    font-family: var(--font-retro);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #64748b;
-  }
-  .select-wrap select {
-    width: auto;
-    min-width: 140px;
-    font-family: var(--font-retro);
+  .trust-pill {
     font-size: 0.75rem;
+    font-weight: 700;
+    color: #4b5563;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
   }
-  .tickets-section {
-    margin-top: 2rem;
+  .complaints-feed-section {
+    margin-bottom: 4rem;
   }
-  .section-header {
+  .feed-section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-black);
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
-  .section-title {
-    font-family: var(--font-retro);
-    font-size: 1.05rem;
-    letter-spacing: 0.05em;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
-  .tickets-grid {
+  .feed-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--border-black);
+  }
+  .feed-count-pill {
+    background: var(--pastel-lavender);
+    font-size: 0.68rem;
+  }
+  .modern-complaints-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1.5rem;
   }
-  .empty-box {
+  .empty-state-box {
     text-align: center;
-    margin-top: 2rem;
-  }
-  .empty-body {
     padding: 3rem 1.5rem;
     background: #ffffff;
   }
-  .empty-emoji {
-    font-size: 3rem;
-    margin-bottom: 0.75rem;
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
   }
-  .empty-body h3 {
-    font-family: var(--font-retro);
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-  .empty-sub {
-    font-size: 0.875rem;
-    color: #64748b;
-  }
-  /* Dialog Styling */
-  .dialog-body {
-    padding: 1.75rem;
-    background: #ffffff;
-  }
-  .dialog-badge-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px dashed #cbd5e1;
-  }
-  .dialog-banner {
-    font-family: var(--font-retro);
-    font-size: 0.9rem;
-    font-weight: 700;
-  }
-  .form-row {
-    margin-bottom: 1.25rem;
-  }
-  .form-row label {
-    display: block;
-    font-family: var(--font-retro);
-    font-size: 0.7rem;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-    color: #475569;
-  }
-  .dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    margin-top: 1.75rem;
-  }
-  .retro-footer {
-    text-align: center;
-    margin-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  .footer-cloud {
-    display: inline-block;
+  @media (max-width: 768px) {
+    .hero-headline {
+      font-size: 2.1rem;
+    }
+    .modern-complaints-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

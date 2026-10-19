@@ -1,0 +1,190 @@
+---
+---
+
+<footer class="modern-footer">
+  <div class="container footer-container">
+    <div class="footer-grid">
+      <!-- Col 1: Brand & Mission -->
+      <div class="footer-col col-brand">
+        <div class="footer-brand-header">
+          <span class="sticker text-2xl">🦖</span>
+          <div>
+            <h4 class="brand-title">CAMPUSFIX PORTAL</h4>
+            <span class="brand-sub">Kauwar Chor Kindergarten University</span>
+          </div>
+        </div>
+        <p class="footer-desc">
+          Official grievance and student welfare redressal system of KCKU. Dedicated to protecting student rights, resolving facility outages, and enforcing zero-tolerance campus safety.
+        </p>
+        <div class="footer-badge-row">
+          <span class="retro-badge" style="background: var(--pastel-mint)">🛡️ ANTI-RAGGING CELL</span>
+          <span class="retro-badge" style="background: var(--pastel-yellow)">⚡ ZERO-JS ASTRO</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div class="footer-col">
+        <h5 class="col-heading">NAVIGATION</h5>
+        <ul class="col-links">
+          <li><a href="/">📢 Public Notice Feed</a></li>
+          <li><a href="/my-complaints">🔒 My Confidential Vault</a></li>
+          <li><a href="/track">🔎 Track Ticket Status</a></li>
+          <li><a href="/emergency">🚨 Emergency Desk & Hotlines</a></li>
+          <li><a href="/architecture">🗺️ System Architecture & ERD</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Emergency Contacts -->
+      <div class="footer-col">
+        <h5 class="col-heading">EMERGENCY TRIAGE</h5>
+        <ul class="col-links font-mono text-xs">
+          <li><strong>Proctor SOS:</strong> +880-1700-KCKU-SOS</li>
+          <li><strong>Hall Wardens:</strong> Ext: 204 (Hall 1, 2, 3)</li>
+          <li><strong>Campus Ambulance:</strong> +880-1700-CHOR-MED</li>
+          <li><strong>Bus Dispatch Desk:</strong> Ext: 305</li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Architecture Specs -->
+      <div class="footer-col">
+        <h5 class="col-heading">SYSTEM SPECS</h5>
+        <ul class="col-links font-mono text-xs">
+          <li>• Backend: NestJS 12 + MySQL 8</li>
+          <li>• ORM: Drizzle ORM Multi-Folder</li>
+          <li>• Auth: Better Auth (Sliding Cookies)</li>
+          <li>• Frontend: Pure Astro 5 (&lt;9 kB JS)</li>
+        </ul>
+        <div class="footer-quote">
+          "Dedicated to resolving campus problems before your semester exams begin!"
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar">
+      <p class="copyright-text">
+        © 2026 Kauwar Chor Kindergarten University (KCKU). All complaints securely moderated.
+      </p>
+      <div class="footer-stickers">
+        <span class="cloud-badge">🦖 DINO-VERIFIED</span>
+        <span class="cloud-badge">💾 AUTO-SAVED</span>
+        <span class="cloud-badge">✨ 100% RETRO</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .modern-footer {
+    border-top: var(--border-width) solid var(--border-black);
+    background: #ffffff;
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
+  }
+  .brand-title {
+    font-family: var(--font-retro);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--border-black);
+  }
+  .brand-sub {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
+    display: block;
+  }
+  .footer-desc {
+    font-size: 0.82rem;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .footer-badge-row {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .col-heading {
+    font-family: var(--font-retro);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--border-black);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .col-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .col-links a {
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #4b5563;
+    transition: color 0.15s ease;
+  }
+  .col-links a:hover {
+    color: #000000;
+    text-decoration: underline;
+  }
+  .col-links li {
+    font-size: 0.8rem;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+  .footer-quote {
+    margin-top: 0.85rem;
+    font-style: italic;
+    font-size: 0.75rem;
+    color: #6b7280;
+    border-left: 2px solid var(--pastel-pink);
+    padding-left: 0.5rem;
+    line-height: 1.4;
+  }
+  .footer-bottom-bar {
+    border-top: 1.5px solid #f1f5f9;
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .copyright-text {
+    font-size: 0.78rem;
+    color: #6b7280;
+    font-weight: 600;
+  }
+  .footer-stickers {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 960px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

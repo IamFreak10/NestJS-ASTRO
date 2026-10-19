@@ -1,0 +1,293 @@
+---
+import type { Complaint } from '../types/complaint.js';
+
+interface Props {
+  complaint: Complaint;
+}
+
+const { complaint } = Astro.props;
+
+const categoryColors: Record<string, string> = {
+  facilities: 'var(--pastel-cyan)',
+  hostel_canteen: 'var(--pastel-yellow)',
+  transport: 'var(--pastel-mint)',
+  academics: 'var(--pastel-lavender)',
+  safety_bullying: 'var(--pastel-pink)',
+  administration: 'var(--pastel-rose)',
+};
+
+const categoryLabels: Record<string, string> = {
+  facilities: '🏢 Facilities',
+  hostel_canteen: '🛏️ Hostel & Mess',
+  transport: '🚌 Transport',
+  academics: '📚 Academics',
+  safety_bullying: '🛡️ Safety & Anti-Ragging',
+  administration: '📑 Administration',
+};
+
+const categoryColor = categoryColors[complaint.category] || 'var(--pastel-cyan)';
+const categoryLabel = categoryLabels[complaint.category] || complaint.category;
+
+const isResolved = complaint.status === 'resolved';
+
+const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<div class={`neo-card modern-complaint-card ${isResolved ? 'resolved-card' : ''}`} data-complaint-id={complaint.id}>
+  <div class="card-inner">
+    <!-- Top Meta Row -->
+    <div class="card-top-row">
+      <div class="badge-cluster">
+        <span class="category-pill" style={`background: ${categoryColor}`}>
+          {categoryLabel}
+        </span>
+        <span class={`retro-badge priority-badge priority-${complaint.priority}`}>
+          ⚡ {complaint.priority.toUpperCase()}
+        </span>
+        {complaint.visibility === 'private' && (
+          <span class="retro-badge badge-private">
+            🔒 CONFIDENTIAL
+          </span>
+        )}
+      </div>
+
+      <!-- Status Stamp -->
+      <div class={`status-stamp stamp-${complaint.status}`}>
+        {complaint.status.replace('_', ' ').toUpperCase()}
+        {isResolved && ' ✔'}
+      </div>
+    </div>
+
+    <!-- Complaint Title & Description -->
+    <div class="card-main-content">
+      <h3 class="complaint-card-title">
+        <span class="ticket-id-tag">#{complaint.id}</span> {complaint.title}
+      </h3>
+      <p class="complaint-card-desc">{complaint.description}</p>
+    </div>
+
+    <!-- Official Resolution Box if Resolved -->
+    {complaint.resolutionNote && (
+      <div class="resolution-callout">
+        <div class="res-header">
+          <span class="res-tag">🛠️ OFFICIAL VERIFIED FIX:</span>
+          {complaint.resolvedAt && (
+            <span class="res-date">{new Date(complaint.resolvedAt).toLocaleDateString()}</span>
+          )}
+        </div>
+        <p class="res-note-text">{complaint.resolutionNote}</p>
+      </div>
+    )}
+
+    <!-- Card Footer -->
+    <div class="card-bottom-row">
+      <div class="author-info">
+        {complaint.isAnonymous ? (
+          <span class="author-tag anonymous">
+            🕶️ Anonymous Student
+          </span>
+        ) : (
+          <span class="author-tag verified">
+            👤 {complaint.author.name}
+            {complaint.author.department && <small>({complaint.author.department})</small>}
+          </span>
+        )}
+        <span class="timestamp-text">{formattedDate}</span>
+      </div>
+
+      <div class="card-action-bar">
+        <button
+          type="button"
+          class="open-detail-btn retro-btn retro-btn-sm"
+          data-id={complaint.id}
+          title="Inspect timeline and technician logs"
+        >
+          🔍 Timeline
+        </button>
+
+        {complaint.visibility === 'public' && (
+          <button
+            type="button"
+            class={`upvote-btn ${complaint.hasUpvoted ? 'upvoted' : ''}`}
+            data-id={complaint.id}
+          >
+            <span class="upvote-icon">👍</span>
+            <span class="upvote-label">Me Too</span>
+            <span class="upvote-count font-mono font-bold">({complaint.upvotesCount})</span>
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modern-complaint-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+  }
+  .resolved-card {
+    border-color: #059669;
+  }
+  .card-inner {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 1rem;
+  }
+  .card-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .badge-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--border-black);
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .priority-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+  .badge-private {
+    background: #f3e8ff;
+    color: #6b21a8;
+    border-color: #7e22ce;
+  }
+  .card-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .complaint-card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: var(--border-black);
+  }
+  .ticket-id-tag {
+    font-family: var(--font-retro);
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-right: 0.2rem;
+  }
+  .complaint-card-desc {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #4b5563;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .resolution-callout {
+    background: #f0fdf4;
+    border: 1.5px solid #059669;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 0.85rem;
+    box-shadow: 2px 2px 0px #059669;
+  }
+  .res-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-retro);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 0.25rem;
+  }
+  .res-note-text {
+    font-size: 0.78rem;
+    color: #047857;
+    line-height: 1.45;
+  }
+  .card-bottom-row {
+    border-top: 1.5px solid #f1f5f9;
+    padding-top: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .author-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .author-tag.anonymous {
+    color: #6b7280;
+    font-style: italic;
+  }
+  .author-tag.verified {
+    color: var(--border-black);
+  }
+  .timestamp-text {
+    font-size: 0.68rem;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+  .card-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .upvote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #ffffff;
+    border: 1.5px solid var(--border-black);
+    box-shadow: var(--shadow-neo-sm);
+    border-radius: var(--radius-md);
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.12s ease;
+  }
+  .upvote-btn:hover {
+    background: var(--pastel-yellow);
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-neo);
+  }
+  .upvote-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .upvote-btn.upvoted {
+    background: var(--pastel-mint);
+    border-color: #047857;
+    box-shadow: 1.5px 1.5px 0px #047857;
+  }
+</style>

@@ -1,0 +1,167 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<header class="modern-navbar">
+  <div class="container navbar-inner">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <div class="brand-badge">
+        <span class="sticker brand-dino">🦖</span>
+        <div class="brand-text">
+          <span class="brand-title">CAMPUSFIX</span>
+          <span class="brand-uni">KCKU REDRESSAL</span>
+        </div>
+      </div>
+      <span class="cloud-badge header-pill">v2.0 OS</span>
+    </a>
+
+    <!-- Navigation Pills -->
+    <nav class="nav-pill-group">
+      <a href="/" class={`nav-pill ${currentPath === '/' ? 'active' : ''}`}>
+        📢 Public Feed
+      </a>
+      <a href="/my-complaints" class={`nav-pill ${currentPath === '/my-complaints' ? 'active' : ''}`}>
+        🔒 My Grievances
+      </a>
+      <a href="/track" class={`nav-pill ${currentPath === '/track' ? 'active' : ''}`}>
+        🔎 Track ID
+      </a>
+      <a href="/emergency" class={`nav-pill ${currentPath === '/emergency' ? 'active' : ''}`}>
+        🚨 Emergency
+      </a>
+      <a href="/architecture" class={`nav-pill ${currentPath === '/architecture' ? 'active' : ''}`}>
+        🗺️ Blueprint
+      </a>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="navbar-actions">
+      <button id="openAuthModalBtn" class="retro-btn retro-btn-sm retro-btn-yellow auth-btn">
+        🔑 <span id="authBtnText">LOGIN</span>
+      </button>
+
+      <button id="openCreateModalBtn" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink">
+        ✉️ + FILE TICKET
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .modern-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 248, 245, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: var(--border-width) solid var(--border-black);
+    padding: 0.65rem 0;
+  }
+  .navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-black);
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-neo-sm);
+  }
+  .brand-dino {
+    font-size: 1.35rem;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .brand-title {
+    font-family: var(--font-retro);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--border-black);
+  }
+  .brand-uni {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+  }
+  .header-pill {
+    background: var(--pastel-yellow);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .nav-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-black);
+    padding: 0.25rem 0.35rem;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-neo-sm);
+  }
+  .nav-pill {
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--border-black);
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-pill);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .nav-pill:hover {
+    background: var(--pastel-yellow);
+  }
+  .nav-pill.active {
+    background: var(--pastel-lavender);
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  @media (max-width: 960px) {
+    .modern-navbar {
+      padding: 0.5rem 0;
+    }
+    .navbar-inner {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .header-pill {
+      display: none;
+    }
+    .nav-pill-group {
+      order: 3;
+      width: 100%;
+      overflow-x: auto;
+      justify-content: flex-start;
+      border-radius: var(--radius-md);
+      padding: 0.3rem;
+    }
+  }
+</style>

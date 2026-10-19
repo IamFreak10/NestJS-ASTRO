@@ -1,0 +1,635 @@
+---
+import '../styles/global.css';
+import StatsGrid from '../components/StatsGrid.astro';
+import TicketCard from '../components/TicketCard.astro';
+import type { Ticket } from '../types/ticket.js';
+
+// Server-side fetch at request/build time (The pure power of Astro!)
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+
+let tickets: Ticket[] = [];
+let fetchError: string | null = null;
+
+try {
+  const res = await fetch(`${API_URL}/tickets`);
+  if (res.ok) {
+    const json = await res.json();
+    tickets = json.data || [];
+  } else {
+    fetchError = `Backend responded with ${res.status} ${res.statusText}`;
+  }
+} catch (err: any) {
+  fetchError = err.message || 'Could not connect to NestJS API';
+}
+
+const stats = {
+  total: tickets.length,
+  open: tickets.filter((t) => t.status === 'open').length,
+  closed: tickets.filter((t) => t.status === 'closed').length,
+  high: tickets.filter((t) => t.priority === 'high').length,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HELPDESK.OS — Retro Astro Portal</title>
+    <meta name="description" content="Retro Y2K Neobrutalist Helpdesk Ticket Portal built with pure Astro & NestJS." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <!-- Retro Toast Notification -->
+    <div id="toast" class="retro-toast"></div>
+
+    <!-- Retro Desktop Header -->
+    <header class="desktop-header">
+      <div class="container header-inner">
+        <!-- Logo & Desktop Window Title -->
+        <div class="header-branding">
+          <div class="retro-window branding-window">
+            <div class="retro-titlebar cyan">
+              <span class="retro-title">💻 HELPDESK_OS_v1.0</span>
+              <div class="retro-controls">
+                <span class="retro-ctrl-btn">_</span>
+                <span class="retro-ctrl-btn">□</span>
+                <span class="retro-ctrl-btn">✕</span>
+              </div>
+            </div>
+            <div class="branding-body">
+              <span class="sticker">😊</span>
+              <div>
+                <h1 class="portal-heading">HELPDESK TICKETS</h1>
+                <p class="portal-sub">Astro Power • Zero-JS Architecture</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decorative Sticker Cloud -->
+          <div class="cloud-badge header-sticker">
+            ☁️ YOU'VE GOT TICKETS!
+          </div>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-action-group">
+          <div class="retro-badge badge-open connection-badge">
+            <span class="live-pulse"></span> API: CONNECTED
+          </div>
+          <button id="openCreateModalBtn" class="retro-btn retro-btn-pixel retro-btn-pink">
+            ✉️ + NEW TICKET
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container main-content">
+      <!-- Error Banner if backend isn't reachable -->
+      {fetchError && (
+        <div class="retro-window error-dialog">
+          <div class="retro-titlebar pink">
+            <span class="retro-title">⚠️ SYSTEM ALERT</span>
+            <div class="retro-controls">
+              <span class="retro-ctrl-btn">✕</span>
+            </div>
+          </div>
+          <div class="error-body">
+            <p><strong>Warning:</strong> {fetchError}</p>
+            <small>Backend target: <code>{API_URL}</code></small>
+          </div>
+        </div>
+      )}
+
+      <!-- Retro Stats Window Cards -->
+      <StatsGrid 
+        total={stats.total} 
+        open={stats.open} 
+        closed={stats.closed} 
+        high={stats.high} 
+      />
+
+      <!-- Retro Search & Filter Toolbar -->
+      <div class="retro-window search-window">
+        <div class="retro-titlebar lavender">
+          <span class="retro-title">🔍 SEARCH_AND_FILTER.EXE</span>
+          <div class="retro-controls">
+            <span class="retro-ctrl-btn">_</span>
+            <span class="retro-ctrl-btn">□</span>
+            <span class="retro-ctrl-btn">✕</span>
+          </div>
+        </div>
+
+        <div class="search-body">
+          <div class="search-input-wrap">
+            <span class="search-prefix">URL:</span>
+            <input 
+              id="searchInput" 
+              type="text" 
+              placeholder="Search by ticket title, description, or #ID..." 
+            />
+          </div>
+
+          <div class="filter-dropdowns">
+            <div class="select-wrap">
+              <label for="statusFilter">STATUS:</label>
+              <select id="statusFilter">
+                <option value="all">ALL STATUS</option>
+                <option value="open">🟢 OPEN</option>
+                <option value="closed">⚪ CLOSED</option>
+              </select>
+            </div>
+
+            <div class="select-wrap">
+              <label for="priorityFilter">PRIORITY:</label>
+              <select id="priorityFilter">
+                <option value="all">ALL PRIORITY</option>
+                <option value="low">LOW</option>
+                <option value="medium">MEDIUM</option>
+                <option value="high">HIGH 🔥</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tickets Grid Section -->
+      <section class="tickets-section">
+        <div class="section-header">
+          <h2 class="section-title">📂 ACTIVE DIRECTORY ITEMS</h2>
+          <span class="cloud-badge">TOTAL: {tickets.length}</span>
+        </div>
+
+        <div id="ticketsGrid" class="tickets-grid">
+          {tickets.map((ticket) => (
+            <TicketCard ticket={ticket} />
+          ))}
+        </div>
+
+        <!-- Retro Empty State -->
+        <div id="emptyState" class="retro-window empty-box" style={tickets.length === 0 ? '' : 'display: none;'}>
+          <div class="retro-titlebar yellow">
+            <span class="retro-title">📭 EMPTY_DIRECTORY</span>
+          </div>
+          <div class="empty-body">
+            <p class="empty-emoji">🌸</p>
+            <h3>NO TICKETS FOUND</h3>
+            <p class="empty-sub">Enjoy the little things! Or create a new ticket above.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Retro Native Dialog: Create Ticket (Matching Image 3 "New Message" style) -->
+    <dialog id="createModal" class="retro-dialog">
+      <div class="retro-titlebar pink">
+        <span class="retro-title">✉️ NEW TICKET.MSG</span>
+        <div class="retro-controls">
+          <button type="button" class="retro-ctrl-btn btn-close-dialog">✕</button>
+        </div>
+      </div>
+
+      <form id="createForm" method="dialog" class="dialog-body">
+        <div class="dialog-badge-header">
+          <span class="sticker">💌</span>
+          <span class="dialog-banner">CREATE SUPPORT TICKET</span>
+        </div>
+
+        <div class="form-row">
+          <label for="createSubject">SUBJECT *</label>
+          <input type="text" id="createSubject" required placeholder="What needs attention?" />
+        </div>
+
+        <div class="form-row">
+          <label for="createDescription">DESCRIPTION *</label>
+          <textarea id="createDescription" rows="4" required placeholder="Provide full details of the issue..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <label for="createPriority">PRIORITY LEVEL</label>
+          <select id="createPriority">
+            <option value="low">LOW PRIORITY</option>
+            <option value="medium">MEDIUM PRIORITY</option>
+            <option value="high">HIGH PRIORITY 🔥</option>
+          </select>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="retro-btn btn-close-dialog">
+            CANCEL
+          </button>
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink" id="createSubmitBtn">
+            💾 SUBMIT TICKET
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Retro Native Dialog: Edit Ticket -->
+    <dialog id="editModal" class="retro-dialog">
+      <div class="retro-titlebar yellow">
+        <span class="retro-title">✏️ EDIT_TICKET.EXE</span>
+        <div class="retro-controls">
+          <button type="button" class="retro-ctrl-btn btn-close-dialog">✕</button>
+        </div>
+      </div>
+
+      <form id="editForm" method="dialog" class="dialog-body">
+        <input type="hidden" id="editId" />
+
+        <div class="dialog-badge-header">
+          <span class="sticker">📝</span>
+          <span class="dialog-banner">UPDATE TICKET DETAILS</span>
+        </div>
+
+        <div class="form-row">
+          <label for="editSubject">SUBJECT</label>
+          <input type="text" id="editSubject" required />
+        </div>
+
+        <div class="form-row">
+          <label for="editDescription">DESCRIPTION</label>
+          <textarea id="editDescription" rows="4"></textarea>
+        </div>
+
+        <div class="form-row">
+          <label for="editPriority">PRIORITY LEVEL</label>
+          <select id="editPriority">
+            <option value="low">LOW PRIORITY</option>
+            <option value="medium">MEDIUM PRIORITY</option>
+            <option value="high">HIGH PRIORITY 🔥</option>
+          </select>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="retro-btn btn-close-dialog">
+            CANCEL
+          </button>
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-yellow" id="editSubmitBtn">
+            💾 SAVE CHANGES
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Retro Footer -->
+    <footer class="container retro-footer">
+      <div class="cloud-badge footer-cloud">
+        ⚡ FULLSTACK POWERED BY ASTRO & NESTJS • ZERO CLIENT HYDRATION OVERHEAD
+      </div>
+    </footer>
+
+    <!-- Minimal Vanilla JS Script (<75 lines, Pure Native Browser JS) -->
+    <script define:vars={{ API_URL }}>
+      // Toast notification helper
+      const showToast = (message) => {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = `★ ${message}`;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+      };
+
+      // Modals
+      const createModal = document.getElementById('createModal');
+      const editModal = document.getElementById('editModal');
+      const openCreateBtn = document.getElementById('openCreateModalBtn');
+
+      openCreateBtn?.addEventListener('click', () => createModal?.showModal());
+      document.querySelectorAll('.btn-close-dialog').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          createModal?.close();
+          editModal?.close();
+        });
+      });
+
+      // Client-side Instant Filter & Search (Zero fetch overhead!)
+      const searchInput = document.getElementById('searchInput');
+      const statusFilter = document.getElementById('statusFilter');
+      const priorityFilter = document.getElementById('priorityFilter');
+      const emptyState = document.getElementById('emptyState');
+
+      const applyFilters = () => {
+        const q = searchInput?.value.toLowerCase().trim() || '';
+        const status = statusFilter?.value || 'all';
+        const priority = priorityFilter?.value || 'all';
+
+        const cards = document.querySelectorAll('.ticket-card');
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+          const cardStatus = card.getAttribute('data-status');
+          const cardPriority = card.getAttribute('data-priority');
+          const cardSubject = card.getAttribute('data-subject') || '';
+          const cardDesc = card.getAttribute('data-description') || '';
+          const cardId = card.getAttribute('data-id') || '';
+
+          const matchStatus = status === 'all' || cardStatus === status;
+          const matchPriority = priority === 'all' || cardPriority === priority;
+          const matchQuery = !q || cardSubject.includes(q) || cardDesc.includes(q) || cardId === q;
+
+          if (matchStatus && matchPriority && matchQuery) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+      };
+
+      searchInput?.addEventListener('input', applyFilters);
+      statusFilter?.addEventListener('change', applyFilters);
+      priorityFilter?.addEventListener('change', applyFilters);
+
+      // Create Ticket Submit
+      document.getElementById('createForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const subject = document.getElementById('createSubject').value.trim();
+        const description = document.getElementById('createDescription').value.trim();
+        const priority = document.getElementById('createPriority').value;
+
+        try {
+          const res = await fetch(`${API_URL}/tickets`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, description, priority }),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.message || 'Creation failed');
+
+          createModal?.close();
+          showToast('TICKET CREATED SUCCESSFULLY! REFRESHING...');
+          setTimeout(() => window.location.reload(), 600);
+        } catch (err) {
+          alert(`Error: ${err.message}`);
+        }
+      });
+
+      // Delegation for Edit & Close
+      document.addEventListener('click', (e) => {
+        const editBtn = e.target.closest('.btn-edit');
+        if (editBtn) {
+          const id = editBtn.getAttribute('data-id');
+          const subject = editBtn.getAttribute('data-subject');
+          const description = editBtn.getAttribute('data-description');
+          const priority = editBtn.getAttribute('data-priority');
+
+          document.getElementById('editId').value = id;
+          document.getElementById('editSubject').value = subject;
+          document.getElementById('editDescription').value = description;
+          document.getElementById('editPriority').value = priority;
+          editModal?.showModal();
+        }
+
+        const closeBtn = e.target.closest('.btn-close');
+        if (closeBtn) {
+          const id = closeBtn.getAttribute('data-id');
+          if (!confirm(`Confirm: Close ticket #${id}?`)) return;
+
+          fetch(`${API_URL}/tickets/${id}/close`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'staff-key': 'helpdesk-staff-secret',
+            },
+          })
+            .then(async (res) => {
+              if (!res.ok) {
+                const j = await res.json().catch(() => ({}));
+                throw new Error(j.message || 'Could not close ticket');
+              }
+              showToast(`TICKET #${id} CLOSED!`);
+              setTimeout(() => window.location.reload(), 600);
+            })
+            .catch((err) => alert(err.message));
+        }
+      });
+
+      // Edit Form Submit
+      document.getElementById('editForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editId').value;
+        const subject = document.getElementById('editSubject').value.trim();
+        const description = document.getElementById('editDescription').value.trim();
+        const priority = document.getElementById('editPriority').value;
+
+        try {
+          const res = await fetch(`${API_URL}/tickets/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, description, priority }),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.message || 'Update failed');
+
+          editModal?.close();
+          showToast(`TICKET #${id} UPDATED!`);
+          setTimeout(() => window.location.reload(), 600);
+        } catch (err) {
+          alert(`Error: ${err.message}`);
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .desktop-header {
+    margin-bottom: 1.5rem;
+  }
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .header-branding {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .branding-window {
+    min-width: 320px;
+  }
+  .branding-body {
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #ffffff;
+  }
+  .portal-heading {
+    font-family: var(--font-retro);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+  }
+  .portal-sub {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+  .header-action-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .connection-badge {
+    padding: 0.45rem 0.85rem;
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+  }
+  .live-pulse {
+    width: 8px;
+    height: 8px;
+    background: #059669;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .error-dialog {
+    margin-bottom: 2rem;
+  }
+  .error-body {
+    padding: 1.25rem;
+    background: #fff;
+    color: #991b1b;
+  }
+  .search-window {
+    margin-bottom: 2rem;
+  }
+  .search-body {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: center;
+    background: #ffffff;
+  }
+  .search-input-wrap {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .search-prefix {
+    font-family: var(--font-retro);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+  .filter-dropdowns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .select-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .select-wrap label {
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+  .select-wrap select {
+    width: auto;
+    min-width: 140px;
+    font-family: var(--font-retro);
+    font-size: 0.75rem;
+  }
+  .tickets-section {
+    margin-top: 2rem;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .section-title {
+    font-family: var(--font-retro);
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+  }
+  .tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .empty-box {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .empty-body {
+    padding: 3rem 1.5rem;
+    background: #ffffff;
+  }
+  .empty-emoji {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+  }
+  .empty-body h3 {
+    font-family: var(--font-retro);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .empty-sub {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+  /* Dialog Styling */
+  .dialog-body {
+    padding: 1.75rem;
+    background: #ffffff;
+  }
+  .dialog-badge-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px dashed #cbd5e1;
+  }
+  .dialog-banner {
+    font-family: var(--font-retro);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .form-row {
+    margin-bottom: 1.25rem;
+  }
+  .form-row label {
+    display: block;
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: #475569;
+  }
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .retro-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .footer-cloud {
+    display: inline-block;
+  }
+</style>

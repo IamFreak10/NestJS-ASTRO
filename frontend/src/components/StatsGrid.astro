@@ -1,0 +1,135 @@
+---
+interface Props {
+  total: number;
+  open: number;
+  closed: number;
+  high: number;
+}
+
+const { total, open, closed, high } = Astro.props;
+---
+
+<div class="stats-container">
+  <!-- Stat 1: Total -->
+  <div class="retro-window stat-card">
+    <div class="retro-titlebar">
+      <span class="retro-title">📁 ALL_TICKETS.DAT</span>
+      <div class="retro-controls">
+        <span class="retro-ctrl-btn">_</span>
+        <span class="retro-ctrl-btn">□</span>
+        <span class="retro-ctrl-btn">✕</span>
+      </div>
+    </div>
+    <div class="stat-body">
+      <div class="stat-content">
+        <span class="stat-label">TOTAL COUNT</span>
+        <span class="stat-number">{total}</span>
+      </div>
+      <span class="stat-icon">📄</span>
+    </div>
+  </div>
+
+  <!-- Stat 2: Open -->
+  <div class="retro-window stat-card">
+    <div class="retro-titlebar mint">
+      <span class="retro-title">🟢 OPEN_ACTIVE.SYS</span>
+      <div class="retro-controls">
+        <span class="retro-ctrl-btn">_</span>
+        <span class="retro-ctrl-btn">□</span>
+        <span class="retro-ctrl-btn">✕</span>
+      </div>
+    </div>
+    <div class="stat-body">
+      <div class="stat-content">
+        <span class="stat-label">NEED ATTENTION</span>
+        <span class="stat-number text-mint">{open}</span>
+      </div>
+      <span class="stat-icon">😊</span>
+    </div>
+  </div>
+
+  <!-- Stat 3: Closed -->
+  <div class="retro-window stat-card">
+    <div class="retro-titlebar yellow">
+      <span class="retro-title">✨ RESOLVED.LOG</span>
+      <div class="retro-controls">
+        <span class="retro-ctrl-btn">_</span>
+        <span class="retro-ctrl-btn">□</span>
+        <span class="retro-ctrl-btn">✕</span>
+      </div>
+    </div>
+    <div class="stat-body">
+      <div class="stat-content">
+        <span class="stat-label">COMPLETED</span>
+        <span class="stat-number text-yellow">{closed}</span>
+      </div>
+      <span class="stat-icon">💾</span>
+    </div>
+  </div>
+
+  <!-- Stat 4: High Priority -->
+  <div class="retro-window stat-card">
+    <div class="retro-titlebar pink">
+      <span class="retro-title">🔥 URGENT.EXE</span>
+      <div class="retro-controls">
+        <span class="retro-ctrl-btn">_</span>
+        <span class="retro-ctrl-btn">□</span>
+        <span class="retro-ctrl-btn">✕</span>
+      </div>
+    </div>
+    <div class="stat-body">
+      <div class="stat-content">
+        <span class="stat-label">HIGH PRIORITY</span>
+        <span class="stat-number text-pink">{high}</span>
+      </div>
+      <span class="stat-icon">⚡</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+  .stat-body {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+  }
+  .stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .stat-label {
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.05em;
+  }
+  .stat-number {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--border-black);
+  }
+  .stat-icon {
+    font-size: 2.2rem;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
+  }
+  .text-mint { color: #059669; }
+  .text-yellow { color: #d97706; }
+  .text-pink { color: #db2777; }
+</style>

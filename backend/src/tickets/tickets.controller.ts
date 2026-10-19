@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service.js';
-import { Ticket } from './ticket.interface.js';
+import type { Ticket } from './ticket.interface.js';
 import { CreateTicketDto } from './dto/create-ticket.dto.js';
 import { FilterTicketsQueryDto } from './dto/filter-tickets-query.dto.js';
 import { UpdateTicketDto } from './dto/update-ticket-dto.js';
@@ -18,32 +18,34 @@ import { StaffGuard } from './guards/staff.guard.js';
 
 @Controller('tickets')
 export class TicketsController {
-  //Dependency injection
   constructor(private readonly ticketsService: TicketsService) {}
+
   @Get()
-  getAll(@Query() filters: FilterTicketsQueryDto) {
+  async getAll(@Query() filters: FilterTicketsQueryDto): Promise<Ticket[]> {
     return this.ticketsService.findAll(filters.status, filters.priority);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Ticket> {
     return this.ticketsService.findOne(id);
   }
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
+  async create(@Body() createTicketDto: CreateTicketDto): Promise<Ticket> {
     return this.ticketsService.create(createTicketDto);
   }
+
   @Patch(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTicketDto: UpdateTicketDto,
-  ) {
+  ): Promise<Ticket> {
     return this.ticketsService.update(id, updateTicketDto);
   }
+
   @UseGuards(StaffGuard)
   @Patch(':id/close')
-  close(@Param('id', ParseIntPipe) id: number) {
+  async close(@Param('id', ParseIntPipe) id: number): Promise<Ticket> {
     return this.ticketsService.closeTicket(id);
   }
 }

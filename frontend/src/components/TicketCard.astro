@@ -1,0 +1,170 @@
+---
+import type { Ticket } from '../types/ticket.js';
+
+interface Props {
+  ticket: Ticket;
+}
+
+const { ticket } = Astro.props;
+
+// Format date nicely
+const formattedDate = new Date(ticket.createdAt).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+// Titlebar color based on status / priority
+const titlebarColor = 
+  ticket.status === 'closed' 
+    ? '' 
+    : ticket.priority === 'high' 
+      ? 'pink' 
+      : ticket.priority === 'medium' 
+        ? 'yellow' 
+        : 'cyan';
+---
+
+<article 
+  class="retro-window ticket-card" 
+  data-id={ticket.id} 
+  data-status={ticket.status} 
+  data-priority={ticket.priority}
+  data-subject={ticket.subject.toLowerCase()}
+  data-description={(ticket.description || '').toLowerCase()}
+>
+  <!-- Retro Titlebar -->
+  <div class={`retro-titlebar ${titlebarColor}`}>
+    <span class="retro-title">
+      <span>✉️</span> TICKET_#{ticket.id}.TXT
+    </span>
+    <div class="retro-controls">
+      <span class="retro-ctrl-btn">_</span>
+      <span class="retro-ctrl-btn">□</span>
+      <span class="retro-ctrl-btn">✕</span>
+    </div>
+  </div>
+
+  <!-- Body Content -->
+  <div class="ticket-body">
+    <div class="ticket-badges">
+      <span class={`retro-badge badge-${ticket.status}`}>
+        ● {ticket.status}
+      </span>
+      <span class={`retro-badge badge-priority-${ticket.priority}`}>
+        ★ {ticket.priority}
+      </span>
+    </div>
+
+    <h3 class="ticket-subject">{ticket.subject}</h3>
+    <p class="ticket-desc">{ticket.description || 'No description provided.'}</p>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="ticket-footer">
+    <div class="ticket-meta">
+      <span class="date-icon">📅</span>
+      <time class="ticket-date">{formattedDate}</time>
+    </div>
+
+    <div class="ticket-actions">
+      {ticket.status === 'open' && (
+        <button 
+          class="retro-btn retro-btn-sm retro-btn-yellow btn-edit"
+          data-id={ticket.id}
+          data-subject={ticket.subject}
+          data-description={ticket.description || ''}
+          data-priority={ticket.priority}
+        >
+          ✏️ Edit
+        </button>
+      )}
+
+      {ticket.status === 'open' && (
+        <button 
+          class="retro-btn retro-btn-sm retro-btn-danger btn-close"
+          data-id={ticket.id}
+        >
+          ✕ Close
+        </button>
+      )}
+
+      {ticket.status === 'closed' && (
+        <span class="closed-label">
+          ✔ RESOLVED
+        </span>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .ticket-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background: #ffffff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ticket-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--border-black);
+  }
+  .ticket-body {
+    padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+    flex: 1;
+  }
+  .ticket-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+  .ticket-subject {
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    color: var(--border-black);
+  }
+  .ticket-desc {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ticket-footer {
+    padding: 1rem 1.25rem;
+    border-top: 2px dashed #cbd5e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fafafa;
+  }
+  .ticket-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    font-family: var(--font-retro);
+  }
+  .ticket-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .closed-label {
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    background: #f1f5f9;
+    border: 1px dashed #cbd5e1;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+  }
+</style>

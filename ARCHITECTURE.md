@@ -1,6 +1,6 @@
 # 🏛️ CampusFix — Architectural Plan & System Design
 
-**Institution:** Kauwar Chor Kindergarten University (KCKU)  
+**Institution:** University of Barishal (বরিশাল বিশ্ববিদ্যালয় / BU)  
 **System:** Fullstack Campus Complaint, Grievance & Student Welfare Resolution Portal  
 **Backend:** NestJS 12 (REST API, Simplified Architecture)  
 **Authentication:** Better Auth 1.7 (Drizzle MySQL Adapter, Session Cookies, RBAC)  
@@ -29,7 +29,7 @@ erDiagram
         string email UK "varchar(255)"
         boolean emailVerified
         string role "student | staff | admin"
-        string studentId "nullable (e.g. KCKU-2024-042)"
+        string studentId "nullable (e.g. BU-2023-0101)"
         string department "e.g. CSE, Transport, ProctorOffice"
         timestamp createdAt
         timestamp updatedAt

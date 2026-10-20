@@ -1,61 +1,75 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import VaultHero from '../components/vault/VaultHero.astro';
+import VaultStatsBar from '../components/vault/VaultStatsBar.astro';
+import VaultFilterBar from '../components/vault/VaultFilterBar.astro';
+import VaultAuthNotice from '../components/vault/VaultAuthNotice.astro';
+import VaultEmptyState from '../components/vault/VaultEmptyState.astro';
 ---
 
-<Layout title="My Grievances & Confidential Vault — CampusFix | KCKU" currentPath="/my-complaints">
-  <!-- Page Header -->
-  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
-    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-lavender)">🔒 CONFIDENTIAL STUDENT VAULT</span>
-    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">My Complaints & Grievances</h2>
-    <p class="text-sm text-gray-600 leading-relaxed">
-      Track real-time status and technician updates for all tickets you have lodged, including both your <strong>Public Notice Board</strong> issues and your <strong>Sealed Confidential Reports</strong>.
-    </p>
-  </section>
+<Layout title="My Grievance Vault & Complaint Desk — CampusFix | University of Barishal" currentPath="/my-complaints">
+  <!-- Modular Hero Section with Live Stats Bar Slot -->
+  <VaultHero>
+    <VaultStatsBar />
+  </VaultHero>
 
-  <!-- Login Gate Notice (shown when unauthenticated) -->
-  <div id="unauthNotice" class="neo-card max-w-lg mx-auto text-center p-8 bg-white my-8">
-    <div class="text-4xl mb-3">🔑</div>
-    <h3 class="font-extrabold text-lg mb-2">Student Authentication Required</h3>
-    <p class="text-xs text-gray-600 mb-4">Please log in with your university account to access your personal dashboard and private grievances.</p>
-    <div class="flex flex-col gap-2 justify-center items-center">
-      <button onclick="document.getElementById('authModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-yellow">
-        🚀 LOGIN TO VIEW MY COMPLAINTS
-      </button>
-    </div>
-  </div>
+  <!-- Filter Toolbar (Visible when complaints exist) -->
+  <VaultFilterBar />
+
+  <!-- Login Gate Notice (Shown when guest/unauthenticated) -->
+  <VaultAuthNotice />
 
   <!-- Loading State -->
-  <div id="loadingState" class="hidden text-center py-12">
-    <span class="inline-block animate-spin text-3xl mb-2">⚙️</span>
-    <p class="font-mono text-xs font-bold">DECRYPTING PERSONAL DASHBOARD...</p>
+  <div id="loadingState" class="hidden loading-card">
+    <div class="loading-icon-wrap">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg-spinner">
+        <line x1="12" y1="2" x2="12" y2="6"></line>
+        <line x1="12" y1="18" x2="12" y2="22"></line>
+        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+        <line x1="2" y1="12" x2="6" y2="12"></line>
+        <line x1="18" y1="12" x2="22" y2="12"></line>
+        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+      </svg>
+    </div>
+    <p class="loading-title">DECRYPTING PERSONAL DASHBOARD...</p>
+    <p class="loading-sub">Connecting to University Database</p>
   </div>
 
-  <!-- My Complaints Container -->
-  <div id="myComplaintsList" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+  <!-- My Complaints Cards Grid Container -->
+  <div id="myComplaintsList" class="hidden my-complaints-grid"></div>
 
-  <!-- Empty State for Logged-in User -->
-  <div id="emptyMyComplaints" class="hidden retro-window max-w-md mx-auto text-center p-8 bg-white my-8">
-    <div class="text-4xl mb-2">✨</div>
-    <h3 class="font-extrabold text-base mb-1">No Complaints Filed Yet!</h3>
-    <p class="text-xs text-gray-600 mb-4">You haven't filed any complaints or grievances yet. Need maintenance or facing campus issues?</p>
-    <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink">
-      ✉️ + FILE A NEW TICKET
-    </button>
-  </div>
+  <!-- Empty State for Logged-in User with 0 tickets -->
+  <VaultEmptyState />
 </Layout>
 
 <script>
+  import { ICONS } from '../lib/icons.js';
+  import { getCategoryMeta } from '../lib/categories.js';
+  import { formatDate } from '../lib/date.js';
+  import { toBengaliDigits, formatBengaliDate, translateStatus, translatePriority } from '../lib/i18n.js';
+
   const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+
+  let allComplaintsData: any[] = [];
+  let currentFilter = 'all';
 
   async function loadMyComplaints() {
     const unauthNotice = document.getElementById('unauthNotice');
     const loadingState = document.getElementById('loadingState');
     const complaintsList = document.getElementById('myComplaintsList');
     const emptyState = document.getElementById('emptyMyComplaints');
+    const statsBar = document.getElementById('vaultStatsBar');
+    const filterBar = document.getElementById('vaultFilterBar');
 
     try {
       loadingState?.classList.remove('hidden');
       unauthNotice?.classList.add('hidden');
+      emptyState?.classList.add('hidden');
+      complaintsList?.classList.add('hidden');
+      statsBar?.classList.add('hidden');
+      filterBar?.classList.add('hidden');
 
       const res = await fetch(`${API_URL}/complaints/my`, { credentials: 'include' });
       loadingState?.classList.add('hidden');
@@ -69,69 +83,689 @@ import Layout from '../layouts/Layout.astro';
       }
 
       const json = await res.json();
-      const items = json.data || [];
+      allComplaintsData = json.data || [];
 
-      if (items.length === 0) {
+      // Guarantee unauth notice is hidden once authenticated data arrives
+      unauthNotice?.classList.add('hidden');
+
+      if (allComplaintsData.length === 0) {
         emptyState?.classList.remove('hidden');
         return;
       }
 
-      complaintsList?.classList.remove('hidden');
-      if (!complaintsList) return;
+      // Populate Live Metric Counters
+      updateSummaryMetrics(allComplaintsData);
+      statsBar?.classList.remove('hidden');
+      filterBar?.classList.remove('hidden');
 
-      complaintsList.innerHTML = items
+      renderFilteredComplaints();
+    } catch (err) {
+      console.error('Failed to load personal complaints:', err);
+      loadingState?.classList.add('hidden');
+      if (!allComplaintsData || allComplaintsData.length === 0) {
+        unauthNotice?.classList.remove('hidden');
+      }
+    }
+  }
+
+  function updateSummaryMetrics(items: any[]) {
+    const statTotal = document.getElementById('statTotalCount');
+    const statPending = document.getElementById('statPendingCount');
+    const statResolved = document.getElementById('statResolvedCount');
+    const statConfidential = document.getElementById('statConfidentialCount');
+    const filterAllCount = document.getElementById('filterAllCount');
+    const filterPendingCount = document.getElementById('filterPendingCount');
+    const filterResolvedCount = document.getElementById('filterResolvedCount');
+    const filterConfidentialCount = document.getElementById('filterConfidentialCount');
+
+    const total = items.length;
+    const resolved = items.filter((c) => c.status === 'resolved').length;
+    const pending = items.filter((c) => c.status !== 'resolved').length;
+    const confidential = items.filter((c) => c.visibility === 'private').length;
+
+    const lang = (localStorage.getItem('campusfix_lang') as 'en' | 'bn') || 'en';
+    const isBn = lang === 'bn';
+    const fmt = (n: number) => isBn ? toBengaliDigits(n) : String(n);
+
+    if (statTotal) statTotal.textContent = fmt(total);
+    if (statPending) statPending.textContent = fmt(pending);
+    if (statResolved) statResolved.textContent = fmt(resolved);
+    if (statConfidential) statConfidential.textContent = fmt(confidential);
+
+    if (filterAllCount) filterAllCount.textContent = fmt(total);
+    if (filterPendingCount) filterPendingCount.textContent = fmt(pending);
+    if (filterResolvedCount) filterResolvedCount.textContent = fmt(resolved);
+    if (filterConfidentialCount) filterConfidentialCount.textContent = fmt(confidential);
+  }
+
+  async function loadSamplePreview() {
+    const unauthNotice = document.getElementById('unauthNotice');
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyMyComplaints');
+    const statsBar = document.getElementById('vaultStatsBar');
+    const filterBar = document.getElementById('vaultFilterBar');
+
+    unauthNotice?.classList.add('hidden');
+    emptyState?.classList.add('hidden');
+    loadingState?.classList.add('hidden');
+
+    try {
+      const { SAMPLE_COMPLAINTS } = await import('../services/sampleData.js');
+      allComplaintsData = SAMPLE_COMPLAINTS.slice(0, 5);
+    } catch {
+      allComplaintsData = [];
+    }
+    updateSummaryMetrics(allComplaintsData);
+    statsBar?.classList.remove('hidden');
+    filterBar?.classList.remove('hidden');
+    renderFilteredComplaints();
+
+    if (!document.getElementById('demoPreviewNotice')) {
+      const banner = document.createElement('div');
+      banner.id = 'demoPreviewNotice';
+      banner.className = 'demo-vault-banner';
+      banner.innerHTML = `
+        <div class="demo-banner-content">
+          <span class="demo-banner-tag">PREVIEW MODE</span>
+          <span class="demo-banner-text">Displaying sample student grievance cards. Log in with your university account to access live database tickets.</span>
+        </div>
+        <button type="button" class="retro-btn retro-btn-sm retro-btn-yellow" onclick="document.getElementById('authModal').showModal()">
+          🔑 Sign In
+        </button>
+      `;
+      const hero = document.querySelector('.vault-hero-section');
+      hero?.insertAdjacentElement('afterend', banner);
+    }
+  }
+
+  function renderFilteredComplaints() {
+    const complaintsList = document.getElementById('myComplaintsList');
+    if (!complaintsList) return;
+
+    let filtered = allComplaintsData;
+    if (currentFilter === 'pending') {
+      filtered = allComplaintsData.filter((c) => c.status !== 'resolved');
+    } else if (currentFilter === 'resolved') {
+      filtered = allComplaintsData.filter((c) => c.status === 'resolved');
+    } else if (currentFilter === 'confidential') {
+      filtered = allComplaintsData.filter((c) => c.visibility === 'private');
+    }
+
+    if (filtered.length === 0) {
+      complaintsList.classList.remove('hidden');
+      complaintsList.innerHTML = `
+        <div class="filter-empty-box">
+          <p class="font-bold text-gray-700">No tickets match this filter selection.</p>
+          <button type="button" class="retro-btn retro-btn-sm retro-btn-yellow mt-2" onclick="document.querySelector('[data-filter=all]').click()">
+            Reset to All Tickets
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    complaintsList.classList.remove('hidden');
+    try {
+      const lang = (localStorage.getItem('campusfix_lang') as 'en' | 'bn') || 'en';
+      const isBn = lang === 'bn';
+
+      complaintsList.innerHTML = filtered
         .map((c: any) => {
           const isResolved = c.status === 'resolved';
           const isPrivate = c.visibility === 'private';
-          const dateStr = new Date(c.createdAt).toLocaleDateString();
+          const dateStr = isBn ? formatBengaliDate(c.createdAt) : formatDate(c.createdAt);
+          const catInfo = getCategoryMeta(c.category);
+          const categoryLabel = isBn ? (catInfo.labelBn || catInfo.label) : catInfo.label;
+          const priorityVal = String(c.priority || 'medium').toLowerCase();
+          const priorityLabel = translatePriority(priorityVal, lang);
+          const statusLabel = translateStatus(c.status, lang);
+          const ticketIdStr = isBn ? toBengaliDigits(c.id) : String(c.id);
+          const upvotesStr = isBn ? toBengaliDigits(c.upvotesCount || 0) : String(c.upvotesCount || 0);
+
+          // Status stamp
+          let statusBadgeHtml = '';
+          if (isResolved) {
+            statusBadgeHtml = `<span class="status-stamp stamp-resolved">${ICONS.check} ${statusLabel}</span>`;
+          } else if (c.status === 'in_progress') {
+            statusBadgeHtml = `<span class="status-stamp stamp-in_progress">${ICONS.clock} ${statusLabel}</span>`;
+          } else if (c.status === 'under_review') {
+            statusBadgeHtml = `<span class="status-stamp stamp-under_review">${ICONS.eye} ${statusLabel}</span>`;
+          } else {
+            statusBadgeHtml = `<span class="status-stamp stamp-submitted">${ICONS.clock} ${statusLabel}</span>`;
+          }
 
           return `
-            <div class="retro-window">
-              <div class="retro-titlebar ${isPrivate ? 'pink' : 'cyan'}">
-                <span class="retro-title">#${c.id} • ${c.category.toUpperCase()}</span>
+            <article class="retro-window vault-complaint-card ${isResolved ? 'resolved-border' : ''}">
+              <!-- Titlebar -->
+              <div class="retro-titlebar ${isPrivate ? 'pink' : 'yellow'}">
+                <div class="titlebar-left">
+                  <span class="vault-ticket-num">#${ticketIdStr}</span>
+                  <span class="category-pill-sm" style="background: ${catInfo.color}">
+                    ${catInfo.icon} ${categoryLabel}
+                  </span>
+                </div>
                 <div class="retro-controls">
                   <span class="retro-ctrl-btn">_</span>
                   <span class="retro-ctrl-btn">□</span>
                 </div>
               </div>
-              <div class="p-5 bg-white flex flex-col justify-between gap-3">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex gap-2">
-                    <span class="retro-badge text-xs font-bold">⚡ ${c.priority.toUpperCase()}</span>
-                    ${isPrivate ? '<span class="retro-badge text-xs font-bold" style="background: #f3e8ff; color: #6b21a8">🔒 CONFIDENTIAL</span>' : '<span class="retro-badge text-xs font-bold">📢 PUBLIC WALL</span>'}
-                    ${c.isAnonymous ? '<span class="retro-badge text-xs font-bold" style="background: #f1f5f9">🕶️ ANONYMOUS</span>' : ''}
+
+              <!-- Card Content Body -->
+              <div class="card-inner-body">
+                <!-- Top Metadata Cluster -->
+                <div class="badge-cluster-row">
+                  <div class="badge-cluster-left">
+                    <span class="retro-badge badge-priority-${priorityVal}">
+                      ${ICONS.lightning} ${priorityLabel.toUpperCase()}
+                    </span>
+
+                    ${
+                      isPrivate
+                        ? `<span class="retro-badge badge-confidential">${ICONS.lock} ${isBn ? 'গোপনীয়' : 'CONFIDENTIAL'}</span>`
+                        : `<span class="retro-badge badge-public">${ICONS.globe} ${isBn ? 'পাবলিক ফিড' : 'PUBLIC WALL'}</span>`
+                    }
+
+                    ${
+                      c.isAnonymous
+                        ? `<span class="retro-badge badge-anonymous">${ICONS.userMask} ${isBn ? 'বেনামি' : 'ANONYMOUS'}</span>`
+                        : ''
+                    }
                   </div>
-                  <span class="font-mono text-xs font-bold px-2 py-0.5 border-2 border-black rounded ${isResolved ? 'bg-emerald-300' : 'bg-amber-200'}">
-                    ${c.status.replace('_', ' ').toUpperCase()} ${isResolved ? '✔' : ''}
-                  </span>
+
+                  <div class="badge-cluster-right">
+                    ${statusBadgeHtml}
+                  </div>
                 </div>
 
-                <div>
-                  <h4 class="font-extrabold text-base mb-1">${c.title}</h4>
-                  <p class="text-xs text-gray-700 leading-relaxed">${c.description}</p>
+                <!-- Author Profile Snippet -->
+                <div class="vault-author-badge">
+                  <div class="vault-author-avatar-wrap ${c.isAnonymous ? 'anonymous-avatar' : ''}">
+                    ${c.isAnonymous
+                      ? '<span class="vault-author-icon">🕶️</span>'
+                      : (c.author?.image
+                          ? `<img src="${c.author.image}" alt="${c.author.name || 'Author'}" class="vault-author-avatar-img" />`
+                          : `<span class="vault-author-initial">${(c.author?.name || 'S').charAt(0).toUpperCase()}</span>`
+                        )
+                    }
+                  </div>
+                  <div class="vault-author-meta">
+                    <span class="vault-author-name">
+                      ${c.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student 🕶️') : (c.author?.name || 'Student')}
+                    </span>
+                    <span class="vault-author-sub">
+                      ${c.isAnonymous
+                        ? (isBn ? 'পরিচয় গোপনীয়' : 'Identity Masked')
+                        : (c.author?.department ? c.author.department : (isBn ? 'বরিশাল বিশ্ববিদ্যালয়' : 'University of Barishal'))
+                      }
+                    </span>
+                  </div>
                 </div>
 
-                ${c.resolutionNote ? `
-                  <div class="bg-emerald-50 border border-emerald-500 rounded p-3 text-xs text-emerald-800">
-                    <strong>🛠️ Resolution Note:</strong> ${c.resolutionNote}
-                  </div>
-                ` : ''}
+                <!-- Main Title & Description -->
+                <div class="card-text-block">
+                  <h3 class="complaint-item-title">${c.title || (isBn ? 'শিরোনামহীন অভিযোগ' : 'Untitled Complaint')}</h3>
+                  <p class="complaint-item-desc">${c.description || (isBn ? 'কোনো বিবরণ প্রদান করা হয়নি।' : 'No description provided.')}</p>
+                </div>
 
-                <div class="pt-3 border-t border-gray-200 flex justify-between items-center text-xs text-gray-500">
-                  <span>Filed on: ${dateStr}</span>
-                  <span>👍 Upvotes: <strong>${c.upvotesCount}</strong></span>
+                <!-- Official Proctor Resolution Note Box -->
+                ${
+                  c.resolutionNote
+                    ? `
+                  <div class="official-resolution-box">
+                    <div class="resolution-box-header">
+                      <span class="res-title-text">
+                        ${ICONS.shieldCheck} ${isBn ? 'যাচাইকৃত প্রক্টরিয়াল সমাধান:' : 'VERIFIED PROCTOR RESOLUTION:'}
+                      </span>
+                      ${
+                        c.resolvedAt
+                          ? `<span class="res-date-tag">${isBn ? formatBengaliDate(c.resolvedAt) : formatDate(c.resolvedAt)}</span>`
+                          : ''
+                      }
+                    </div>
+                    <p class="resolution-box-body">${c.resolutionNote}</p>
+                  </div>
+                `
+                    : ''
+                }
+
+                <!-- Bottom Row: Meta & Inspect Timeline CTA -->
+                <div class="card-action-footer">
+                  <div class="card-footer-meta">
+                    <span class="meta-item">
+                      ${ICONS.calendar} ${dateStr}
+                    </span>
+                    ${
+                      isPrivate
+                        ? `<span class="meta-item text-gray-500" title="Confidential grievance protected by student privacy">${ICONS.lock} ${isBn ? 'গোপনীয় (সিলগালা)' : 'Sealed (Private)'}</span>`
+                        : `
+                      <button
+                        type="button"
+                        class="upvote-btn retro-btn retro-btn-sm"
+                        data-id="${c.id}"
+                        title="Toggle +1 Me Too Upvote"
+                      >
+                        <span class="upvote-icon">👍</span>
+                        <span class="upvote-label">${c.hasUpvoted ? (isBn ? 'সমর্থিত' : 'Upvoted') : (isBn ? '+১ ভুক্তভোগী' : 'Me Too')}</span>
+                        <span class="upvote-count font-mono font-bold">(${upvotesStr})</span>
+                      </button>
+                    `
+                    }
+                  </div>
+
+                  <button
+                    type="button"
+                    class="open-detail-btn retro-btn retro-btn-sm"
+                    data-id="${c.id}"
+                    title="Inspect real-time dispatch timeline and technician logs"
+                  >
+                    ${ICONS.search} ${isBn ? 'অগ্রগতি ও টাইমলাইন' : 'Inspect Timeline'}
+                  </button>
                 </div>
               </div>
-            </div>
+            </article>
           `;
         })
         .join('');
-    } catch {
-      loadingState?.classList.add('hidden');
-      unauthNotice?.classList.remove('hidden');
+    } catch (renderErr) {
+      console.error('Error rendering complaints cards:', renderErr);
     }
   }
+
+  // Handle Filter Button Clicks
+  document.querySelectorAll('.vault-filter-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vault-filter-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-filter') || 'all';
+      renderFilteredComplaints();
+    });
+  });
+
+  // 1-Click Instant Demo Login Handler
+  document.getElementById('quickDemoStudentLoginBtn')?.addEventListener('click', async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/sign-in/email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email: 'student@kcku.edu', password: 'student123' }),
+      });
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        document.getElementById('authModal')?.showModal();
+      }
+    } catch {
+      document.getElementById('authModal')?.showModal();
+    }
+  });
+
+  // Instant Offline Demo Preview Handlers
+  document.getElementById('previewSampleVaultBtn')?.addEventListener('click', loadSamplePreview);
+  document.getElementById('emptySamplePreviewBtn')?.addEventListener('click', loadSamplePreview);
+
+  // Re-render immediately when language is switched
+  window.addEventListener('campusfix:langchange', () => {
+    updateSummaryMetrics(allComplaintsData);
+    renderFilteredComplaints();
+  });
 
   loadMyComplaints();
 </script>
 
+<!-- Global CSS for dynamically injected vault cards -->
+<style is:global>
+  /* Complaints Cards Grid */
+  .my-complaints-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  @media (max-width: 768px) {
+    .my-complaints-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  /* Vault Complaint Card */
+  .vault-complaint-card {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: var(--radius-lg);
+    border: var(--border-width) solid var(--border-black);
+    box-shadow: var(--shadow-neo);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+  }
+  .vault-complaint-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-neo-lg);
+  }
+
+  /* Titlebar */
+  .titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .vault-ticket-num {
+    font-family: var(--font-retro);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--border-black);
+  }
+  .category-pill-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0.55rem;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-pill);
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--border-black);
+    box-shadow: 1px 1px 0px var(--border-black);
+    line-height: 1;
+  }
+
+  /* Card Body */
+  .card-inner-body {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    flex: 1;
+    background: #ffffff;
+  }
+
+  /* Badges Row */
+  .badge-cluster-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .vault-author-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.65rem;
+    background: #fefce8;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-md);
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .vault-author-avatar-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1px 1px 0 var(--border-black);
+    overflow: hidden;
+    background: var(--pastel-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .vault-author-avatar-wrap.anonymous-avatar {
+    background: #e2e8f0;
+  }
+  .vault-author-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .vault-author-initial {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--border-black);
+  }
+  .vault-author-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+  .vault-author-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .vault-author-name {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--border-black);
+    line-height: 1.2;
+  }
+  .vault-author-sub {
+    font-size: 0.65rem;
+    color: #4b5563;
+    font-weight: 500;
+  }
+  .badge-cluster-left {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .badge-confidential {
+    background: #f3e8ff;
+    color: #6b21a8;
+    border-color: #7e22ce;
+  }
+  .badge-public {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #0284c7;
+  }
+  .badge-anonymous {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #64748b;
+  }
+
+  /* Typography */
+  .card-text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+  }
+  .complaint-item-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--border-black);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .complaint-item-desc {
+    font-size: 0.84rem;
+    color: #4b5563;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Official Resolution Callout */
+  .official-resolution-box {
+    background: #f0fdf4;
+    border: 1.5px solid #059669;
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    box-shadow: 2px 2px 0px #059669;
+  }
+  .resolution-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+  }
+  .res-title-text {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--font-retro);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #065f46;
+  }
+  .res-date-tag {
+    font-family: monospace;
+    font-size: 0.68rem;
+    color: #065f46;
+    font-weight: 700;
+  }
+  .resolution-box-body {
+    font-size: 0.8rem;
+    color: #047857;
+    line-height: 1.45;
+  }
+
+  /* Card Footer Actions */
+  .card-action-footer {
+    border-top: 1.5px solid #f1f5f9;
+    padding-top: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .card-footer-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 0.74rem;
+    color: #6b7280;
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .filter-empty-box {
+    grid-column: 1 / -1;
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-black);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neo);
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .card-inner-body {
+      padding: 1rem;
+    }
+    .badge-cluster-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .card-action-footer {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+    .card-action-footer .open-detail-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 0.6rem;
+    }
+  }
+
+  /* Demo Vault Preview Banner */
+  .demo-vault-banner {
+    max-width: 820px;
+    margin: 0 auto 1.5rem auto;
+    background: #fef9c3;
+    border: 2px solid var(--border-black);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    box-shadow: var(--shadow-neo-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .demo-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .demo-banner-tag {
+    background: #eab308;
+    color: #000000;
+    font-family: var(--font-retro);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-black);
+    box-shadow: 1px 1px 0px var(--border-black);
+  }
+  .demo-banner-text {
+    font-size: 0.8rem;
+    color: #713f12;
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .demo-vault-banner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      padding: 0.85rem;
+    }
+    .demo-vault-banner .retro-btn {
+      width: 100%;
+    }
+  }
+
+  /* Loading State */
+  .loading-card {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+  .loading-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--border-black);
+    border-radius: var(--radius-md);
+    background: #fef08a;
+    box-shadow: var(--shadow-neo-sm);
+    margin-bottom: 0.85rem;
+  }
+  .loading-title {
+    font-family: var(--font-retro);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.05em;
+  }
+  .loading-sub {
+    font-family: monospace;
+    font-size: 0.72rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+</style>

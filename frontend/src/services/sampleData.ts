@@ -20,8 +20,27 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: 'usr_s1',
       name: 'Tanvir Hossain',
       department: 'CSE Batch 21',
+      image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80',
     },
     hasUpvoted: false,
+    comments: [
+      {
+        id: 1,
+        authorName: 'Kamal Uddin (Senior Maintenance Tech)',
+        authorImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80',
+        message: 'Inspected 4th floor plumbing line. Identified damaged joint gasket. Replacement parts dispatched from Central Store.',
+        createdAt: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
+        isInternalNote: false,
+      },
+      {
+        id: 2,
+        authorName: 'Tanvir Hossain',
+        authorImage: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80',
+        message: 'Thank you for the quick inspection! Water is still dripping slightly.',
+        createdAt: new Date(Date.now() - 3600 * 1000 * 1).toISOString(),
+        isInternalNote: false,
+      },
+    ],
   },
   {
     id: 102,
@@ -42,8 +61,19 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: null,
       name: 'Anonymous Student 🕶️',
       department: null,
+      image: null,
     },
     hasUpvoted: true,
+    comments: [
+      {
+        id: 3,
+        authorName: 'Dr. Rafiqul Islam (Chief Proctor)',
+        authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80',
+        message: 'Complaint routed to Food Safety & Dining Hall Committee. Surprise inspection scheduled for Tuesday.',
+        createdAt: new Date(Date.now() - 3600 * 1000 * 6).toISOString(),
+        isInternalNote: false,
+      },
+    ],
   },
   {
     id: 103,
@@ -65,14 +95,25 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: 'usr_s2',
       name: 'Anika Rahman',
       department: 'BBA 19th',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&h=256&q=80',
     },
     hasUpvoted: false,
+    comments: [
+      {
+        id: 4,
+        authorName: 'Jashim Uddin (Transport Dispatcher)',
+        authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&h=256&q=80',
+        message: 'Bus #14 added as permanent morning relief shuttle starting today at 8:20 AM.',
+        createdAt: new Date(Date.now() - 3600 * 1000 * 24).toISOString(),
+        isInternalNote: false,
+      },
+    ],
   },
   {
     id: 104,
     title: '📚 Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently',
     description:
-      'The access point "KCKU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.',
+      'The access point "BU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.',
     category: 'academics',
     visibility: 'public',
     isAnonymous: false,
@@ -87,6 +128,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: 'usr_s3',
       name: 'Mahmudul Hasan',
       department: 'EEE Batch 22',
+      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&h=256&q=80',
     },
     hasUpvoted: false,
   },
@@ -110,6 +152,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: null,
       name: 'Anonymous Student 🕶️',
       department: null,
+      image: null,
     },
     hasUpvoted: true,
   },
@@ -132,6 +175,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
       id: 'usr_s4',
       name: 'Samiul Haque',
       department: 'CSE Batch 20',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=256&h=256&q=80',
     },
     hasUpvoted: false,
   },
@@ -140,6 +184,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
 export interface TicketTimelineEvent {
   time: string;
   author: string;
+  authorImage?: string;
   role: string;
   content: string;
   statusChange?: string;
@@ -150,6 +195,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: '09:00 AM',
       author: 'Tanvir Hossain',
+      authorImage: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Student',
       content: 'Ticket submitted with photo of 4th floor water leakage.',
       statusChange: 'submitted',
@@ -157,6 +203,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: '10:30 AM',
       author: 'Dr. Rafiqul Islam (Proctor Office)',
+      authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Admin',
       content: 'Complaint verified. Forwarded to Hall 3 Maintenance Supervisor.',
       statusChange: 'under_review',
@@ -164,6 +211,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: '01:15 PM',
       author: 'Kamal Uddin (Senior Plumber)',
+      authorImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Technician',
       content: 'Inspected 4th floor. Main pipe joint gasket has cracked. Parts requisition submitted to store.',
       statusChange: 'in_progress',
@@ -173,6 +221,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: 'Yesterday 08:45 AM',
       author: 'Anika Rahman',
+      authorImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Student',
       content: 'Route 4 bus delayed and overcrowding reported.',
       statusChange: 'submitted',
@@ -180,6 +229,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: 'Yesterday 11:00 AM',
       author: 'Transport Committee Chair',
+      authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Admin',
       content: 'Reviewing vehicle GPS logs and morning driver schedule.',
       statusChange: 'under_review',
@@ -187,6 +237,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: 'Today 07:30 AM',
       author: 'Transport Dispatcher',
+      authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Staff',
       content: 'Bus #14 deployed as dedicated relief shuttle on Route 4.',
       statusChange: 'resolved',
@@ -203,6 +254,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: '2 days ago',
       author: 'Chief Proctor Office',
+      authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Admin',
       content: 'High priority anti-ragging response initiated. Night patrol deployed.',
       statusChange: 'in_progress',
@@ -210,6 +262,7 @@ export const SAMPLE_TIMELINES: Record<number, TicketTimelineEvent[]> = {
     {
       time: 'Yesterday',
       author: 'Campus Security & Electrical Cell',
+      authorImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80',
       role: 'Staff',
       content: 'Installed 2 high-lumen floodlights and stationed permanent 8 PM patrol post.',
       statusChange: 'resolved',

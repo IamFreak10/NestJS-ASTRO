@@ -6,7 +6,7 @@ import * as schema from './schema/index.js';
 import { eq } from 'drizzle-orm';
 
 async function seed() {
-  console.log('🌱 Starting database seed for Kauwar Chor Kindergarten University (KCKU)...');
+  console.log('🌱 Starting database seed for University of Barishal (বরিশাল বিশ্ববিদ্যালয়)...');
 
   const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
@@ -35,6 +35,7 @@ async function seed() {
         name: 'Dr. Rafiqul Islam (Chief Proctor)',
         email: 'proctor@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'admin' as const,
         studentId: null,
         department: 'Proctor Office & Student Welfare',
@@ -45,6 +46,7 @@ async function seed() {
         name: 'Kamal Uddin (Senior Maintenance Tech)',
         email: 'technician@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'staff' as const,
         studentId: null,
         department: 'Campus Electrical & Plumbing Cell',
@@ -55,6 +57,7 @@ async function seed() {
         name: 'Jashim Uddin (Transport Dispatcher)',
         email: 'transport@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'staff' as const,
         studentId: null,
         department: 'University Bus Directorate',
@@ -65,8 +68,9 @@ async function seed() {
         name: 'Tanvir Hossain',
         email: 'student@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'student' as const,
-        studentId: 'KCKU-2023-0101',
+        studentId: 'BU-2023-0101',
         department: 'Computer Science & Engineering',
         passwordHash: studentPasswordHash,
       },
@@ -75,8 +79,9 @@ async function seed() {
         name: 'Anika Rahman',
         email: 'anika@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'student' as const,
-        studentId: 'KCKU-2023-0205',
+        studentId: 'BU-2023-0205',
         department: 'Business Administration',
         passwordHash: studentPasswordHash,
       },
@@ -85,8 +90,9 @@ async function seed() {
         name: 'Mahmudul Hasan',
         email: 'mahmud@kcku.edu',
         emailVerified: true,
+        image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&h=256&q=80',
         role: 'student' as const,
-        studentId: 'KCKU-2024-0312',
+        studentId: 'BU-2024-0312',
         department: 'Electrical & Electronic Engineering',
         passwordHash: studentPasswordHash,
       },
@@ -109,6 +115,7 @@ async function seed() {
           name: u.name,
           email: u.email,
           emailVerified: u.emailVerified,
+          image: u.image,
           role: u.role,
           studentId: u.studentId,
           department: u.department,
@@ -116,7 +123,15 @@ async function seed() {
         console.log(`  ✔ Created user: ${u.email} (${u.role})`);
       } else {
         userId = existingUser[0].id;
-        console.log(`  ℹ User already exists: ${u.email}`);
+        await db
+          .update(schema.user)
+          .set({
+            image: u.image,
+            name: u.name,
+            department: u.department,
+          })
+          .where(eq(schema.user.id, userId));
+        console.log(`  ℹ User already exists: ${u.email} (synced avatar & info)`);
       }
 
       // Upsert Account credentials
@@ -201,7 +216,7 @@ async function seed() {
         authorId: 'usr_student_mahmud',
         title: '📚 Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently',
         description:
-          'The access point "KCKU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.',
+          'The access point "BU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.',
         category: 'academics' as const,
         visibility: 'public' as const,
         isAnonymous: false,

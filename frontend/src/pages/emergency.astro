@@ -3,142 +3,356 @@ import Layout from '../layouts/Layout.astro';
 
 const emergencyContacts = [
   {
-    role: '🛡️ Anti-Ragging Special Taskforce',
-    hotline: '+880-1700-KCKU-SOS',
-    ext: 'Room 102, Proctor Building',
+    role: 'Anti-Ragging Special Taskforce',
+    roleBn: 'অ্যান্টি-র‍্যাগিং স্পেশাল টাস্কফোর্স',
+    hotline: '+880-1700-BU-HELP',
+    phoneRaw: '+8801700284357',
+    ext: 'Room 102, Proctorial Building',
+    extBn: 'রুম ১০২, প্রক্টরিয়াল ভবন',
     desc: 'Confidential reporting hotline for fresher harassment, bullying, or dorm intimidation. Rapid mobile response units dispatched 24/7.',
+    descBn: 'নবীন শিক্ষার্থীদের হয়রানি, র‍্যাগিং ও ভয়ভীতি প্রদর্শনের বিরুদ্ধে সার্বক্ষণিক গোপনীয় হেল্পলাইন। তাৎক্ষণিক মোবাইল টিম পাঠানো হয়।',
     color: 'rose',
-    tag: '24/7 EMERGENCY',
+    tag: '24/7 RAPID TRIAGE',
+    icon: '🛡️',
   },
   {
-    role: '🏛️ Chief Proctor Office & Campus Security',
-    hotline: '+880-1700-KCKU-PRO',
-    ext: 'Ext: 101 / Central Security Desk',
-    desc: 'Official university law, safety, boundary patrol, student disciplinary matters, and outside interference protection.',
+    role: 'Chief Proctor Office & Security',
+    roleBn: 'প্রধান প্রক্টর কার্যালয় ও নিরাপত্তা সেল',
+    hotline: '+880-1700-BU-PROCTOR',
+    phoneRaw: '+8801700287762',
+    ext: 'Room 101, Central Security Desk',
+    extBn: 'রুম ১০১, কেন্দ্রীয় নিরাপত্তা ডেস্ক',
+    desc: 'Official university law, campus boundary patrol, student disciplinary matters, and outside interference protection.',
+    descBn: 'ক্যাম্পাস শৃঙ্খলা, বহিরাগতদের অনধিকার প্রবেশ রোধ, সীমানা পাহারা ও বিশ্ববিদ্যালয়ের আইন-শৃঙ্খলা রক্ষা।',
     color: 'yellow',
     tag: 'SECURITY & LAW',
+    icon: '🏛️',
   },
   {
-    role: '🛏️ Hall Provost & Wardens Council',
+    role: 'Hall Provost & Wardens Council',
+    roleBn: 'হল প্রভোস্ট ও আবাসিক ওয়ার্ডেন কাউন্সিল',
     hotline: '+880-1700-HALL-DESK',
-    ext: 'Hall 1, 2 & 3 Wardens Office',
-    desc: 'Room allocation issues, water/electricity emergency cuts, meal disputes, and residential conflict resolution.',
+    phoneRaw: '+8801700425533',
+    ext: 'Bangabandhu & Karnaphuli Halls Office',
+    extBn: 'বঙ্গবন্ধু ও কর্ণফুলী হল অফিস',
+    desc: 'Dorm room allocation, water/electricity emergency cuts, meal safety disputes, and residential conflict mediation.',
+    descBn: 'আবাসিক সিট সমস্যা, গভীর রাতে বিদ্যুৎ বা পানি সরবরাহ বন্ধ হওয়া ও ডাইনিং সংক্রান্ত জরুরি ব্যবস্থাপনা।',
     color: 'mint',
     tag: 'RESIDENTIAL',
+    icon: '🛏️',
   },
   {
-    role: '🩺 Campus Red Cross Medical & Ambulance',
-    hotline: '+880-1700-CHOR-MED',
-    ext: 'Medical Center Ground Floor',
-    desc: 'Immediate first-aid, emergency oxygen, campus ambulance dispatch, and doctor on-call for sudden illness or accidents.',
+    role: 'Medical Center & Ambulance',
+    roleBn: 'মেডিকেল সেন্টার ও জরুরি অ্যাম্বুলেন্স',
+    hotline: '+880-1700-BU-MEDIC',
+    phoneRaw: '+8801700286334',
+    ext: 'Campus Medical Center Ground Floor',
+    extBn: 'মেডিকেল সেন্টার, নিচতলা',
+    desc: 'Immediate first-aid, emergency oxygen, campus ambulance dispatch, and on-call university physicians.',
+    descBn: 'জরুরি প্রাথমিক চিকিৎসা, অক্সিজেন সাপোর্ট, সার্বক্ষণিক অ্যাম্বুলেন্স প্রেরণ ও চিকিৎসক সেবা।',
     color: 'pink',
-    tag: 'HEALTH & AMBULANCE',
+    tag: '24/7 HEALTH & AMBULANCE',
+    icon: '🩺',
   },
   {
-    role: '🚌 Campus Transport Directorate',
+    role: 'Campus Transport Directorate',
+    roleBn: 'পরিবহন দপ্তর ও বাস কন্ট্রোল রুম',
     hotline: '+880-1700-BUS-DISP',
-    ext: 'Bus Depot / Central Terminal',
-    desc: 'Bus delays, overcrowding, emergency shuttle requests, lost & found on university buses.',
+    phoneRaw: '+8801700287347',
+    ext: 'Central Bus Terminal Dispatch Room',
+    extBn: 'কেন্দ্রীয় বাস টার্মিনাল কন্ট্রোল রুম',
+    desc: 'Bus schedule tracking, overcrowding alerts, emergency shuttle dispatch, and lost-and-found items.',
+    descBn: 'ক্যাম্পাস বাসের শিডিউল সমস্যা, অতিরিক্ত ভিড় নিরসনে অতিরিক্ত বাস প্রেরণ ও বাসে ফেলে যাওয়া সামগ্রী উদ্ধার।',
     color: 'cyan',
-    tag: 'TRANSPORT',
+    tag: 'TRANSIT OPERATIONS',
+    icon: '🚌',
   },
   {
-    role: '🧠 Student Counseling & Mental Wellbeing',
+    role: 'Counseling & Mental Wellbeing',
+    roleBn: 'ছাত্র নির্দেশনা ও মানসিক স্বাস্থ্য কেন্দ্র',
     hotline: '+880-1700-CARE-HELP',
-    ext: 'Counseling Cell, Student Center',
-    desc: 'Certified campus psychologists providing free, completely anonymous guidance for academic stress, anxiety, and depression.',
+    phoneRaw: '+8801700227343',
+    ext: 'Student Counseling Cell, Room 204',
+    extBn: 'ছাত্র পরামর্শ কেন্দ্র, কক্ষ ২০৪',
+    desc: 'Certified campus psychologists providing free, completely anonymous guidance for academic stress and trauma.',
+    descBn: 'পড়াশোনার চাপ, বিষণ্ণতা ও ব্যক্তিগত সমস্যা নিরসনে অভিজ্ঞ মনোবিজ্ঞানীদের সম্পূর্ণ গোপনীয় কাউন্সেলিং।',
     color: 'lavender',
-    tag: 'CONFIDENTIAL COUNSELING',
+    tag: 'CONFIDENTIAL SUPPORT',
+    icon: '🧠',
   },
 ];
 ---
 
-<Layout title="Emergency Contacts & Student Welfare Desk — CampusFix | KCKU" currentPath="/emergency">
+<Layout title="Emergency Contacts & Student Welfare Desk — CampusFix | University of Barishal" currentPath="/emergency">
   <!-- Page Header -->
-  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
-    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-rose); color: #881337">🚨 24/7 RAPID TRIAGE</span>
-    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">Emergency Hotlines & Student Welfare</h2>
-    <p class="text-sm text-gray-600 leading-relaxed">
-      Direct rapid-response telephone hotlines and confidential support desks across Kauwar Chor Kindergarten University. All safety reports receive immediate emergency dispatch.
+  <section class="page-intro-header text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+    <div class="inline-flex items-center gap-2 mb-2">
+      <span class="retro-badge" style="background: var(--pastel-rose); color: #881337" data-i18n="emergency.badge">
+        🚨 24/7 RAPID TRIAGE
+      </span>
+      <span class="cloud-badge text-xs">OFFICIAL HOTLINES</span>
+    </div>
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-black tracking-tight mb-2" data-i18n="emergency.title">
+      Emergency Hotlines & Student Welfare
+    </h1>
+    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed px-2 max-w-2xl mx-auto" data-i18n="emergency.subtitle">
+      Direct rapid-response telephone hotlines and confidential support desks across the University of Barishal (বরিশাল বিশ্ববিদ্যালয়). All safety reports receive immediate emergency dispatch.
     </p>
   </section>
 
-  <!-- SOS Callout Banner -->
-  <div class="neo-card p-6 mb-8 bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-500">
-    <div class="flex items-start md:items-center justify-between gap-4 flex-col md:flex-row">
-      <div>
-        <div class="flex items-center gap-2 text-red-700 font-extrabold text-sm mb-1">
-          <span class="text-xl">⚠️</span> FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?
-        </div>
-        <p class="text-xs text-gray-700 max-w-2xl leading-relaxed">
-          Do not wait for standard ticket processing. Call the Proctorial Mobile Patrol immediately or file a Sealed Confidential Grievance.
-        </p>
+  <!-- Shaped SOS Emergency Command Console -->
+  <div class="sos-hazard-container max-w-4xl mx-auto mb-10">
+    <div class="retro-window sos-command-window">
+      <div class="retro-titlebar rose flex items-center justify-between">
+        <span class="retro-title flex items-center gap-2 text-xs sm:text-sm">
+          <span class="sos-beacon"></span>
+          <span>🚨 CRISIS_RAPID_DISPATCH_CONSOLE.SYS</span>
+        </span>
+        <span class="cloud-badge text-xs font-bold bg-white">STATUS: ACTIVE</span>
       </div>
-      <div class="flex gap-2 flex-wrap">
-        <a href="tel:+8801700525876" class="retro-btn retro-btn-pixel retro-btn-pink">
-          📞 CALL SOS HOTLINE
-        </a>
-        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-yellow">
-          🔒 FILE CONFIDENTIAL TICKET
-        </button>
+
+      <div class="p-5 sm:p-7 bg-gradient-to-br from-rose-50 via-white to-orange-50">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex-1">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-red-100 border border-red-300 text-red-800 text-xs font-extrabold mb-2" data-i18n="emergency.sosBannerTitle">
+              <span>⚠️</span> FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?
+            </div>
+            <p class="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium" data-i18n="emergency.sosBannerDesc">
+              Do not wait for standard ticket processing. Call the Proctorial Mobile Patrol immediately or file a Sealed Confidential Grievance.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
+            <a
+              href="tel:+8801700284357"
+              class="retro-btn retro-btn-pixel retro-btn-pink h-12 px-6 flex items-center justify-center gap-2 font-extrabold text-sm"
+              data-i18n="emergency.sosHotlineBtn"
+            >
+              <span>📞</span>
+              <span>CALL: +880-1700-BU-HELP</span>
+            </a>
+            <button
+              type="button"
+              class="retro-btn retro-btn-pixel retro-btn-yellow h-12 px-5 flex items-center justify-center gap-2 font-bold text-xs open-create-modal-trigger"
+            >
+              <span>🔒</span>
+              <span>FILE CONFIDENTIAL TICKET</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Contacts Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Department Emergency Cards Grid (6 Shaped Retro Windows) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
     {emergencyContacts.map((contact) => (
-      <div class="neo-card flex flex-col justify-between h-full bg-white">
-        <div class="p-6 flex flex-col justify-between flex-1 gap-4">
+      <article class="retro-window department-contact-card flex flex-col justify-between">
+        <!-- Titlebar with Department Color -->
+        <div class={`retro-titlebar ${contact.color} flex items-center justify-between`}>
+          <span class="retro-title text-xs flex items-center gap-1.5 font-bold">
+            <span>{contact.icon}</span>
+            <span>{contact.tag}</span>
+          </span>
+          <div class="retro-controls">
+            <span class="retro-ctrl-btn">_</span>
+            <span class="retro-ctrl-btn">□</span>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-5 bg-white flex flex-col justify-between flex-1">
           <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="retro-badge text-xs font-bold" style={`background: var(--pastel-${contact.color})`}>
-                {contact.tag}
-              </span>
+            <h3 class="font-extrabold text-base text-black mb-1.5 leading-snug">
+              {contact.role}
+            </h3>
+            <span class="text-xs text-gray-500 font-bangla block mb-2 font-medium">
+              {contact.roleBn}
+            </span>
+            <p class="text-xs text-gray-600 leading-relaxed mb-3">
+              {contact.desc}
+            </p>
+            <div class="text-[11px] font-mono text-gray-500 flex items-center gap-1 mb-4 bg-gray-50 p-2 rounded border border-gray-200">
+              <span>📍</span>
+              <span>{contact.ext}</span>
             </div>
-            <h3 class="font-extrabold text-base mb-1.5">{contact.role}</h3>
-            <p class="text-xs text-gray-600 mb-3 leading-relaxed">{contact.desc}</p>
-            <div class="text-xs font-mono text-gray-500 mb-1">📍 {contact.ext}</div>
           </div>
 
-          <div class="border-t border-gray-200 pt-3">
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-mono text-sm font-extrabold text-black">{contact.hotline}</span>
+          <!-- Bottom Actions -->
+          <div class="pt-3 border-t-2 border-gray-100 flex items-center justify-between gap-2 flex-wrap">
+            <span class="font-mono text-sm font-extrabold text-black">
+              {contact.hotline}
+            </span>
+            <div class="flex items-center gap-1.5">
+              <a
+                href={`tel:${contact.phoneRaw}`}
+                class="retro-btn retro-btn-sm retro-btn-pink font-bold text-xs flex items-center gap-1"
+                title="Direct Phone Call"
+              >
+                <span>📞</span>
+                <span>Call</span>
+              </a>
               <button
                 type="button"
-                class="copy-phone-btn retro-btn retro-btn-sm"
+                class="copy-phone-btn retro-btn retro-btn-sm text-xs font-bold"
                 data-phone={contact.hotline}
+                title="Copy Number"
               >
-                📋 Copy
+                <span>📋</span>
+                <span>Copy</span>
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     ))}
   </div>
 
-  <!-- Student Rights Policy Accordion -->
-  <div class="retro-window p-6 bg-white mb-8">
-    <h3 class="font-extrabold text-base mb-3 flex items-center gap-2">
-      <span>📜</span> KCKU Student Welfare Charter & Whistleblower Protections
-    </h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-700 leading-relaxed">
-      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
-        <strong>1. Protection from Retaliation:</strong> Any senior student, staff member, or administration official found retaliating against a complainant faces immediate disciplinary suspension under University Statute Section 14.
+  <!-- University Student Welfare Charter Section -->
+  <section class="retro-window max-w-4xl mx-auto mb-12 charter-window">
+    <div class="retro-titlebar mint flex items-center justify-between">
+      <span class="retro-title flex items-center gap-2 text-xs sm:text-sm font-bold">
+        <span>📜</span>
+        <span>UNIVERSITY_OF_BARISHAL_STUDENT_CHARTER.DOC</span>
+      </span>
+      <span class="cloud-badge text-xs">OFFICIAL POLICY</span>
+    </div>
+
+    <div class="p-6 sm:p-8 bg-white">
+      <div class="charter-header text-center max-w-2xl mx-auto mb-6">
+        <img src="/images/bu-seal-circle.png" alt="University Seal" class="w-12 h-12 mx-auto mb-2 opacity-90" />
+        <h3 class="text-lg sm:text-xl font-extrabold text-black mb-1">
+          Student Welfare Charter & Whistleblower Protections
+        </h3>
+        <p class="text-xs text-gray-500">
+          Enacted by the University of Barishal Proctorial Council & Student Welfare Directorate
+        </p>
       </div>
-      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
-        <strong>2. Cryptographic Anonymity:</strong> Anonymous tickets mask all identifying student credentials in public database views while maintaining internal tamper-proof logs for proctorial verification.
-      </div>
-      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
-        <strong>3. Mandatory 24h Triage:</strong> Safety, electrical hazards, and water outages are flagged with top priority and must receive technician dispatch within 24 hours.
-      </div>
-      <div class="p-3 bg-gray-50 border border-gray-300 rounded">
-        <strong>4. Verified Resolution Sign-off:</strong> No maintenance ticket can be marked resolved without an official written resolution note detailing the repair actions taken.
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Clause 1 -->
+        <div class="charter-clause-card">
+          <div class="clause-num">01</div>
+          <div class="clause-text">
+            <strong>Protection from Retaliation:</strong> Any senior student, staff member, or administration official found retaliating against a complainant faces immediate disciplinary suspension under University Statute Section 14.
+          </div>
+        </div>
+
+        <!-- Clause 2 -->
+        <div class="charter-clause-card">
+          <div class="clause-num">02</div>
+          <div class="clause-text">
+            <strong>Cryptographic Anonymity:</strong> Anonymous tickets mask all identifying student credentials in public database views while maintaining internal tamper-proof logs for proctorial verification.
+          </div>
+        </div>
+
+        <!-- Clause 3 -->
+        <div class="charter-clause-card">
+          <div class="clause-num">03</div>
+          <div class="clause-text">
+            <strong>Mandatory 24h Triage:</strong> Safety, electrical hazards, and water outages are flagged with top priority and must receive technician dispatch within 24 hours.
+          </div>
+        </div>
+
+        <!-- Clause 4 -->
+        <div class="charter-clause-card">
+          <div class="clause-num">04</div>
+          <div class="clause-text">
+            <strong>Verified Resolution Sign-off:</strong> No maintenance ticket can be marked resolved without an official written resolution note detailing the repair actions taken.
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </Layout>
+
+<style>
+  /* SOS Beacon Pulsing Animation */
+  .sos-beacon {
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: beaconPulse 1.5s infinite;
+  }
+  @keyframes beaconPulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+  }
+
+  /* SOS Command Window */
+  .sos-hazard-container {
+    position: relative;
+    padding: 4px;
+    background: repeating-linear-gradient(
+      -45deg,
+      #18181b,
+      #18181b 12px,
+      #fef08a 12px,
+      #fef08a 24px
+    );
+    border-radius: calc(var(--radius-lg) + 4px);
+    box-shadow: var(--shadow-neo-lg);
+  }
+  .sos-command-window {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  /* Department Contact Card */
+  .department-contact-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: var(--shadow-neo);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .department-contact-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-neo-lg);
+  }
+
+  /* Charter Section */
+  .charter-window {
+    box-shadow: var(--shadow-neo-lg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .charter-clause-card {
+    background: #fbf8f5;
+    border: 2px solid var(--border-black);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    box-shadow: var(--shadow-neo-sm);
+    transition: transform 0.1s ease;
+  }
+  .charter-clause-card:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+  }
+  .clause-num {
+    background: var(--pastel-yellow);
+    border: 1.5px solid var(--border-black);
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    box-shadow: 1px 1px 0 var(--border-black);
+    font-family: monospace;
+    flex-shrink: 0;
+  }
+  .clause-text {
+    font-size: 0.75rem;
+    color: #374151;
+    line-height: 1.6;
+  }
+</style>
 
 <script>
   document.querySelectorAll('.copy-phone-btn').forEach((btn) => {
@@ -146,13 +360,14 @@ const emergencyContacts = [
       const phone = btn.getAttribute('data-phone');
       if (phone) {
         navigator.clipboard.writeText(phone);
-        const originalText = btn.textContent;
-        btn.textContent = '✔ Copied!';
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>✔</span><span>Copied!</span>';
+        btn.classList.add('bg-emerald-200');
         setTimeout(() => {
-          btn.textContent = originalText;
-        }, 1500);
+          btn.innerHTML = originalText;
+          btn.classList.remove('bg-emerald-200');
+        }, 1800);
       }
     });
   });
 </script>
-

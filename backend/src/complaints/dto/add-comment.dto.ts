@@ -1,9 +1,13 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class AddCommentDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'Comment message cannot be empty' })
-  message!: string;
+  message?: string;
+
+  @IsOptional()
+  @IsString()
+  content?: string;
 
   @IsOptional()
   @IsBoolean()

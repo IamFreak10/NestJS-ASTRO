@@ -13,7 +13,6 @@ import { ComplaintsService } from './complaints.service.js';
 import { CreateComplaintDto } from './dto/create-complaint.dto.js';
 import { FilterComplaintsQueryDto } from './dto/filter-complaints.dto.js';
 import { UpdateComplaintStatusDto } from './dto/update-complaint-status.dto.js';
-import { AddCommentDto } from './dto/add-comment.dto.js';
 import { AuthGuard, CurrentUser } from '../auth/guards/auth.guard.js';
 import { OptionalAuthGuard } from '../auth/guards/optional-auth.guard.js';
 import { StaffGuard } from '../auth/guards/staff.guard.js';
@@ -91,18 +90,5 @@ export class ComplaintsController {
     @CurrentUser() staffUser: AuthenticatedUser,
   ) {
     return this.complaintsService.updateStatus(id, dto, staffUser);
-  }
-
-  /**
-   * Post discussion comment on a complaint
-   */
-  @Post(':id/comments')
-  @UseGuards(AuthGuard)
-  async addComment(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: AddCommentDto,
-    @CurrentUser() user: AuthenticatedUser,
-  ) {
-    return this.complaintsService.addComment(id, dto, user);
   }
 }

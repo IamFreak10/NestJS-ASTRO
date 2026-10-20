@@ -23,6 +23,8 @@ const categories = [
       <a
         href={cat.id === 'all' ? '/' : `/?category=${cat.id}`}
         class={`category-chip ${activeCategory === cat.id ? 'active' : ''}`}
+        data-category={cat.id}
+        data-i18n={`categories.${cat.id}`}
       >
         {cat.label}
       </a>
@@ -40,6 +42,7 @@ const categories = [
         type="text"
         name="search"
         placeholder="Search keywords, rooms, buses..."
+        data-i18n-placeholder="feed.searchPlaceholder"
         class="search-input"
       />
     </div>
@@ -63,6 +66,11 @@ const categories = [
     gap: 0.5rem;
     overflow-x: auto;
     padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .category-pills-row::-webkit-scrollbar {
+    display: none;
   }
   .category-chip {
     text-decoration: none;

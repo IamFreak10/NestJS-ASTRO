@@ -1,5 +1,5 @@
 ---
-import type { Complaint } from '../types/complaint.js';
+import type { Complaint } from '../../types/complaint.js';
 
 interface Props {
   complaint: Complaint;
@@ -42,21 +42,21 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     <!-- Top Meta Row -->
     <div class="card-top-row">
       <div class="badge-cluster">
-        <span class="category-pill" style={`background: ${categoryColor}`}>
+        <span class="category-pill" style={`background: ${categoryColor}`} data-category={complaint.category}>
           {categoryLabel}
         </span>
-        <span class={`retro-badge priority-badge priority-${complaint.priority}`}>
+        <span class={`retro-badge priority-badge priority-${complaint.priority}`} data-priority={complaint.priority}>
           ⚡ {complaint.priority.toUpperCase()}
         </span>
         {complaint.visibility === 'private' && (
-          <span class="retro-badge badge-private">
+          <span class="retro-badge badge-private" data-i18n="vault.confidential">
             🔒 CONFIDENTIAL
           </span>
         )}
       </div>
 
       <!-- Status Stamp -->
-      <div class={`status-stamp stamp-${complaint.status}`}>
+      <div class={`status-stamp stamp-${complaint.status}`} data-status={complaint.status}>
         {complaint.status.replace('_', ' ').toUpperCase()}
         {isResolved && ' ✔'}
       </div>
@@ -87,16 +87,47 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     <div class="card-bottom-row">
       <div class="author-info">
         {complaint.isAnonymous ? (
-          <span class="author-tag anonymous">
-            🕶️ Anonymous Student
-          </span>
+          <div class="author-profile-group">
+            <div class="author-avatar-wrap anonymous-avatar" title="Whistleblower identity protected">
+              <span class="avatar-icon">🕶️</span>
+            </div>
+            <div class="author-text-col">
+              <span class="author-tag anonymous" data-i18n="card.anonymousAuthor">
+                Anonymous Student
+              </span>
+              <span class="timestamp-text">{formattedDate}</span>
+            </div>
+          </div>
         ) : (
-          <span class="author-tag verified">
-            👤 {complaint.author.name}
-            {complaint.author.department && <small>({complaint.author.department})</small>}
-          </span>
+          <div class="author-profile-group">
+            <div class="author-avatar-wrap">
+              {complaint.author.image ? (
+                <>
+                  <img
+                    src={complaint.author.image}
+                    alt={complaint.author.name}
+                    class="author-avatar-img"
+                    loading="lazy"
+                  />
+                  <span class="author-avatar-fallback hidden">
+                    {complaint.author.name ? complaint.author.name.charAt(0).toUpperCase() : 'S'}
+                  </span>
+                </>
+              ) : (
+                <span class="author-avatar-fallback">
+                  {complaint.author.name ? complaint.author.name.charAt(0).toUpperCase() : 'S'}
+                </span>
+              )}
+            </div>
+            <div class="author-text-col">
+              <span class="author-tag verified">
+                {complaint.author.name}
+                {complaint.author.department && <small class="author-dept">({complaint.author.department})</small>}
+              </span>
+              <span class="timestamp-text">{formattedDate}</span>
+            </div>
+          </div>
         )}
-        <span class="timestamp-text">{formattedDate}</span>
       </div>
 
       <div class="card-action-bar">
@@ -104,6 +135,7 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
           type="button"
           class="open-detail-btn retro-btn retro-btn-sm"
           data-id={complaint.id}
+          data-i18n="card.viewDetails"
           title="Inspect timeline and technician logs"
         >
           🔍 Timeline
@@ -112,11 +144,12 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
         {complaint.visibility === 'public' && (
           <button
             type="button"
-            class={`upvote-btn ${complaint.hasUpvoted ? 'upvoted' : ''}`}
+            class={`upvote-btn card-upvote-btn ${complaint.hasUpvoted ? 'upvoted' : ''}`}
             data-id={complaint.id}
+            data-upvoted={complaint.hasUpvoted ? 'true' : 'false'}
           >
             <span class="upvote-icon">👍</span>
-            <span class="upvote-label">Me Too</span>
+            <span class="upvote-label">{complaint.hasUpvoted ? 'Upvoted' : '+1 Me Too'}</span>
             <span class="upvote-count font-mono font-bold">({complaint.upvotesCount})</span>
           </button>
         )}
@@ -241,6 +274,58 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     flex-direction: column;
     gap: 0.15rem;
   }
+  .author-profile-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .author-avatar-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1px 1px 0 var(--border-black);
+    overflow: hidden;
+    background: var(--pastel-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .author-avatar-wrap.anonymous-avatar {
+    background: #e2e8f0;
+  }
+  .author-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .author-avatar-fallback {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--border-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .avatar-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+  .author-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+  .author-dept {
+    font-size: 0.7rem;
+    color: #4b5563;
+    font-weight: 500;
+    margin-left: 0.25rem;
+  }
   .author-tag {
     font-size: 0.75rem;
     font-weight: 700;
@@ -289,5 +374,28 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     background: var(--pastel-mint);
     border-color: #047857;
     box-shadow: 1.5px 1.5px 0px #047857;
+  }
+
+  @media (max-width: 640px) {
+    .card-inner {
+      padding: 1rem;
+      gap: 0.85rem;
+    }
+    .complaint-card-title {
+      font-size: 0.98rem;
+    }
+    .card-bottom-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .card-action-bar {
+      width: 100%;
+      justify-content: flex-end;
+    }
+    .card-action-bar .retro-btn, .upvote-btn {
+      min-height: 38px;
+      padding: 0.4rem 0.75rem;
+    }
   }
 </style>

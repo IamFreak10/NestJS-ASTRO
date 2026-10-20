@@ -2,83 +2,235 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Track Campus Complaint by ID — CampusFix | KCKU" currentPath="/track">
+<Layout title="Track Campus Complaint by ID — CampusFix | University of Barishal" currentPath="/track">
   <!-- Page Header -->
-  <section class="page-intro-header text-center max-w-2xl mx-auto mb-8">
-    <span class="retro-badge mb-2 inline-block" style="background: var(--pastel-yellow)">⚡ INSTANT TICKET RADAR</span>
-    <h2 class="text-3xl font-extrabold text-black tracking-tight mb-2">Track Complaint Progress</h2>
-    <p class="text-sm text-gray-600 leading-relaxed">
+  <section class="page-intro-header text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+    <div class="inline-flex items-center gap-2 mb-2">
+      <span class="retro-badge" style="background: var(--pastel-yellow)" data-i18n="track.badge">⚡ INSTANT TICKET RADAR</span>
+      <span class="cloud-badge text-xs">BU REAL-TIME SCAN</span>
+    </div>
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-black tracking-tight mb-2" data-i18n="track.title">
+      Track Complaint Progress
+    </h1>
+    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed px-2 max-w-2xl mx-auto" data-i18n="track.subtitle">
       Enter any complaint ticket number (or click a test ticket below) to inspect real-time maintenance dispatches, proctorial triage notes, and verified resolution sign-offs.
     </p>
   </section>
 
-  <!-- Search Input Box -->
-  <div class="neo-card p-6 md:p-8 bg-white mb-8 max-w-3xl mx-auto">
-    <form id="trackForm" class="flex flex-col sm:flex-row gap-3 items-stretch">
-      <div class="flex-1 relative">
-        <input
-          type="number"
-          id="trackInput"
-          placeholder="Enter Ticket ID (e.g. 101, 103, 105)..."
-          class="retro-input text-base font-bold pl-10"
-          min="1"
-          required
-        />
-        <span class="absolute left-3 top-3 text-base text-gray-500 font-bold">#</span>
+  <!-- Search Input Console Window -->
+  <div class="retro-window max-w-3xl mx-auto mb-8 track-radar-window">
+    <div class="retro-titlebar yellow flex items-center justify-between">
+      <span class="retro-title flex items-center gap-2 text-xs sm:text-sm">
+        <span class="radar-ping-dot"></span>
+        <span>📡 COMPLAINT_RADAR_SCANNER.SYS</span>
+      </span>
+      <div class="retro-controls">
+        <span class="retro-ctrl-btn">_</span>
+        <span class="retro-ctrl-btn">□</span>
       </div>
-      <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink">
-        🚀 SCAN TICKET STATUS
-      </button>
-    </form>
+    </div>
 
-    <!-- Quick Demo Chips -->
-    <div class="flex items-center gap-2 mt-4 flex-wrap text-xs">
-      <span class="font-bold text-gray-500">Quick Test Tickets:</span>
-      <button type="button" class="quick-chip" data-id="101">#101 Water Filter (In Progress)</button>
-      <button type="button" class="quick-chip" data-id="102">#102 Canteen Hygiene (Under Review)</button>
-      <button type="button" class="quick-chip" data-id="103">#103 Bus Delay (Resolved ✔)</button>
-      <button type="button" class="quick-chip" data-id="105">#105 North Gate Lights (Resolved ✔)</button>
+    <div class="p-5 sm:p-7 bg-white">
+      <form id="trackForm" class="flex flex-col sm:flex-row gap-3 items-stretch">
+        <div class="flex-1 relative input-with-prefix">
+          <span class="prefix-badge">#</span>
+          <input
+            type="number"
+            id="trackInput"
+            placeholder="Enter Ticket ID (e.g. 101, 102, 103, 105)..."
+            data-i18n-placeholder="track.inputPlaceholder"
+            class="retro-input text-base font-bold pl-12 h-12 w-full"
+            min="1"
+            required
+          />
+        </div>
+        <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink h-12 px-6 justify-center flex items-center gap-2 text-sm" data-i18n="track.scanBtn">
+          <span>🚀</span>
+          <span>SCAN TICKET STATUS</span>
+        </button>
+      </form>
+
+      <!-- Quick Demo Chips Bar -->
+      <div class="quick-chips-section mt-5 pt-4 border-t border-gray-200">
+        <div class="text-xs font-bold text-gray-500 mb-2.5 flex items-center gap-1.5" data-i18n="track.quickTicketsLabel">
+          <span>⚡</span>
+          <span>Quick Test Tickets:</span>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button type="button" class="quick-chip chip-facilities" data-id="101">
+            <span class="chip-badge">#101</span> Water Filter Leaking <span class="chip-state">🔨 In Progress</span>
+          </button>
+          <button type="button" class="quick-chip chip-mess" data-id="102">
+            <span class="chip-badge">#102</span> Canteen Hygiene <span class="chip-state">👀 Review</span>
+          </button>
+          <button type="button" class="quick-chip chip-transport" data-id="103">
+            <span class="chip-badge">#103</span> Route 4 Bus Delay <span class="chip-state">✔ Resolved</span>
+          </button>
+          <button type="button" class="quick-chip chip-safety" data-id="105">
+            <span class="chip-badge">#105</span> North Gate Streetlight <span class="chip-state">✔ Resolved</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Result Container -->
-  <div id="trackResultContainer" class="hidden max-w-3xl mx-auto">
-    <div class="retro-window">
-      <div class="retro-titlebar yellow" id="resultTitlebar">
-        <span class="retro-title" id="resultTitle">TICKET DETAILS</span>
+  <!-- Loading Radar Terminal State -->
+  <div id="trackLoading" class="hidden max-w-xl mx-auto my-12 text-center">
+    <div class="retro-window p-6 bg-white inline-block shadow-neo">
+      <div class="radar-spinner mb-3">
+        <div class="radar-sweep"></div>
       </div>
-      <div class="p-6 bg-white" id="resultBody">
+      <p class="font-mono text-xs sm:text-sm font-extrabold text-black" data-i18n="track.scanningText">
+        RADAR SCANNING UNIVERSITY OF BARISHAL DATABASE...
+      </p>
+      <span class="text-[11px] font-mono text-gray-500 mt-1 block">Inspecting Drizzle ORM records & technician logs</span>
+    </div>
+  </div>
+
+  <!-- Detailed Ticket Dossier Result Container -->
+  <div id="trackResultContainer" class="hidden max-w-3xl mx-auto mb-12">
+    <div class="retro-window result-window">
+      <div class="retro-titlebar cyan flex items-center justify-between" id="resultTitlebar">
+        <span class="retro-title text-xs sm:text-sm" id="resultTitle">
+          📋 TICKET DOSSIER
+        </span>
+        <div class="retro-controls">
+          <span class="retro-ctrl-btn">_</span>
+          <span class="retro-ctrl-btn">□</span>
+        </div>
+      </div>
+      <div class="p-5 sm:p-7 bg-white" id="resultBody">
         <!-- Injected via client script -->
       </div>
     </div>
   </div>
-
-  <!-- Loading State -->
-  <div id="trackLoading" class="hidden text-center py-12">
-    <span class="inline-block animate-spin text-3xl mb-2">⚙️</span>
-    <p class="font-mono text-xs font-bold">RADAR SCANNING KCKU DATABASE...</p>
-  </div>
 </Layout>
 
 <style>
-  .quick-chip {
-    background: #f3f4f6;
+  /* Radar Ping Animation */
+  .radar-ping-dot {
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: radarPulse 1.8s infinite;
+  }
+  @keyframes radarPulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+  }
+
+  /* Input Prefix Badge */
+  .input-with-prefix {
+    position: relative;
+  }
+  .prefix-badge {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--pastel-yellow);
     border: 1.5px solid var(--border-black);
-    padding: 0.2rem 0.6rem;
+    width: 26px;
+    height: 26px;
     border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    box-shadow: 1px 1px 0 var(--border-black);
+    pointer-events: none;
+  }
+
+  /* Quick Demo Chips */
+  .quick-chip {
+    background: #ffffff;
+    border: 2px solid var(--border-black);
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
     font-weight: 700;
+    font-size: 0.75rem;
     cursor: pointer;
-    box-shadow: 1px 1px 0px var(--border-black);
-    transition: all 0.1s ease;
+    box-shadow: var(--shadow-neo-sm);
+    transition: all 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
   }
   .quick-chip:hover {
-    background: var(--pastel-yellow);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-neo);
+  }
+  .quick-chip:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--border-black);
+  }
+  .chip-badge {
+    background: #f3f4f6;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: 800;
+  }
+  .chip-state {
+    font-size: 0.7rem;
+    opacity: 0.85;
+  }
+  .chip-facilities:hover { background: var(--pastel-cyan); }
+  .chip-mess:hover { background: var(--pastel-yellow); }
+  .chip-transport:hover { background: var(--pastel-mint); }
+  .chip-safety:hover { background: var(--pastel-rose); }
+
+  /* Radar Spinner Loading State */
+  .radar-spinner {
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--border-black);
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    background: radial-gradient(circle, #ecfdf5 20%, #d1fae5 80%);
+    overflow: hidden;
+  }
+  .radar-sweep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), transparent);
+    transform-origin: 0 0;
+    animation: radarRotate 1.4s linear infinite;
+  }
+  @keyframes radarRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Result Container Shadows */
+  .result-window {
+    box-shadow: var(--shadow-neo-lg);
   }
 </style>
 
 <script>
-  import { SAMPLE_COMPLAINTS, SAMPLE_TIMELINES } from '../services/sampleData.js';
+  import { ICONS } from '../lib/icons.js';
+  import { getCategoryMeta } from '../lib/categories.js';
+  import { formatDate } from '../lib/date.js';
+  import { toBengaliDigits, formatBengaliDate, translateStatus, translatePriority } from '../lib/i18n.js';
 
   const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
   const trackForm = document.getElementById('trackForm');
@@ -104,25 +256,45 @@ import Layout from '../layouts/Layout.astro';
         ticket = json.data;
       }
     } catch {
-      // API fallback
+      // Fallback below
     }
 
+    // Dynamic on-demand sample data fallback if offline
     if (!ticket) {
-      ticket = SAMPLE_COMPLAINTS.find((c) => c.id === id);
-      timelines = SAMPLE_TIMELINES[id] || [];
+      try {
+        const sample = await import('../services/sampleData.js');
+        ticket = sample.SAMPLE_COMPLAINTS.find((c) => c.id === id);
+        timelines = sample.SAMPLE_TIMELINES[id] || [];
+      } catch {
+        ticket = null;
+      }
     }
 
     loading.classList.add('hidden');
 
+    const lang = (localStorage.getItem('campusfix_lang') as 'en' | 'bn') || 'en';
+    const isBn = lang === 'bn';
+
     if (!ticket) {
       resultContainer.classList.remove('hidden');
-      if (resultTitle) resultTitle.textContent = `⚠️ TICKET #${id} NOT FOUND`;
+      if (resultTitle) resultTitle.textContent = isBn ? `⚠️ টিকিট #${toBengaliDigits(id)} পাওয়া যায়নি` : `⚠️ TICKET #${id} NOT FOUND`;
       resultBody.innerHTML = `
-        <div class="text-center py-8">
-          <div class="text-4xl mb-2">🕵️‍♂️</div>
-          <h4 class="font-extrabold text-base mb-1">No ticket found with ID #${id}</h4>
-          <p class="text-xs text-gray-600 mb-4">Please verify the ticket number or check if it was filed under private whistleblower status.</p>
-          <a href="/" class="retro-btn retro-btn-pixel retro-btn-yellow">Browse Public Feed</a>
+        <div class="text-center py-10">
+          <div class="text-5xl mb-3">🕵️‍♂️</div>
+          <h4 class="font-extrabold text-lg mb-1.5 text-black">
+            ${isBn ? `আইডি #${toBengaliDigits(id)} এর কোনো অভিযোগ পাওয়া যায়নি` : `No complaint ticket found with ID #${id}`}
+          </h4>
+          <p class="text-xs sm:text-sm text-gray-600 mb-5 max-w-md mx-auto leading-relaxed">
+            ${isBn ? 'টিকিট নম্বরটি সঠিক কিনা পরীক্ষা করুন অথবা এটি কোনো গোপনীয় হুইসেলব্লোয়ার রিপোর্ট কিনা নিশ্চিত হোন।' : 'Please verify the ticket ID number or check if this report was sealed under confidential whistleblower status.'}
+          </p>
+          <div class="flex items-center justify-center gap-2 flex-wrap">
+            <a href="/" class="retro-btn retro-btn-pixel retro-btn-yellow text-xs">
+              📢 ${isBn ? 'উন্মুক্ত ফিড ব্রাউজ করুন' : 'Browse Public Feed'}
+            </a>
+            <button type="button" class="retro-btn retro-btn-sm" onclick="document.getElementById('trackInput')?.focus()">
+              🔄 ${isBn ? 'পুনরায় খুঁজুন' : 'Try Another ID'}
+            </button>
+          </div>
         </div>
       `;
       return;
@@ -132,77 +304,168 @@ import Layout from '../layouts/Layout.astro';
     const isProgress = ticket.status === 'in_progress';
     const isReview = ticket.status === 'under_review';
 
+    const catMeta = getCategoryMeta(ticket.category);
+    const catLabel = isBn ? (catMeta.labelBn || catMeta.label) : catMeta.label;
+    const priLabel = translatePriority(ticket.priority, lang);
+    const statusLabel = translateStatus(ticket.status, lang);
+    const dateFormatted = isBn ? formatBengaliDate(ticket.createdAt) : formatDate(ticket.createdAt);
+    const ticketIdStr = isBn ? toBengaliDigits(ticket.id) : String(ticket.id);
+    const upvotesStr = isBn ? toBengaliDigits(ticket.upvotesCount || 0) : String(ticket.upvotesCount || 0);
+
     resultContainer.classList.remove('hidden');
-    if (resultTitle) resultTitle.textContent = `📋 TICKET #${ticket.id} • ${ticket.category.toUpperCase()}`;
+    if (resultTitle) {
+      resultTitle.textContent = isBn
+        ? `📋 টিকিট #${ticketIdStr} • ${catLabel}`
+        : `📋 TICKET #${ticket.id} • ${ticket.category.toUpperCase()}`;
+    }
 
     resultBody.innerHTML = `
-      <div class="flex flex-col gap-5">
-        <!-- Top Details -->
-        <div class="flex justify-between items-center gap-3 flex-wrap border-b border-gray-200 pb-4">
+      <div class="flex flex-col gap-6">
+        <!-- Top Metadata & Status Row -->
+        <div class="flex justify-between items-start sm:items-center gap-4 flex-col sm:flex-row pb-5 border-b-2 border-gray-100">
           <div>
-            <div class="flex gap-2 mb-1">
-              <span class="retro-badge text-xs font-bold">⚡ ${ticket.priority.toUpperCase()}</span>
-              <span class="retro-badge text-xs font-bold" style="background: var(--pastel-mint)">🏢 ${ticket.category.toUpperCase()}</span>
+            <div class="flex items-center gap-2 mb-2 flex-wrap">
+              <span class="category-pill-sm font-bold text-xs" style="background: ${catMeta.color}; border: 1.5px solid var(--border-black); padding: 0.2rem 0.55rem; border-radius: 6px;">
+                ${catMeta.icon} ${catLabel}
+              </span>
+              <span class="retro-badge text-xs font-bold priority-badge priority-${ticket.priority}">
+                ⚡ ${priLabel.toUpperCase()}
+              </span>
+              ${ticket.visibility === 'private' ? '<span class="retro-badge" style="background: var(--pastel-rose)">🔒 ' + (isBn ? 'গোপনীয় ভল্ট' : 'CONFIDENTIAL') + '</span>' : ''}
             </div>
-            <h3 class="font-extrabold text-lg text-black">${ticket.title}</h3>
+            <h2 class="font-extrabold text-xl sm:text-2xl text-black tracking-tight">${ticket.title}</h2>
           </div>
-          <div class="font-mono text-xs font-bold px-3 py-1.5 border-2 border-black rounded ${
-            isResolved ? 'bg-emerald-300' : isProgress ? 'bg-sky-200' : 'bg-amber-200'
-          }">
-            ${ticket.status.replace('_', ' ').toUpperCase()} ${isResolved ? '✔' : ''}
+          <div class="status-stamp stamp-${ticket.status}">
+            ${statusLabel}
           </div>
         </div>
 
-        <!-- Progress Lifecycle -->
-        <div class="border-2 border-black rounded-lg p-4 bg-orange-50/40">
-          <div class="text-xs font-mono font-bold mb-3">CURRENT RESOLUTION STAGE</div>
+        <!-- Complainant Author Profile Card -->
+        <div class="p-3.5 border-2 border-black rounded-xl bg-yellow-50/70 shadow-sm flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-black overflow-hidden bg-yellow-200 flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">
+              ${ticket.isAnonymous
+                ? '<span class="text-base">🕶️</span>'
+                : (ticket.author?.image
+                    ? `<img src="${ticket.author.image}" alt="${ticket.author.name || 'Author'}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><span class="hidden font-bold">${(ticket.author?.name || 'S').charAt(0).toUpperCase()}</span>`
+                    : `<span>${(ticket.author?.name || 'S').charAt(0).toUpperCase()}</span>`
+                  )
+              }
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-xs sm:text-sm text-black">
+                  ${ticket.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student 🕶️') : (ticket.author?.name || (isBn ? 'শিক্ষার্থী' : 'Student'))}
+                </span>
+                <span class="retro-badge text-[10px] py-0.5 px-1.5" style="background: ${ticket.isAnonymous ? 'var(--pastel-blue)' : 'var(--pastel-yellow)'}">
+                  ${ticket.isAnonymous ? (isBn ? 'হুইসেলব্লোয়ার' : 'WHISTLEBLOWER') : (isBn ? 'অভিযোগকারী' : 'COMPLAINANT')}
+                </span>
+              </div>
+              <span class="text-[11px] text-gray-600 block mt-0.5 font-medium">
+                ${ticket.isAnonymous
+                  ? (isBn ? 'বিশ্ববিদ্যালয় গোপনীয়তা নীতির অধীনে পরিচয় সুরক্ষিত' : 'Whistleblower identity protected by University Privacy Gate')
+                  : (ticket.author?.department || (isBn ? 'বরিশাল বিশ্ববিদ্যালয়' : 'University of Barishal'))}
+              </span>
+            </div>
+          </div>
+          <span class="text-[11px] font-mono text-gray-500">
+            ${isBn ? 'দাখিলকৃত: ' : 'Filed: '} ${dateFormatted}
+          </span>
+        </div>
+
+        <!-- 4-Stage Visual Progress Lifecycle Stepper -->
+        <div class="p-4 sm:p-5 border-2 border-black rounded-xl bg-orange-50/50 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-mono text-xs font-bold text-gray-700 tracking-wider">
+              ${isBn ? 'সমাধান পর্যায় ও অগ্রগতি লাইফসাইকেল' : 'RESOLUTION PROGRESS LIFECYCLE'}
+            </span>
+            <span class="font-mono text-[11px] text-gray-500">
+              ${isBn ? 'দাখিলকৃত:' : 'Filed on:'} ${dateFormatted}
+            </span>
+          </div>
+
           <div class="grid grid-cols-4 gap-2 text-center text-xs">
-            <div class="p-2 border-2 border-black rounded bg-emerald-200 font-bold">
-              1. Submitted ✔
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg bg-emerald-200 font-bold shadow-sm">
+              <div class="text-sm mb-0.5">✔</div>
+              <span>${isBn ? '১. দাখিল' : '1. Submitted'}</span>
             </div>
-            <div class="p-2 border-2 border-black rounded ${isReview || isProgress || isResolved ? 'bg-emerald-200 font-bold' : 'bg-gray-100 text-gray-400'}">
-              2. Triage ${isReview || isProgress || isResolved ? '✔' : ''}
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isReview || isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
+              <div class="text-sm mb-0.5">${isReview || isProgress || isResolved ? '✔' : '⏳'}</div>
+              <span>${isBn ? '২. যাচাই' : '2. Triage'}</span>
             </div>
-            <div class="p-2 border-2 border-black rounded ${isProgress || isResolved ? 'bg-emerald-200 font-bold' : 'bg-gray-100 text-gray-400'}">
-              3. Repair ${isProgress ? '🔨' : isResolved ? '✔' : ''}
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
+              <div class="text-sm mb-0.5">${isProgress ? '🔨' : isResolved ? '✔' : '🔧'}</div>
+              <span>${isBn ? '৩. মেরামত' : '3. Repair'}</span>
             </div>
-            <div class="p-2 border-2 border-black rounded ${isResolved ? 'bg-emerald-300 font-extrabold text-emerald-900' : 'bg-gray-100 text-gray-400'}">
-              4. Resolved ${isResolved ? '✔' : ''}
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isResolved ? 'bg-emerald-300 font-extrabold text-emerald-950 shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
+              <div class="text-sm mb-0.5">${isResolved ? '🎉' : '🏁'}</div>
+              <span>${isBn ? '৪. সমাধান' : '4. Resolved'}</span>
             </div>
           </div>
         </div>
 
-        <p class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 border border-gray-300 rounded">
-          ${ticket.description}
-        </p>
+        <!-- Issue Description Box -->
+        <div class="p-4 sm:p-5 border-2 border-black rounded-xl bg-white shadow-neo-sm">
+          <div class="font-bold text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span>📄</span>
+            <span>${isBn ? 'অভিযোগের বিবরণ ও ভৌগোলিক অবস্থান' : 'COMPLAINT DETAILS & LOCATION'}</span>
+          </div>
+          <p class="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+            ${ticket.description}
+          </p>
+        </div>
 
+        <!-- Official Resolution Note Certificate (if available) -->
         ${
           ticket.resolutionNote
             ? `
-          <div class="bg-emerald-50 border-2 border-emerald-600 rounded-lg p-4 text-emerald-900">
-            <div class="font-mono text-xs font-extrabold mb-1">🛠️ OFFICIAL VERIFIED RESOLUTION:</div>
-            <p class="text-sm leading-relaxed">${ticket.resolutionNote}</p>
+          <div class="p-5 border-2 border-emerald-600 rounded-xl bg-emerald-50 text-emerald-950 shadow-neo-sm">
+            <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+              <span class="font-mono text-xs font-extrabold flex items-center gap-1.5 text-emerald-800 uppercase tracking-wider">
+                <span>🛠️</span>
+                <span>${isBn ? 'যাচাইকৃত প্রক্টরিয়াল সমাধান সনদ:' : 'OFFICIAL VERIFIED RESOLUTION CERTIFICATE:'}</span>
+              </span>
+              ${ticket.resolvedAt ? '<span class="retro-badge text-[10px]" style="background: var(--pastel-mint)">' + (isBn ? formatBengaliDate(ticket.resolvedAt) : formatDate(ticket.resolvedAt)) + '</span>' : ''}
+            </div>
+            <p class="text-xs sm:text-sm leading-relaxed font-medium mb-3">
+              ${ticket.resolutionNote}
+            </p>
+            <div class="text-[11px] font-mono text-emerald-700 flex items-center gap-2">
+              <span>✍️ Verified By: University Maintenance & Proctorial Authority</span>
+            </div>
           </div>
         `
             : ''
         }
 
-        <!-- Timelines -->
+        <!-- Technician & Dispatch Timeline Logs -->
         ${
           timelines.length > 0
             ? `
-          <div class="border-t border-gray-200 pt-4">
-            <h4 class="font-mono text-xs font-extrabold mb-3">⏱️ DISPATCH & TECHNICIAN LOGS:</h4>
-            <div class="flex flex-col gap-2">
+          <div class="pt-2">
+            <h4 class="font-mono text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <span>⏱️</span>
+              <span>${isBn ? 'মেরামত কার্যক্রম ও টেকনিশিয়ান লগ' : 'DISPATCH TIMELINE & TECHNICIAN LOGS'}</span>
+            </h4>
+            <div class="flex flex-col gap-2.5">
               ${timelines
                 .map(
                   (t) => `
-                <div class="bg-white border-2 border-black rounded p-3 text-xs flex flex-col gap-1 shadow-sm">
-                  <div class="flex justify-between font-bold text-gray-800">
-                    <span>${t.author} (${t.role})</span>
-                    <span class="text-gray-500 font-mono">${t.time}</span>
+                <div class="bg-white border-2 border-black rounded-lg p-3.5 text-xs flex flex-col gap-1.5 shadow-sm transition-all hover:bg-yellow-50/50">
+                  <div class="flex justify-between items-center font-bold text-gray-900 flex-wrap gap-2">
+                    <span class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full border border-black overflow-hidden bg-yellow-200 flex items-center justify-center text-[10px] flex-shrink-0">
+                        ${t.authorImage
+                          ? `<img src="${t.authorImage}" alt="${t.author}" class="w-full h-full object-cover" />`
+                          : (t.author ? t.author.charAt(0).toUpperCase() : '👤')
+                        }
+                      </div>
+                      <span>${t.author}</span>
+                      <small class="text-gray-500 font-mono">(${t.role})</small>
+                    </span>
+                    <span class="text-gray-500 font-mono text-[11px] bg-gray-100 px-2 py-0.5 rounded border border-gray-300">${t.time}</span>
                   </div>
-                  <p class="text-gray-600">${t.content}</p>
+                  <p class="text-gray-700 leading-relaxed font-medium pl-8 border-l-2 border-gray-200">${t.content}</p>
                 </div>
               `,
                 )
@@ -212,8 +475,39 @@ import Layout from '../layouts/Layout.astro';
         `
             : ''
         }
+
+        <!-- Action Footer -->
+        <div class="pt-4 border-t border-gray-200 flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" class="retro-btn retro-btn-sm card-upvote-btn" data-id="${ticket.id}">
+              <span>👍</span>
+              <span>${isBn ? '+১ আমিও ভুক্তভোগী' : '+1 Me Too'}</span>
+              <span class="font-mono font-bold">(${upvotesStr})</span>
+            </button>
+            <button type="button" class="retro-btn retro-btn-sm" id="shareTrackLinkBtn">
+              <span>🔗</span>
+              <span>${isBn ? 'লিংক কপি করুন' : 'Share Ticket'}</span>
+            </button>
+          </div>
+          <button type="button" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink open-create-modal-trigger">
+            <span>✉️</span>
+            <span>${isBn ? '+ নতুন অভিযোগ দাখিল' : '+ File New Issue'}</span>
+          </button>
+        </div>
       </div>
     `;
+
+    // Share Ticket Link Button
+    document.getElementById('shareTrackLinkBtn')?.addEventListener('click', () => {
+      const shareUrl = `${window.location.origin}/track?id=${ticket.id}`;
+      navigator.clipboard.writeText(shareUrl);
+      const toast = document.getElementById('toast');
+      if (toast) {
+        toast.textContent = isBn ? '✔ টিকিট লিংক কপি করা হয়েছে' : '✔ Ticket link copied to clipboard';
+        toast.className = 'retro-toast show';
+        setTimeout(() => (toast.className = 'retro-toast'), 2500);
+      }
+    });
   }
 
   trackForm?.addEventListener('submit', (e) => {
@@ -233,6 +527,13 @@ import Layout from '../layouts/Layout.astro';
     });
   });
 
+  // Re-run search if language toggled
+  window.addEventListener('campusfix:langchange', () => {
+    if (trackInput && trackInput.value) {
+      searchTicket(parseInt(trackInput.value, 10));
+    }
+  });
+
   // Check URL params
   const urlParams = new URLSearchParams(window.location.search);
   const ticketParam = urlParams.get('id');
@@ -241,4 +542,3 @@ import Layout from '../layouts/Layout.astro';
     searchTicket(parseInt(ticketParam, 10));
   }
 </script>
-

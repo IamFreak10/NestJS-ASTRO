@@ -3,9 +3,9 @@
 
 <section class="how-it-works-section">
   <div class="section-header-centered">
-    <span class="retro-badge" style="background: var(--pastel-mint)">⚡ FAST & TRANSPARENT</span>
-    <h3 class="section-title">Campus Redressal Pipeline</h3>
-    <p class="section-subtitle">
+    <span class="retro-badge" style="background: var(--pastel-mint)" data-i18n="howItWorks.badge">⚡ FAST & TRANSPARENT</span>
+    <h3 class="section-title" data-i18n="howItWorks.title">Campus Redressal Pipeline</h3>
+    <p class="section-subtitle" data-i18n="howItWorks.subtitle">
       From initial submission to verified maintenance fix, every ticket follows a strict 4-step university protocol.
     </p>
   </div>
@@ -17,8 +17,8 @@
       <div class="step-icon-wrap" style="background: var(--pastel-yellow)">
         <span>📝</span>
       </div>
-      <h4 class="step-heading">File Complaint</h4>
-      <p class="step-desc">
+      <h4 class="step-heading" data-i18n="howItWorks.step1Title">File Complaint</h4>
+      <p class="step-desc" data-i18n="howItWorks.step1Desc">
         Submit issue with location and priority. Toggle <strong>Public Wall</strong> or sealed <strong>Confidential Vault</strong> with 🕶️ Anonymous Protection.
       </p>
       <div class="step-footer-tag">Instant Ticket ID</div>
@@ -30,8 +30,8 @@
       <div class="step-icon-wrap" style="background: var(--pastel-lavender)">
         <span>🛡️</span>
       </div>
-      <h4 class="step-heading">Proctorial Triage</h4>
-      <p class="step-desc">
+      <h4 class="step-heading" data-i18n="howItWorks.step2Title">Proctorial Triage</h4>
+      <p class="step-desc" data-i18n="howItWorks.step2Desc">
         Proctor Office verifies ticket validity within 2 hours. Ragging, harassment, and electrical hazards trigger emergency dispatch.
       </p>
       <div class="step-footer-tag">&lt; 2h Response SLA</div>
@@ -43,8 +43,8 @@
       <div class="step-icon-wrap" style="background: var(--pastel-cyan)">
         <span>👷</span>
       </div>
-      <h4 class="step-heading">Technician Action</h4>
-      <p class="step-desc">
+      <h4 class="step-heading" data-i18n="howItWorks.step3Title">Technician Action</h4>
+      <p class="step-desc" data-i18n="howItWorks.step3Desc">
         Campus electricians, plumbers, or transport mechanics are assigned. Real-time updates and parts orders are logged on your ticket.
       </p>
       <div class="step-footer-tag">Live Activity Log</div>
@@ -56,8 +56,8 @@
       <div class="step-icon-wrap" style="background: var(--pastel-mint)">
         <span>✅</span>
       </div>
-      <h4 class="step-heading">Verified Fix</h4>
-      <p class="step-desc">
+      <h4 class="step-heading" data-i18n="howItWorks.step4Title">Verified Fix</h4>
+      <p class="step-desc" data-i18n="howItWorks.step4Desc">
         Once inspected and completed, an official written resolution note is published. The ticket gets the green <strong>RESOLVED ✔</strong> stamp.
       </p>
       <div class="step-footer-tag">Official Sign-off</div>
@@ -147,5 +147,19 @@
     border-radius: var(--radius-sm);
     background: #f8fafc;
     align-self: flex-start;
+  }
+
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.35rem;
+    }
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .step-card {
+      padding: 1.15rem 1rem;
+      min-height: auto;
+    }
   }
 </style>

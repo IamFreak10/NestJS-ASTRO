@@ -19,6 +19,16 @@ export interface ComplaintAuthor {
   id: string | null;
   name: string;
   department: string | null;
+  image?: string | null;
+}
+
+export interface ComplaintComment {
+  id: number;
+  authorName: string;
+  authorImage?: string | null;
+  message: string;
+  createdAt: string;
+  isInternalNote?: boolean;
 }
 
 export interface Complaint {
@@ -37,5 +47,6 @@ export interface Complaint {
   updatedAt: string;
   author: ComplaintAuthor;
   hasUpvoted?: boolean;
+  comments?: ComplaintComment[];
 }
 

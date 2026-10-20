@@ -16,7 +16,7 @@ describe('Auth Guards Suite (Simplified)', () => {
     emailVerified: true,
     image: null,
     role: 'student',
-    studentId: 'KCKU-2026-042',
+    studentId: 'BU-2026-042',
     department: 'CSE',
     createdAt: new Date(),
     updatedAt: new Date(),

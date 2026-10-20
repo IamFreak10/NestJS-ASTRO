@@ -1,0 +1,575 @@
+---
+---
+
+<dialog id="complaintDetailModal" class="retro-modal">
+  <div class="retro-window modal-window detail-modal-window">
+    <div class="retro-titlebar cyan" id="detailModalTitlebar">
+      <span class="retro-title" id="detailModalTitle" data-i18n="modals.detailTitle">🔍 TICKET_TIMELINE_INSPECTOR.SYS</span>
+      <div class="retro-controls">
+        <button type="button" class="modal-close-btn" id="closeDetailModalBtn">✕</button>
+      </div>
+    </div>
+
+    <div class="modal-body detail-modal-body">
+      <!-- Top Meta Row -->
+      <div class="detail-header-row">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="retro-badge" id="detailCategoryBadge">🏢 Facilities</span>
+          <span class="retro-badge" id="detailPriorityBadge">⚡ HIGH PRIORITY</span>
+          <span class="retro-badge" id="detailVisibilityBadge">📢 PUBLIC BOARD</span>
+        </div>
+        <div class="status-stamp" id="detailStatusStamp">IN PROGRESS</div>
+      </div>
+
+      <!-- Ticket Main Title & Description -->
+      <h3 class="detail-ticket-title" id="detailTicketTitle">Loading complaint title...</h3>
+      <p class="detail-ticket-desc" id="detailTicketDesc">Loading description...</p>
+
+      <!-- Author Profile Info Card -->
+      <div class="detail-author-card" id="detailAuthorBar">
+        <div class="detail-author-avatar-wrap" id="detailAuthorAvatarWrap">
+          <img id="detailAuthorAvatarImg" class="detail-author-avatar-img hidden" src="" alt="Author" />
+          <span id="detailAuthorAvatarFallback" class="detail-author-avatar-fallback">👤</span>
+        </div>
+        <div class="detail-author-info">
+          <div class="flex items-center gap-2">
+            <span class="detail-author-name" id="detailAuthorName">Loading student...</span>
+            <span class="detail-author-pill" id="detailAuthorPill">COMPLAINANT</span>
+          </div>
+          <span class="detail-author-dept" id="detailAuthorDept">University of Barishal</span>
+        </div>
+      </div>
+
+      <!-- Visual 4-Step Progress Lifecycle -->
+      <div class="lifecycle-track-box">
+        <div class="track-header">
+          <span>PROGRESS LIFECYCLE</span>
+          <span class="text-xs text-gray-500" id="detailTicketFiledDate">Filed on: ...</span>
+        </div>
+        <div class="stepper-row">
+          <div class="step-node active" id="stepNode1">
+            <div class="node-circle">1</div>
+            <span class="node-label">Submitted</span>
+          </div>
+          <div class="step-line" id="stepLine1"></div>
+          <div class="step-node" id="stepNode2">
+            <div class="node-circle">2</div>
+            <span class="node-label">Under Review</span>
+          </div>
+          <div class="step-line" id="stepLine2"></div>
+          <div class="step-node" id="stepNode3">
+            <div class="node-circle">3</div>
+            <span class="node-label">In Progress</span>
+          </div>
+          <div class="step-line" id="stepLine3"></div>
+          <div class="step-node" id="stepNode4">
+            <div class="node-circle">4</div>
+            <span class="node-label">Resolved</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Official Resolution Box (shown if resolved) -->
+      <div id="detailResolutionBox" class="hidden resolution-box mb-4">
+        <div class="resolution-header">
+          <span>🛠️ OFFICIAL PROCTOR RESOLUTION NOTE</span>
+          <span id="detailResolvedDate" class="resolved-date">Date</span>
+        </div>
+        <p id="detailResolutionText" class="resolution-text">Resolution text goes here...</p>
+      </div>
+
+      <!-- Real-time Timeline Logs -->
+      <div class="timeline-logs-box">
+        <h4 class="logs-title">📋 Activity & Maintenance Log</h4>
+        <div class="logs-list" id="detailTimelineList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Student & Staff Comments Section -->
+      <div class="comments-section">
+        <h4 class="logs-title" data-i18n="modals.discussionTitle">💬 Community & Department Discussion</h4>
+        <div class="comments-feed" id="detailCommentsFeed">
+          <p class="text-xs text-gray-500 italic py-2">No discussion notes yet. Leave an update below.</p>
+        </div>
+
+        <form id="addCommentForm" class="comment-input-box mt-3">
+          <input
+            type="text"
+            id="commentTextInput"
+            class="retro-input text-xs"
+            placeholder="Write a comment or follow-up note (requires login)..."
+            data-i18n-placeholder="modals.commentPlaceholder"
+            required
+          />
+          <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink" data-i18n="modals.postCommentBtn">
+            💬 POST
+          </button>
+        </form>
+      </div>
+
+      <!-- Staff & Proctor Resolution Desk (Exclusively revealed for staff & admin roles) -->
+      <div id="staffResolutionPanel" class="staff-triage-panel hidden">
+        <div class="staff-triage-header">
+          <span class="flex items-center gap-1.5 font-extrabold text-xs text-amber-950">
+            <span>🛠️</span>
+            <span>STAFF & PROCTORIAL RESOLUTION DESK</span>
+          </span>
+          <span class="retro-badge text-[10px]" style="background: var(--pastel-yellow)">RBAC SECURED</span>
+        </div>
+
+        <form id="staffStatusUpdateForm" class="staff-triage-body">
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="staffStatusSelect" class="form-label text-xs">Update Status</label>
+              <select id="staffStatusSelect" name="status" class="retro-input retro-select text-xs">
+                <option value="submitted">📥 Submitted / Logged (দাখিলকৃত)</option>
+                <option value="under_review">👀 Under Review (পর্যালোচনাধীন)</option>
+                <option value="in_progress">🔨 In Progress (কাজ চলমান)</option>
+                <option value="resolved">✔ Resolved (সমাধান সম্পন্ন)</option>
+                <option value="rejected">✕ Rejected / Dismissed (বাতিল)</option>
+              </select>
+            </div>
+            <div class="form-group half">
+              <label for="staffAssignedId" class="form-label text-xs">Assigned Technician</label>
+              <input
+                type="text"
+                id="staffAssignedId"
+                name="assignedStaffId"
+                class="retro-input text-xs"
+                placeholder="e.g. usr_staff_tech (Kamal)"
+              />
+            </div>
+          </div>
+
+          <div class="form-group mt-2">
+            <label for="staffResolutionNote" class="form-label text-xs">Official Verified Fix & Resolution Note</label>
+            <textarea
+              id="staffResolutionNote"
+              name="resolutionNote"
+              class="retro-input text-xs"
+              rows="2"
+              placeholder="Detail the on-ground repair actions taken, parts replaced, or proctorial findings..."
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end gap-2 mt-3">
+            <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-mint text-xs">
+              💾 SAVE RESOLUTION & SIGN-OFF FIX
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal Footer Actions -->
+      <div class="modal-actions mt-4 pt-3 border-t border-gray-200">
+        <button type="button" class="upvote-btn retro-btn text-xs" id="detailModalUpvoteBtn" data-id="">
+          <span class="upvote-icon">👍</span>
+          <span class="upvote-label">Me Too</span>
+          <span class="upvote-count font-mono font-bold">(0)</span>
+        </button>
+        <button type="button" class="retro-btn text-xs" id="shareTicketBtn">
+          🔗 Copy Share Link
+        </button>
+        <button type="button" class="retro-btn text-xs retro-btn-yellow" id="closeDetailActionBtn">
+          Close Window
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .modal-close-btn {
+    background: var(--pastel-rose);
+    border: 1.5px solid var(--border-black);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 0.9rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .detail-modal-window {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .detail-modal-body {
+    padding: 1.25rem;
+    max-height: calc(88dvh - 50px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+  }
+  .detail-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .detail-ticket-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--border-black);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .detail-ticket-desc {
+    font-size: 0.82rem;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .lifecycle-track-box {
+    border: var(--border-width) solid var(--border-black);
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fbf7f4;
+    margin-bottom: 1.25rem;
+    box-sizing: border-box;
+  }
+  .track-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-retro);
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .stepper-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .step-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    z-index: 2;
+  }
+  .node-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border-black);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  .step-node.active .node-circle {
+    background: var(--pastel-mint);
+    color: #064e3b;
+    box-shadow: 2px 2px 0px var(--border-black);
+  }
+  .step-node.current .node-circle {
+    background: var(--pastel-yellow);
+    animation: pulseRing 1.5s infinite;
+  }
+  .node-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.15;
+    max-width: 75px;
+    word-break: break-word;
+  }
+  .step-line {
+    flex: 1;
+    height: 3px;
+    background: #e5e7eb;
+    margin: 0 4px;
+    position: relative;
+    top: -9px;
+  }
+  .step-line.active {
+    background: var(--border-black);
+  }
+  .timeline-logs-box, .comments-section {
+    border: var(--border-width) solid var(--border-black);
+    border-radius: 8px;
+    padding: 0.85rem;
+    background: #ffffff;
+    margin-bottom: 1rem;
+  }
+  .detail-author-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    background: #fefce8;
+    border: 1.5px solid var(--border-black);
+    border-radius: 8px;
+    box-shadow: var(--shadow-neo-sm);
+    margin-bottom: 0.9rem;
+  }
+  .detail-author-avatar-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1px 1px 0 var(--border-black);
+    overflow: hidden;
+    background: var(--pastel-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .detail-author-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .detail-author-avatar-fallback {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--border-black);
+  }
+  .detail-author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .detail-author-name {
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--border-black);
+  }
+  .detail-author-pill {
+    font-size: 0.65rem;
+    font-family: var(--font-retro);
+    font-weight: 800;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-black);
+    background: var(--pastel-yellow);
+  }
+  .detail-author-dept {
+    font-size: 0.72rem;
+    color: #4b5563;
+    font-weight: 500;
+  }
+  .comments-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .comment-bubble-item {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    padding: 0.6rem 0.75rem;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+  }
+  .comment-bubble-item:hover {
+    background: #f1f5f9;
+  }
+  .comment-avatar-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--border-black);
+    box-shadow: 1px 1px 0 var(--border-black);
+    overflow: hidden;
+    background: var(--pastel-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .comment-author-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .comment-author-avatar-fallback {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--border-black);
+  }
+  .comment-content-col {
+    flex: 1;
+    min-width: 0;
+  }
+  .comment-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+  .comment-author-name {
+    font-weight: 800;
+    font-size: 0.78rem;
+    color: var(--border-black);
+  }
+  .comment-internal-pill {
+    font-size: 0.6rem;
+    font-family: var(--font-retro);
+    font-weight: 800;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+  }
+  .comment-time {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    font-family: monospace;
+  }
+  .comment-actions-cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+  .comment-action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .comment-action-btn:hover {
+    opacity: 1;
+    transform: scale(1.15);
+    background: #e2e8f0;
+  }
+  .comment-body-text {
+    font-size: 0.75rem;
+    color: #334155;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .logs-title {
+    font-family: var(--font-retro);
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--border-black);
+  }
+  .logs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .timeline-event-item {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    background: #fbf7f4;
+    border-left: 3px solid var(--pastel-pink);
+    border-radius: 0 4px 4px 0;
+  }
+  .timeline-event-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .comment-input-box {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  .comment-input-box input {
+    flex: 1;
+    min-width: 0;
+  }
+  .modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* Staff & Proctor Triage Panel */
+  .staff-triage-panel {
+    background: #fefce8;
+    border: 2px solid var(--border-black);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1.25rem;
+    box-shadow: var(--shadow-neo-sm);
+  }
+  .staff-triage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1.5px dashed #ca8a04;
+  }
+
+  @media (max-width: 520px) {
+    .detail-modal-body {
+      padding: 0.85rem;
+    }
+    .node-label {
+      font-size: 0.58rem;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.1;
+    }
+    .node-circle {
+      width: 22px;
+      height: 22px;
+      font-size: 0.68rem;
+    }
+    .step-line {
+      top: -12px;
+    }
+    .detail-ticket-title {
+      font-size: 1rem;
+    }
+    .comment-input-box {
+      flex-direction: column;
+    }
+    .comment-input-box .retro-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .modal-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .modal-actions .retro-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 0.6rem;
+    }
+  }
+</style>
+

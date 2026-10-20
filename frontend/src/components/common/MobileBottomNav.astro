@@ -1,0 +1,186 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<nav class="mobile-bottom-nav" aria-label="Mobile Bottom Navigation">
+  <div class="bottom-nav-inner">
+    <!-- 1. Public Feed -->
+    <a href="/" class={`bottom-nav-item ${currentPath === '/' ? 'active' : ''}`}>
+      <span class="nav-icon">📢</span>
+      <span class="nav-label" data-i18n="nav.publicFeed">Feed</span>
+    </a>
+
+    <!-- 2. My Complaints -->
+    <a href="/my-complaints" class={`bottom-nav-item ${currentPath === '/my-complaints' ? 'active' : ''}`}>
+      <span class="nav-icon">🔒</span>
+      <span class="nav-label" data-i18n="nav.myComplaints">Vault</span>
+    </a>
+
+    <!-- 3. Center Action: + File Complaint -->
+    <button
+      type="button"
+      id="mobileBottomFileBtn"
+      class="center-action-btn open-create-modal-trigger"
+      aria-label="File a new campus complaint"
+    >
+      <span class="center-btn-inner">
+        <span class="center-icon">✉️</span>
+        <span class="center-plus">+</span>
+      </span>
+      <span class="center-label" data-i18n="nav.fileTicketBtn">FILE</span>
+    </button>
+
+    <!-- 4. Track Ticket -->
+    <a href="/track" class={`bottom-nav-item ${currentPath === '/track' ? 'active' : ''}`}>
+      <span class="nav-icon">🔎</span>
+      <span class="nav-label" data-i18n="nav.trackId">Track</span>
+    </a>
+
+    <!-- 5. Emergency SOS -->
+    <a href="/emergency" class={`bottom-nav-item ${currentPath === '/emergency' ? 'active' : ''}`}>
+      <span class="nav-icon">🚨</span>
+      <span class="nav-label" data-i18n="nav.emergency">SOS</span>
+    </a>
+  </div>
+</nav>
+
+<style>
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: #ffffff;
+    border-top: var(--border-width) solid var(--border-black);
+    box-shadow: 0 -3px 0px rgba(24, 24, 27, 0.08);
+    padding-bottom: max(0.35rem, env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 768px) {
+    .mobile-bottom-nav {
+      display: block;
+    }
+  }
+
+  .bottom-nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 56px;
+    padding: 0 0.5rem;
+    position: relative;
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 100%;
+    text-decoration: none;
+    color: #4b5563;
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    transition: all 0.12s ease;
+    border-radius: var(--radius-sm);
+    padding: 0.2rem 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bottom-nav-item:active {
+    transform: scale(0.92);
+  }
+
+  .bottom-nav-item.active {
+    color: var(--border-black);
+  }
+
+  .bottom-nav-item.active .nav-icon {
+    transform: scale(1.15);
+  }
+
+  .bottom-nav-item.active .nav-label {
+    color: var(--border-black);
+    font-weight: 800;
+  }
+
+  .nav-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: transform 0.12s ease;
+  }
+
+  .nav-label {
+    letter-spacing: 0.02em;
+    font-size: 0.65rem;
+  }
+
+  /* Elevated Neobrutalist Center Button */
+  .center-action-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    top: -12px;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .center-btn-inner {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-pill);
+    background: var(--pastel-pink);
+    border: var(--border-width) solid var(--border-black);
+    box-shadow: 2px 2px 0px var(--border-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+
+  .center-action-btn:active .center-btn-inner {
+    transform: translate(1.5px, 1.5px);
+    box-shadow: 0.5px 0.5px 0px var(--border-black);
+  }
+
+  .center-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .center-plus {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 1px 1px 0px #000000;
+  }
+
+  .center-label {
+    font-family: var(--font-retro);
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--border-black);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+</style>
+

@@ -21,6 +21,7 @@ export interface ComplaintAuthorView {
   id: string | null;
   name: string;
   department: string | null;
+  image?: string | null;
 }
 
 export interface ComplaintResponseItem {

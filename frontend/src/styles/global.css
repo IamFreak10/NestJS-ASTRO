@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap');
 
 :root {
-  --bg-grid: #fbf8f5;
-  --grid-line: #ede5df;
+  --bg-grid: #fcfbf9;
+  --grid-line: rgba(24, 24, 27, 0.038);
   --border-black: #18181b;
   --border-width: 2px;
   
@@ -24,12 +24,20 @@
   --shadow-neo-xl: 7px 7px 0px var(--border-black);
 
   --font-retro: 'Silkscreen', monospace, cursive;
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-bangla: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif;
   
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-pill: 9999px;
+}
+
+/* Pure Bengali Typography Utilities */
+.font-bangla,
+[lang="bn"] {
+  font-family: var(--font-bangla);
+  letter-spacing: 0.01em;
 }
 
 * {
@@ -38,20 +46,73 @@
   padding: 0;
 }
 
+/* Universal Display Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* Universal SVG Size Safety Gates */
+svg {
+  vertical-align: middle;
+}
+.icon-svg {
+  width: 14px !important;
+  height: 14px !important;
+  max-width: 14px !important;
+  max-height: 14px !important;
+  display: inline-block !important;
+  vertical-align: -2px !important;
+  flex-shrink: 0 !important;
+}
+.icon-svg-lg {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+.icon-svg-spinner {
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+  animation: spin 1s linear infinite;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-grid);
   color: var(--border-black);
   line-height: 1.6;
   min-height: 100vh;
-  /* Crisp Subtle Graph Paper Grid */
+  /* Ultra-Clean Architectural Graph Grid (Breathable 40px x 40px) */
   background-image: 
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-size: 40px 40px;
   position: relative;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================================
+   OFFICIAL UNIVERSITY BACKGROUND WATERMARK
+   ======================================================== */
+.site-bg-seal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 84vw);
+  height: min(700px, 84vw);
+  background-image: url('/images/bu-seal-circle.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
 }
 
 /* Modern Page Container */
@@ -61,11 +122,66 @@ body {
   padding: 0 1.5rem;
   position: relative;
   z-index: 10;
+  pointer-events: none; /* Allow background pixel matrix hover to work everywhere through transparent space */
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 0.85rem;
+  }
 }
 
 .main-content {
   padding-top: 2rem;
   padding-bottom: 4rem;
+  pointer-events: none; /* Allow background pixel matrix hover through empty space */
+}
+
+.main-content > section,
+.main-content > div {
+  pointer-events: none;
+}
+
+/* Ensure all interactive elements, cards, and buttons retain full interactivity */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary,
+details,
+dialog,
+.retro-modal,
+.retro-btn,
+.retro-window,
+.ticket-card,
+.vault-complaint-card,
+.department-contact-card,
+.category-tab-btn,
+.upvote-btn,
+.demo-acc-btn,
+.modal-close-btn,
+.hero-action-row,
+.hero-eyebrow,
+.hero-trust-bar,
+.trust-pill,
+.faq-item,
+.navbar,
+.site-footer,
+.notice-marquee,
+.mobile-bottom-nav,
+.charter-window,
+.track-radar-window,
+.interactive {
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 1.25rem;
+    padding-bottom: 6rem; /* Extra clearance for mobile bottom navigation bar */
+  }
 }
 
 /* ========================================================
@@ -204,6 +320,54 @@ body {
   border-radius: var(--radius-sm);
 }
 
+/* Mini Profile Avatar for Navbar & Comments */
+.user-avatar-mini {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-black);
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+  background: var(--pastel-yellow);
+}
+
+/* Universal Upvote Button Styling */
+.upvote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #ffffff;
+  color: var(--border-black);
+  border: 1.5px solid var(--border-black);
+  box-shadow: var(--shadow-neo-sm);
+  border-radius: var(--radius-sm);
+  padding: 0.32rem 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+.upvote-btn:hover {
+  background: var(--pastel-yellow);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-neo);
+}
+.upvote-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-black);
+}
+.upvote-btn.upvoted {
+  background: var(--pastel-mint);
+  border-color: #047857;
+  color: #064e3b;
+  box-shadow: 1.5px 1.5px 0px #047857;
+}
+
 /* ========================================================
    MODERN NEOBRUTALIST BADGES & PILLS
    ======================================================== */
@@ -240,6 +404,9 @@ body {
 
 /* Status Stamps */
 .status-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   font-family: var(--font-retro);
   font-size: 0.68rem;
   font-weight: 800;
@@ -248,6 +415,7 @@ body {
   border-radius: var(--radius-sm);
   letter-spacing: 0.05em;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .stamp-submitted { background: var(--pastel-yellow); }
@@ -272,6 +440,14 @@ body {
   outline: none;
   box-shadow: 2px 2px 0px var(--border-black);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent auto-zooming on iOS devices */
+@media (max-width: 768px) {
+  .retro-input, input, textarea, select {
+    font-size: 16px !important;
+  }
 }
 
 .retro-input:focus, input:focus, textarea:focus, select:focus {
@@ -283,22 +459,43 @@ body {
 /* ========================================================
    MODALS & DIALOGS
    ======================================================== */
-dialog {
+dialog,
+.retro-modal {
   margin: auto;
-  background: var(--card-bg);
-  border: var(--border-width) solid var(--border-black);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-neo-xl);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   color: var(--border-black);
-  padding: 0;
-  max-width: 540px;
-  width: 90vw;
-  overflow: hidden;
+  padding: 1rem;
+  max-width: 680px;
+  width: calc(100vw - 2rem);
+  max-height: 95vh;
+  max-height: 95dvh;
+  overflow: visible !important;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
 
-dialog::backdrop {
-  background: rgba(24, 24, 27, 0.45);
+dialog::backdrop,
+.retro-modal::backdrop {
+  background: rgba(24, 24, 27, 0.6);
   backdrop-filter: blur(4px);
+}
+
+.modal-window {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  dialog,
+  .retro-modal {
+    padding: 0.5rem;
+    width: calc(100vw - 1rem);
+    max-height: 98dvh;
+  }
 }
 
 /* ========================================================
@@ -320,6 +517,17 @@ dialog::backdrop {
   z-index: 9999;
   display: none;
   animation: retroPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 768px) {
+  .retro-toast {
+    bottom: 5.25rem; /* Sits right above mobile bottom navigation bar */
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    text-align: center;
+    box-shadow: var(--shadow-neo);
+  }
 }
 
 .retro-toast.show { display: block; }

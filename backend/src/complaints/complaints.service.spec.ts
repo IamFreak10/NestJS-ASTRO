@@ -18,7 +18,7 @@ describe('ComplaintsService', () => {
     emailVerified: true,
     image: null,
     role: 'student',
-    studentId: 'KCKU-2024-001',
+    studentId: 'BU-2024-001',
     department: 'CSE',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -31,7 +31,7 @@ describe('ComplaintsService', () => {
     emailVerified: true,
     image: null,
     role: 'student',
-    studentId: 'KCKU-2024-002',
+    studentId: 'BU-2024-002',
     department: 'EEE',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -153,6 +153,7 @@ describe('ComplaintsService', () => {
           authorId: 'student-1',
           authorName: 'Rahim Khan',
           authorDepartment: 'CSE',
+          authorImage: 'https://example.com/rahim.jpg',
         },
         {
           id: 2,
@@ -171,6 +172,7 @@ describe('ComplaintsService', () => {
           authorId: 'student-2',
           authorName: 'Karim Ali',
           authorDepartment: 'EEE',
+          authorImage: 'https://example.com/karim.jpg',
         },
       ];
 
@@ -199,13 +201,15 @@ describe('ComplaintsService', () => {
       const res = await service.findPublic({});
       expect(res.items.length).toBe(2);
 
-      // Verify Anonymous masking on item 1
+      // Verify Anonymous masking on item 1 (name, id, and photo must be masked)
       expect(res.items[0].author.name).toBe('Anonymous Student 🕶️');
       expect(res.items[0].author.id).toBeNull();
+      expect(res.items[0].author.image).toBeNull();
 
-      // Verify Non-anonymous author on item 2
+      // Verify Non-anonymous author on item 2 (name, id, and photo preserved)
       expect(res.items[1].author.name).toBe('Karim Ali');
       expect(res.items[1].author.id).toBe('student-2');
+      expect(res.items[1].author.image).toBe('https://example.com/karim.jpg');
     });
 
     it('should throw UnauthorizedException if unauthenticated visitor requests private complaint', async () => {

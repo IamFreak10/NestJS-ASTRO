@@ -10,6 +10,6 @@
     "zip": "astro build && (cd dist && zip -r -q ../../frontend-dist.zip .)"
   },
   "dependencies": {
-    "astro": "^5.4.2"
+    "astro": "^7.3.8"
   }
 }

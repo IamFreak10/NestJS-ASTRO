@@ -2,7 +2,7 @@
 const faqs = [
   {
     q: '🕶️ Can I file a complaint completely anonymously?',
-    a: 'YES! When creating a complaint, simply check "Submit Anonymously 🕶️". The KCKU Privacy Gate strips your name, student ID, and email from the public board and API responses. Even other students will only see "Anonymous Student 🕶️".',
+    a: 'YES! When creating a complaint, simply check "Submit Anonymously 🕶️". The BU Privacy Gate strips your name, student ID, and email from the public board and API responses. Even other students will only see "Anonymous Student 🕶️".',
   },
   {
     q: '🔒 What is the difference between Public Notice and Confidential Vault?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: '🚨 What should I do if I am facing immediate ragging or safety threats?',
-    a: 'Immediately dial the 24/7 Proctor Hotline at +880-1700-KCKU-SOS or contact your Hall Warden. You can also file an emergency ticket with priority "Urgent" which triggers an instant alert on the proctor dashboard.',
+    a: 'Immediately dial the 24/7 Proctor Hotline at +880-1700-BU-HELP or contact your Hall Warden. You can also file an emergency ticket with priority "Urgent" which triggers an instant alert on the proctor dashboard.',
   },
 ];
 ---
@@ -116,5 +116,19 @@ const faqs = [
     color: #4b5563;
     border-top: 1px dashed #e5e7eb;
     padding-top: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.35rem;
+    }
+    .faq-summary {
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+    }
+    .faq-a-body {
+      padding: 0.75rem 1rem 1rem 1rem;
+      font-size: 0.82rem;
+    }
   }
 </style>

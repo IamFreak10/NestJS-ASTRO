@@ -1,0 +1,131 @@
+---
+/**
+ * VaultEmptyState.astro
+ * Shown when logged-in student has no complaints filed yet
+ */
+---
+
+<div id="emptyMyComplaints" class="hidden retro-window notice-card">
+  <div class="retro-titlebar yellow">
+    <span class="retro-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      ZERO_COMPLAINTS_LOGGED.SYS
+    </span>
+    <div class="retro-controls">
+      <span class="retro-ctrl-btn">_</span>
+      <span class="retro-ctrl-btn">□</span>
+    </div>
+  </div>
+  <div class="notice-card-body">
+    <div class="notice-icon-circle emerald">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-svg-lg">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </div>
+
+    <div class="notice-text-wrap">
+      <h3 class="notice-title">No Complaints Filed Yet!</h3>
+      <p class="notice-desc">
+        Everything on campus seems to be running smoothly for you. If you face classroom outages, bus delays, or cafeteria issues, report it immediately!
+      </p>
+    </div>
+
+    <div class="notice-actions-wrap">
+      <button type="button" class="retro-btn retro-btn-pixel retro-btn-pink open-create-modal-trigger notice-cta-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        + FILE YOUR FIRST COMPLAINT
+      </button>
+
+      <button type="button" id="emptySamplePreviewBtn" class="retro-btn retro-btn-cyan notice-demo-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="7" r="3"></circle>
+        </svg>
+        👁️ Preview Sample Tickets (Demo)
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .notice-card {
+    max-width: 540px;
+    margin: 2.5rem auto;
+    background: #ffffff;
+    box-shadow: var(--shadow-neo-lg);
+  }
+  .notice-card-body {
+    padding: 2.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  .notice-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--border-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-neo-sm);
+  }
+  .notice-icon-circle.emerald {
+    background: #d1fae5;
+    color: #047857;
+  }
+  .notice-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .notice-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--border-black);
+  }
+  .notice-desc {
+    font-size: 0.82rem;
+    color: #4b5563;
+    max-width: 400px;
+    line-height: 1.6;
+    margin: 0 auto;
+  }
+  .notice-actions-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    max-width: 340px;
+  }
+  .notice-cta-btn {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    justify-content: center;
+    font-size: 0.82rem;
+  }
+  .notice-demo-btn {
+    width: 100%;
+    padding: 0.5rem 0.85rem;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  @media (max-width: 480px) {
+    .notice-card-body {
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>
+

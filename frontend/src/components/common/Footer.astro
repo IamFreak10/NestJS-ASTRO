@@ -7,52 +7,52 @@
       <!-- Col 1: Brand & Mission -->
       <div class="footer-col col-brand">
         <div class="footer-brand-header">
-          <span class="sticker text-2xl">🦖</span>
+          <img src="/images/bu-seal-circle.png" alt="Barishal University Seal" class="footer-seal-img" width="34" height="34" />
           <div>
-            <h4 class="brand-title">CAMPUSFIX PORTAL</h4>
-            <span class="brand-sub">Kauwar Chor Kindergarten University</span>
+            <h4 class="brand-title" data-i18n="footer.portalTitle">CAMPUSFIX PORTAL</h4>
+            <span class="brand-sub">University of Barishal (বরিশাল বিশ্ববিদ্যালয়)</span>
           </div>
         </div>
-        <p class="footer-desc">
-          Official grievance and student welfare redressal system of KCKU. Dedicated to protecting student rights, resolving facility outages, and enforcing zero-tolerance campus safety.
+        <p class="footer-desc" data-i18n="footer.desc">
+          Official grievance and student welfare redressal system of the University of Barishal (বরিশাল বিশ্ববিদ্যালয়). Dedicated to protecting student rights, resolving facility outages, and enforcing zero-tolerance campus safety.
         </p>
         <div class="footer-badge-row">
-          <span class="retro-badge" style="background: var(--pastel-mint)">🛡️ ANTI-RAGGING CELL</span>
-          <span class="retro-badge" style="background: var(--pastel-yellow)">⚡ ZERO-JS ASTRO</span>
+          <span class="retro-badge" style="background: var(--pastel-mint)" data-i18n="footer.antiRaggingBadge">🛡️ ANTI-RAGGING CELL</span>
+          <span class="retro-badge" style="background: var(--pastel-yellow)" data-i18n="footer.astroBadge">⚡ ZERO-JS ASTRO 7</span>
         </div>
       </div>
 
       <!-- Col 2: Quick Links -->
       <div class="footer-col">
-        <h5 class="col-heading">NAVIGATION</h5>
+        <h5 class="col-heading" data-i18n="footer.navHeading">NAVIGATION</h5>
         <ul class="col-links">
-          <li><a href="/">📢 Public Notice Feed</a></li>
-          <li><a href="/my-complaints">🔒 My Confidential Vault</a></li>
-          <li><a href="/track">🔎 Track Ticket Status</a></li>
-          <li><a href="/emergency">🚨 Emergency Desk & Hotlines</a></li>
-          <li><a href="/architecture">🗺️ System Architecture & ERD</a></li>
+          <li><a href="/" data-i18n="nav.publicFeed">📢 Public Notice Feed</a></li>
+          <li><a href="/my-complaints" data-i18n="nav.myComplaints">🔒 My Confidential Vault</a></li>
+          <li><a href="/track" data-i18n="nav.trackId">🔎 Track Ticket Status</a></li>
+          <li><a href="/emergency" data-i18n="nav.emergency">🚨 Emergency Desk & Hotlines</a></li>
+          <li><a href="/architecture" data-i18n="nav.blueprint">🗺️ System Architecture & ERD</a></li>
         </ul>
       </div>
 
       <!-- Col 3: Emergency Contacts -->
       <div class="footer-col">
-        <h5 class="col-heading">EMERGENCY TRIAGE</h5>
+        <h5 class="col-heading" data-i18n="footer.triageHeading">EMERGENCY TRIAGE</h5>
         <ul class="col-links font-mono text-xs">
-          <li><strong>Proctor SOS:</strong> +880-1700-KCKU-SOS</li>
-          <li><strong>Hall Wardens:</strong> Ext: 204 (Hall 1, 2, 3)</li>
-          <li><strong>Campus Ambulance:</strong> +880-1700-CHOR-MED</li>
+          <li><strong>Proctor SOS:</strong> +880-1700-BU-HELP</li>
+          <li><strong>Hall Wardens:</strong> Ext: 204 (Bangabandhu, Karnaphuli)</li>
+          <li><strong>Campus Ambulance:</strong> +880-1700-BU-MEDIC</li>
           <li><strong>Bus Dispatch Desk:</strong> Ext: 305</li>
         </ul>
       </div>
 
       <!-- Col 4: Architecture Specs -->
       <div class="footer-col">
-        <h5 class="col-heading">SYSTEM SPECS</h5>
+        <h5 class="col-heading" data-i18n="footer.specsHeading">SYSTEM SPECS</h5>
         <ul class="col-links font-mono text-xs">
           <li>• Backend: NestJS 12 + MySQL 8</li>
           <li>• ORM: Drizzle ORM Multi-Folder</li>
           <li>• Auth: Better Auth (Sliding Cookies)</li>
-          <li>• Frontend: Pure Astro 5 (&lt;9 kB JS)</li>
+          <li>• Frontend: Pure Astro 7.3.8 (&lt;9 kB JS)</li>
         </ul>
         <div class="footer-quote">
           "Dedicated to resolving campus problems before your semester exams begin!"
@@ -62,8 +62,8 @@
 
     <!-- Bottom Bar -->
     <div class="footer-bottom-bar">
-      <p class="copyright-text">
-        © 2026 Kauwar Chor Kindergarten University (KCKU). All complaints securely moderated.
+      <p class="copyright-text" data-i18n="footer.copyright">
+        © 2026 University of Barishal (বরিশাল বিশ্ববিদ্যালয়). All complaints securely moderated.
       </p>
       <div class="footer-stickers">
         <span class="cloud-badge">🦖 DINO-VERIFIED</span>
@@ -94,6 +94,15 @@
     align-items: center;
     gap: 0.65rem;
     margin-bottom: 0.85rem;
+  }
+  .footer-seal-img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 1.5px solid var(--border-black);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-neo-sm);
   }
   .brand-title {
     font-family: var(--font-retro);
@@ -183,8 +192,19 @@
     }
   }
   @media (max-width: 600px) {
+    .modern-footer {
+      padding-top: 2rem;
+      padding-bottom: 5.5rem; /* Clearance for fixed mobile bottom navigation bar */
+    }
     .footer-grid {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .footer-bottom-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
   }
 </style>

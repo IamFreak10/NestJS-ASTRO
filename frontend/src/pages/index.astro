@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StatsGrid from '../components/StatsGrid.astro';
-import CategoryTabs from '../components/CategoryTabs.astro';
-import ComplaintCard from '../components/ComplaintCard.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import FAQSection from '../components/FAQSection.astro';
+import StatsGrid from '../components/feed/StatsGrid.astro';
+import CategoryTabs from '../components/feed/CategoryTabs.astro';
+import ComplaintCard from '../components/feed/ComplaintCard.astro';
+import HowItWorks from '../components/feed/HowItWorks.astro';
+import FAQSection from '../components/feed/FAQSection.astro';
 import { SAMPLE_COMPLAINTS } from '../services/sampleData.js';
 import type { Complaint, ComplaintCategory } from '../types/complaint.js';
 
@@ -60,16 +60,16 @@ const stats = {
 };
 ---
 
-<Layout title="CampusFix — Student Welfare & Public Grievance Feed | KCKU" currentPath="/">
+<Layout title="CampusFix — Student Welfare & Public Grievance Feed | University of Barishal" currentPath="/">
   <!-- Modern Hero Section -->
   <section class="modern-hero-section">
     <div class="hero-content">
       <!-- Eyebrow Badge -->
       <div class="hero-eyebrow">
         <span class="pulse-indicator"></span>
-        <span class="eyebrow-text">RESOLUTION ENGINE ONLINE</span>
+        <span class="eyebrow-text" data-i18n="hero.engineStatus">RESOLUTION ENGINE ONLINE</span>
         <span class="eyebrow-divider">•</span>
-        <span class="eyebrow-sub">KCKU OFFICIAL STUDENT WELFARE</span>
+        <span class="eyebrow-sub" data-i18n="hero.subOfficial">UNIVERSITY OF BARISHAL OFFICIAL STUDENT WELFARE</span>
         {isLiveFromApi ? (
           <span class="retro-badge" style="background: var(--pastel-mint)">LIVE DB</span>
         ) : (
@@ -78,25 +78,25 @@ const stats = {
       </div>
 
       <!-- Main Headline -->
-      <h1 class="hero-headline">
+      <h1 class="hero-headline" data-i18n="hero.headline">
         Resolve Campus Problems. <br />
         <span class="headline-highlight">Empower Student Voices.</span>
       </h1>
 
       <!-- Description -->
-      <p class="hero-subtext">
-        The official real-time complaint and grievance redressal system of <strong>Kauwar Chor Kindergarten University</strong>. File classroom maintenance, hostel mess hygiene, campus bus delays, or confidential anti-ragging reports with cryptographic anonymity.
+      <p class="hero-subtext" data-i18n="hero.description">
+        The official real-time complaint and grievance redressal system of the <strong>University of Barishal (বরিশাল বিশ্ববিদ্যালয়)</strong>. File classroom maintenance, hostel mess hygiene, campus bus delays, or confidential anti-ragging reports with cryptographic anonymity.
       </p>
 
       <!-- Action Button Group -->
       <div class="hero-action-row">
-        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink hero-btn-lg">
+        <button class="retro-btn retro-btn-pixel retro-btn-pink hero-btn-lg open-create-modal-trigger" data-i18n="hero.fileBtn">
           ✉️ + FILE A COMPLAINT
         </button>
-        <a href="/track" class="retro-btn retro-btn-pixel retro-btn-yellow hero-btn-lg">
+        <a href="/track" class="retro-btn retro-btn-pixel retro-btn-yellow hero-btn-lg" data-i18n="hero.trackBtn">
           🔎 TRACK TICKET BY ID
         </a>
-        <a href="/emergency" class="retro-btn hero-btn-lg" style="background: var(--pastel-rose); color: #881337">
+        <a href="/emergency" class="retro-btn hero-btn-lg emergency-hero-btn" style="background: var(--pastel-rose); color: #881337" data-i18n="hero.emergencyBtn">
           🚨 Emergency Hotlines
         </a>
       </div>
@@ -293,11 +293,47 @@ const stats = {
     50% { opacity: 0.4; transform: scale(0.8); }
   }
   @media (max-width: 768px) {
+    .modern-hero-section {
+      padding: 1.5rem 0 2rem 0;
+    }
     .hero-headline {
       font-size: 2.1rem;
     }
     .modern-complaints-grid {
       grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .feed-section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .hero-headline {
+      font-size: 1.75rem;
+    }
+    .hero-subtext {
+      font-size: 0.88rem;
+    }
+    .hero-action-row {
+      flex-direction: column;
+      width: 100%;
+      max-width: 320px;
+    }
+    .hero-btn-lg {
+      width: 100%;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      padding: 0.25rem 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .eyebrow-divider, .eyebrow-sub {
+      display: none;
     }
   }
 </style>

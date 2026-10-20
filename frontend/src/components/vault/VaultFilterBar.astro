@@ -1,0 +1,92 @@
+---
+/**
+ * VaultFilterBar.astro
+ * Quick Status Filters & Action Bar for Grievance Vault
+ */
+---
+
+<div id="vaultFilterBar" class="hidden neo-card vault-toolbar">
+  <div class="vault-filter-group">
+    <button type="button" class="vault-filter-btn active" data-filter="all">
+      All My Tickets (<span id="filterAllCount">0</span>)
+    </button>
+    <button type="button" class="vault-filter-btn" data-filter="pending">
+      In Progress & Review (<span id="filterPendingCount">0</span>)
+    </button>
+    <button type="button" class="vault-filter-btn" data-filter="resolved">
+      Resolved ✔ (<span id="filterResolvedCount">0</span>)
+    </button>
+    <button type="button" class="vault-filter-btn" data-filter="confidential">
+      Confidential Only (<span id="filterConfidentialCount">0</span>)
+    </button>
+  </div>
+
+  <button type="button" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink open-create-modal-trigger" data-i18n="vault.fileNewBtn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    + FILE NEW TICKET
+  </button>
+</div>
+
+<style>
+  .vault-toolbar {
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+  }
+  .vault-filter-group {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .vault-filter-group::-webkit-scrollbar {
+    display: none;
+  }
+  .vault-filter-btn {
+    background: #f8fafc;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.12s ease;
+    color: var(--border-black);
+    font-family: var(--font-sans);
+  }
+  .vault-filter-btn:hover {
+    background: var(--pastel-yellow);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+  }
+  .vault-filter-btn.active {
+    background: var(--pastel-yellow);
+    box-shadow: 2px 2px 0px var(--border-black);
+    font-weight: 800;
+  }
+
+  @media (max-width: 768px) {
+    .vault-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0.85rem;
+      gap: 0.75rem;
+    }
+    .vault-toolbar .retro-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 0.6rem;
+    }
+  }
+</style>
+

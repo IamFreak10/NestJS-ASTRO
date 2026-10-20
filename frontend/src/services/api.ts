@@ -128,3 +128,107 @@ export async function getMe(): Promise<any> {
     return null;
   }
 }
+
+/**
+ * Add comment or discussion note on a complaint
+ */
+export async function addComplaintComment(
+  complaintId: number,
+  message: string,
+  isInternalNote: boolean = false,
+): Promise<{ id: number; message: string; createdAt: Date }> {
+  const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ message, content: message, isInternalNote }),
+  });
+
+  const json: ApiResponse<{ id: number; message: string; createdAt: Date }> = await res.json();
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json.message)
+      ? json.message.join(', ')
+      : json.message || 'Failed to post comment';
+    throw new Error(errorMsg);
+  }
+
+  return json.data;
+}
+
+/**
+ * Update an existing comment
+ */
+export async function updateComplaintComment(
+  commentId: number,
+  message: string,
+): Promise<{ id: number; message: string }> {
+  const res = await fetch(`${API_BASE_URL}/comments/${commentId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ message, content: message }),
+  });
+
+  const json: ApiResponse<{ id: number; message: string }> = await res.json();
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json.message)
+      ? json.message.join(', ')
+      : json.message || 'Failed to update comment';
+    throw new Error(errorMsg);
+  }
+
+  return json.data;
+}
+
+/**
+ * Delete a comment
+ */
+export async function deleteComplaintComment(
+  commentId: number,
+): Promise<{ success: boolean; id: number }> {
+  const res = await fetch(`${API_BASE_URL}/comments/${commentId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  const json: ApiResponse<{ success: boolean; id: number }> = await res.json();
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json.message)
+      ? json.message.join(', ')
+      : json.message || 'Failed to delete comment';
+    throw new Error(errorMsg);
+  }
+
+  return json.data;
+}
+
+/**
+ * Update complaint triage status & resolution
+ */
+export async function updateComplaintStatus(
+  complaintId: number,
+  payload: {
+    status: ComplaintStatus;
+    resolutionNote?: string;
+    assignedStaffId?: string;
+    commentMessage?: string;
+    isInternalNote?: boolean;
+  },
+): Promise<Complaint> {
+  const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(payload),
+  });
+
+  const json: ApiResponse<Complaint> = await res.json();
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json.message)
+      ? json.message.join(', ')
+      : json.message || 'Failed to update status';
+    throw new Error(errorMsg);
+  }
+
+  return json.data;
+}

@@ -104,6 +104,7 @@ export class ComplaintsService {
         authorId: schema.user.id,
         authorName: schema.user.name,
         authorDepartment: schema.user.department,
+        authorImage: schema.user.image,
       })
       .from(schema.complaints)
       .leftJoin(schema.user, eq(schema.complaints.authorId, schema.user.id))
@@ -134,7 +135,8 @@ export class ComplaintsService {
       const author: ComplaintAuthorView = {
         id: isMasked ? null : (row.authorId ?? null),
         name: isMasked ? 'Anonymous Student 🕶️' : (row.authorName ?? 'Unknown Student'),
-        department: row.authorDepartment ?? null,
+        department: isMasked ? null : (row.authorDepartment ?? null),
+        image: isMasked ? null : (row.authorImage ?? null),
       };
 
       return {
@@ -189,6 +191,7 @@ export class ComplaintsService {
         authorId: schema.user.id,
         authorName: schema.user.name,
         authorDepartment: schema.user.department,
+        authorImage: schema.user.image,
       })
       .from(schema.complaints)
       .leftJoin(schema.user, eq(schema.complaints.authorId, schema.user.id))
@@ -214,6 +217,7 @@ export class ComplaintsService {
         id: row.authorId ?? null,
         name: row.authorName ?? 'Student',
         department: row.authorDepartment ?? null,
+        image: row.authorImage ?? null,
       },
     }));
   }
@@ -224,7 +228,18 @@ export class ComplaintsService {
   async findById(
     id: number,
     currentUser?: AuthenticatedUser,
-  ): Promise<ComplaintResponseItem & { comments: Array<{ id: number; authorName: string; message: string; createdAt: Date; isInternalNote: boolean }> }> {
+  ): Promise<
+    ComplaintResponseItem & {
+      comments: Array<{
+        id: number;
+        authorName: string;
+        authorImage?: string | null;
+        message: string;
+        createdAt: Date;
+        isInternalNote: boolean;
+      }>;
+    }
+  > {
     const [row] = await this.db
       .select({
         id: schema.complaints.id,
@@ -243,6 +258,7 @@ export class ComplaintsService {
         updatedAt: schema.complaints.updatedAt,
         userName: schema.user.name,
         userDepartment: schema.user.department,
+        userImage: schema.user.image,
       })
       .from(schema.complaints)
       .leftJoin(schema.user, eq(schema.complaints.authorId, schema.user.id))
@@ -274,7 +290,8 @@ export class ComplaintsService {
     const author: ComplaintAuthorView = {
       id: canSeeIdentity ? row.authorId : null,
       name: canSeeIdentity ? (row.userName ?? 'Student') : 'Anonymous Student 🕶️',
-      department: row.userDepartment ?? null,
+      department: canSeeIdentity ? (row.userDepartment ?? null) : null,
+      image: canSeeIdentity ? (row.userImage ?? null) : null,
     };
 
     // Check if current user has upvoted
@@ -302,6 +319,7 @@ export class ComplaintsService {
         isInternalNote: schema.complaintComments.isInternalNote,
         createdAt: schema.complaintComments.createdAt,
         authorName: schema.user.name,
+        authorImage: schema.user.image,
       })
       .from(schema.complaintComments)
       .leftJoin(schema.user, eq(schema.complaintComments.authorId, schema.user.id))
@@ -336,6 +354,7 @@ export class ComplaintsService {
       comments: commentsRows.map((c) => ({
         id: c.id,
         authorName: c.authorName ?? 'Staff',
+        authorImage: c.authorImage ?? null,
         message: c.message,
         createdAt: c.createdAt,
         isInternalNote: c.isInternalNote,
@@ -461,7 +480,18 @@ export class ComplaintsService {
     complaintId: number,
     dto: AddCommentDto,
     user: AuthenticatedUser,
-  ): Promise<{ id: number; message: string; createdAt: Date }> {
+  ): Promise<{
+    id: number;
+    message: string;
+    authorName: string;
+    authorImage: string | null;
+    createdAt: Date;
+  }> {
+    const text = (dto.message || dto.content || '').trim();
+    if (!text) {
+      throw new BadRequestException('Comment message cannot be empty');
+    }
+
     // Check complaint access
     const complaint = await this.findById(complaintId, user);
 
@@ -474,13 +504,15 @@ export class ComplaintsService {
     const [res] = await this.db.insert(schema.complaintComments).values({
       complaintId: complaint.id,
       authorId: user.id,
-      message: dto.message,
+      message: text,
       isInternalNote,
     });
 
     return {
       id: res.insertId,
-      message: dto.message,
+      message: text,
+      authorName: user.name,
+      authorImage: user.image ?? null,
       createdAt: new Date(),
     };
   }

@@ -13,7 +13,7 @@ describe('ComplaintsController', () => {
     emailVerified: true,
     image: null,
     role: 'student',
-    studentId: 'KCKU-2024-007',
+    studentId: 'BU-2024-007',
     department: 'CSE',
     createdAt: new Date(),
     updatedAt: new Date(),

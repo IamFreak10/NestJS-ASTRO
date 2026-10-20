@@ -1,4 +1,5 @@
 # 🏛️ CampusFix — Architectural Plan & System Design
+
 **Institution:** Kauwar Chor Kindergarten University (KCKU)  
 **System:** Fullstack Campus Complaint, Grievance & Student Welfare Resolution Portal  
 **Backend:** NestJS 12 (REST API, Simplified Architecture)  
@@ -145,19 +146,19 @@ flowchart TD
     subgraph StudentFlow ["🎓 1. Student Portal Flow"]
         Start(["Student Enters CampusFix"]) --> Browse["Browse Campus Notice Board<br/>(Filter by Category / Search)"]
         Browse --> CheckIssue{"Is the issue already reported?"}
-        
+
         CheckIssue -- "Yes (Common Issue)" --> Upvote["Click '👍 Me Too (+1)'<br/>Increases urgency counter on Public Board"]
         CheckIssue -- "No (New Issue)" --> SelectType{"Select Complaint Type"}
-        
+
         SelectType -- "📢 Public Issue<br/>(Facilities, Mess, Bus, Exams)" --> PubForm["Fill Public Ticket Form<br/>• Title & Description<br/>• Category Selection<br/>• Optional Anonymous Toggle"]
         SelectType -- "🔒 Confidential Report<br/>(Ragging, Bullying, Safety, Harassment)" --> PrivForm["Fill Sealed Grievance Form<br/>• Auto-Sealed from Public Board<br/>• Anonymous Identity Masking<br/>• Routed Only to Proctorial Body"]
-        
+
         PubForm --> Submit["Submit to NestJS Backend"]
         PrivForm --> Submit
     end
 
     %% Backend Triage & Security
-    subgraph BackendTriage ["🛡️ 2. Security Filter & Triage (KCKU Proctor Office)"]
+    subgraph BackendTriage ["🛡️ 2. Security Filter & Triage (BUProctor Office)"]
         Submit --> PrivacyCheck{"Privacy & Identity Gate"}
         PrivacyCheck -- "Anonymous = True" --> Mask["Strip Name & Student ID<br/>(Author Identity Sealed in Encrypted DB)"]
         PrivacyCheck -- "Standard" --> Routing["Route to Department Triage Queue"]
@@ -197,11 +198,10 @@ flowchart TD
 
 ## 5. 📅 Phased Implementation Plan & Status
 
-| Phase | Module | Status | Deliverables |
-| :--- | :--- | :---: | :--- |
-| **Phase 1** | **Multi-Folder Drizzle Schema** | ✅ **COMPLETED** | Multi-file schema (`auth`, `complaints`, `upvotes`, `comments`), migration generated & executed on MySQL `nest_db`. |
-| **Phase 2** | **Better Auth & NestJS Auth Integration** | ✅ **COMPLETED** | Better Auth 1.7.11 with Drizzle MySQL adapter, sliding session cookies, Bearer support, simplified `AuthGuard`, `RolesGuard`, `OptionalAuthGuard`, `@CurrentUser()`, 34/34 passing tests. |
-| **Phase 3** | **Complaints API Expansion** | ✅ **COMPLETED** | Public notice board (`GET /api/complaints/public`), confidential grievances (`GET /api/complaints/my`), anonymous identity masking, "Me Too (+1)" upvote toggle, staff timeline notes, 48/48 tests passing. |
-| **Phase 4** | **Astro Y2K Retro Frontend** | ✅ **COMPLETED** | Multi-page pure Astro 5 app (`/`, `/my-complaints`, `/architecture`), retro Y2K Navbar, Footer, Category tabs, anonymous complaint dialog, Better Auth modal, live upvote counter. |
-| **Phase 5** | **Testing & Quality Gates** | ✅ **COMPLETED** | 48/48 Vitest tests passing, 0 oxlint warnings/errors across 46 files, monorepo build verified (sub-25ms Astro static rendering). |
-
+| Phase       | Module                                    |      Status      | Deliverables                                                                                                                                                                                                |
+| :---------- | :---------------------------------------- | :--------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Phase 1** | **Multi-Folder Drizzle Schema**           | ✅ **COMPLETED** | Multi-file schema (`auth`, `complaints`, `upvotes`, `comments`), migration generated & executed on MySQL `nest_db`.                                                                                         |
+| **Phase 2** | **Better Auth & NestJS Auth Integration** | ✅ **COMPLETED** | Better Auth 1.7.11 with Drizzle MySQL adapter, sliding session cookies, Bearer support, simplified `AuthGuard`, `RolesGuard`, `OptionalAuthGuard`, `@CurrentUser()`, 34/34 passing tests.                   |
+| **Phase 3** | **Complaints API Expansion**              | ✅ **COMPLETED** | Public notice board (`GET /api/complaints/public`), confidential grievances (`GET /api/complaints/my`), anonymous identity masking, "Me Too (+1)" upvote toggle, staff timeline notes, 48/48 tests passing. |
+| **Phase 4** | **Astro Y2K Retro Frontend**              | ✅ **COMPLETED** | Multi-page pure Astro 5 app (`/`, `/my-complaints`, `/architecture`), retro Y2K Navbar, Footer, Category tabs, anonymous complaint dialog, Better Auth modal, live upvote counter.                          |
+| **Phase 5** | **Testing & Quality Gates**               | ✅ **COMPLETED** | 48/48 Vitest tests passing, 0 oxlint warnings/errors across 46 files, monorepo build verified (sub-25ms Astro static rendering).                                                                            |

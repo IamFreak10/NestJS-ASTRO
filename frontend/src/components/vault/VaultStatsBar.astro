@@ -1,0 +1,76 @@
+---
+/**
+ * VaultStatsBar.astro
+ * 4-Column Metric Counters for Lodged Reports
+ */
+---
+
+<div id="vaultStatsBar" class="vault-stats-row hidden">
+  <div class="vault-stat-card">
+    <span class="vault-stat-num" id="statTotalCount">0</span>
+    <span class="vault-stat-lbl" data-i18n="vault.totalFiled">Total Lodged</span>
+  </div>
+  <div class="vault-stat-card stat-pending">
+    <span class="vault-stat-num" id="statPendingCount">0</span>
+    <span class="vault-stat-lbl" data-i18n="vault.inProgress">In Progress / Review</span>
+  </div>
+  <div class="vault-stat-card stat-resolved">
+    <span class="vault-stat-num" id="statResolvedCount">0</span>
+    <span class="vault-stat-lbl" data-i18n="vault.resolved">Verified Resolved</span>
+  </div>
+  <div class="vault-stat-card stat-confidential">
+    <span class="vault-stat-num" id="statConfidentialCount">0</span>
+    <span class="vault-stat-lbl" data-i18n="vault.confidential">Confidential Vault</span>
+  </div>
+</div>
+
+<style>
+  .vault-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .vault-stat-card {
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-black);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 0.75rem;
+    box-shadow: var(--shadow-neo-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease;
+  }
+  .vault-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-neo);
+  }
+  .vault-stat-num {
+    font-size: 1.85rem;
+    font-weight: 900;
+    line-height: 1;
+    font-feature-settings: "tnum";
+    color: var(--border-black);
+  }
+  .vault-stat-lbl {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    text-align: center;
+  }
+  .stat-pending .vault-stat-num { color: #b45309; }
+  .stat-resolved .vault-stat-num { color: #047857; }
+  .stat-confidential .vault-stat-num { color: #6b21a8; }
+
+  @media (max-width: 768px) {
+    .vault-stats-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+    }
+  }
+</style>
+

@@ -15,7 +15,7 @@ describe('AuthService', () => {
     emailVerified: true,
     image: null,
     role: 'student',
-    studentId: 'KCKU-2026-001',
+    studentId: 'BU-2026-001',
     department: 'CSE',
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,17 +1,22 @@
 -- ==============================================================================
--- 🏛️ Kauwar Chor Kindergarten University (KCKU) — CampusFix Initial Database Seed
+-- 🏛️ University of Barishal (বরিশাল বিশ্ববিদ্যালয় / BU) — CampusFix Initial Database Seed
 -- Idempotent SQL Seed Script for local MySQL & cPanel Shared Hosting (phpMyAdmin)
 -- ==============================================================================
 
 -- 1. Insert Core Users (Admin, Staff, Students)
-INSERT IGNORE INTO `user` (`id`, `name`, `email`, `email_verified`, `role`, `student_id`, `department`, `created_at`, `updated_at`)
+INSERT INTO `user` (`id`, `name`, `email`, `email_verified`, `image`, `role`, `student_id`, `department`, `created_at`, `updated_at`)
 VALUES
-  ('usr_admin_proctor', 'Dr. Rafiqul Islam (Chief Proctor)', 'proctor@kcku.edu', 1, 'admin', NULL, 'Proctor Office & Student Welfare', NOW(), NOW()),
-  ('usr_staff_tech', 'Kamal Uddin (Senior Maintenance Tech)', 'technician@kcku.edu', 1, 'staff', NULL, 'Campus Electrical & Plumbing Cell', NOW(), NOW()),
-  ('usr_staff_transport', 'Jashim Uddin (Transport Dispatcher)', 'transport@kcku.edu', 1, 'staff', NULL, 'University Bus Directorate', NOW(), NOW()),
-  ('usr_student_tanvir', 'Tanvir Hossain', 'student@kcku.edu', 1, 'student', 'KCKU-2023-0101', 'Computer Science & Engineering', NOW(), NOW()),
-  ('usr_student_anika', 'Anika Rahman', 'anika@kcku.edu', 1, 'student', 'KCKU-2023-0205', 'Business Administration', NOW(), NOW()),
-  ('usr_student_mahmud', 'Mahmudul Hasan', 'mahmud@kcku.edu', 1, 'student', 'KCKU-2024-0312', 'Electrical & Electronic Engineering', NOW(), NOW());
+  ('usr_admin_proctor', 'Dr. Rafiqul Islam (Chief Proctor)', 'proctor@kcku.edu', 1, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&h=256&q=80', 'admin', NULL, 'Proctor Office & Student Welfare', NOW(), NOW()),
+  ('usr_staff_tech', 'Kamal Uddin (Senior Maintenance Tech)', 'technician@kcku.edu', 1, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&h=256&q=80', 'staff', NULL, 'Campus Electrical & Plumbing Cell', NOW(), NOW()),
+  ('usr_staff_transport', 'Jashim Uddin (Transport Dispatcher)', 'transport@kcku.edu', 1, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&h=256&q=80', 'staff', NULL, 'University Bus Directorate', NOW(), NOW()),
+  ('usr_student_tanvir', 'Tanvir Hossain', 'student@kcku.edu', 1, 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&h=256&q=80', 'student', 'BU-2023-0101', 'Computer Science & Engineering', NOW(), NOW()),
+  ('usr_student_anika', 'Anika Rahman', 'anika@kcku.edu', 1, 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&h=256&q=80', 'student', 'BU-2023-0205', 'Business Administration', NOW(), NOW()),
+  ('usr_student_mahmud', 'Mahmudul Hasan', 'mahmud@kcku.edu', 1, 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&h=256&q=80', 'student', 'BU-2024-0312', 'Electrical & Electronic Engineering', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `image` = VALUES(`image`),
+  `name` = VALUES(`name`),
+  `department` = VALUES(`department`),
+  `updated_at` = NOW();
 
 -- 2. Insert Credentials Accounts (Better Auth Scrypt Hashes)
 -- Passwords:
@@ -40,7 +45,7 @@ VALUES
   (101, 'usr_student_tanvir', '🏢 Hall 3 (South Wing) 4th Floor Water Filter Leaking & Low Pressure', 'The central drinking water purifier on the 4th floor has been leaking continuously since Tuesday morning. Low water pressure is forcing 120+ residents to carry buckets down to the 2nd floor.', 'facilities', 'public', 0, 'urgent', 'in_progress', 'usr_staff_tech', NULL, 47, NULL, DATE_SUB(NOW(), INTERVAL 5 HOUR), NOW()),
   (102, 'usr_student_anika', '🛏️ Central Canteen Lunch Hygiene & Cold Food Complaint', 'Several resident students reported undercooked chicken and cold rice served during lunch on Monday. Water cups on dining tables were not properly sanitized. Requesting urgent food safety inspection.', 'hostel_canteen', 'public', 1, 'high', 'under_review', 'usr_admin_proctor', NULL, 89, NULL, DATE_SUB(NOW(), INTERVAL 14 HOUR), NOW()),
   (103, 'usr_student_anika', '🚌 Route 4 Campus Bus Overcrowding & Morning Delay (8:15 AM)', 'Route 4 bus from Chawkbazar to campus arrives 25 minutes late consistently, causing students to miss 9:00 AM lab attendance. The bus is dangerously overloaded with students standing on footboards.', 'transport', 'public', 0, 'medium', 'resolved', 'usr_staff_transport', 'Transport Directorate dispatched Bus #14 as an additional backup shuttle at 8:20 AM. Bus route schedule adjusted and driver counselled.', 63, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY)),
-  (104, 'usr_student_mahmud', '📚 Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently', 'The access point "KCKU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.', 'academics', 'public', 0, 'medium', 'in_progress', 'usr_staff_tech', NULL, 38, NULL, DATE_SUB(NOW(), INTERVAL 18 HOUR), NOW()),
+  (104, 'usr_student_mahmud', '📚 Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently', 'The access point "BU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.', 'academics', 'public', 0, 'medium', 'in_progress', 'usr_staff_tech', NULL, 38, NULL, DATE_SUB(NOW(), INTERVAL 18 HOUR), NOW()),
   (105, 'usr_student_tanvir', '🛡️ Streetlight Outage & Ragging Patrol Request at North Boundary Gate', 'Two high-pressure sodium street lamps near the botanical garden walkway have been dead for a week. Freshers reported intimidation attempts around 9:30 PM. Urgent mobile proctor patrol needed.', 'safety_bullying', 'public', 1, 'urgent', 'resolved', 'usr_admin_proctor', 'Proctorial Mobile Patrol Post #2 stationed at North Gate from 8:00 PM to 1:00 AM daily. Electrical maintenance installed two new 100W LED floodlights on Oct 19.', 114, DATE_SUB(NOW(), INTERVAL 12 HOUR), DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 12 HOUR)),
   (106, 'usr_student_mahmud', '📑 Semester 5 Grade Sheet Discrepancy Correction Desk Delay', 'The exam controller office counter #3 is only open for 45 minutes a day, creating an unruly queue of 80+ students trying to resolve course credit mismatches before registration deadline.', 'administration', 'public', 0, 'low', 'submitted', NULL, NULL, 29, NULL, DATE_SUB(NOW(), INTERVAL 8 HOUR), NOW()),
   (107, 'usr_student_tanvir', '🔒 Confidential Whistleblower: Late Night Dorm Intimidation in Hall 2 Room 314', 'Non-resident senior students entered Room 314 at 1:30 AM demanding juniors to perform menial tasks. Requesting confidential proctorial inspection without revealing complainant details.', 'safety_bullying', 'private', 1, 'urgent', 'under_review', 'usr_admin_proctor', NULL, 0, NULL, DATE_SUB(NOW(), INTERVAL 4 HOUR), NOW());

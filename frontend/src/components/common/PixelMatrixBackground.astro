@@ -1,0 +1,90 @@
+---
+// Zero client-side JavaScript — rendered 100% at build time into pure HTML+CSS.
+// Hardware-accelerated GPU opacity transitions for 120 FPS buttery-smooth soothing trails.
+const TOTAL_CELLS = 2400;
+---
+
+<div class="pixel-matrix-canvas" aria-hidden="true">
+  {Array.from({ length: TOTAL_CELLS }).map(() => (
+    <div class="pixel-cell" />
+  ))}
+</div>
+
+<style>
+  .pixel-matrix-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: grid;
+    /* Aligns 1:1 with body background-size: 40px 40px */
+    grid-template-columns: repeat(auto-fill, 40px);
+    grid-auto-rows: 40px;
+    gap: 0px;
+    padding: 0px;
+    margin: 0px;
+    pointer-events: none;
+    overflow: hidden;
+    user-select: none;
+    box-sizing: border-box;
+    cursor: default !important;
+  }
+
+  .pixel-cell {
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    pointer-events: auto;
+    cursor: default !important;
+    border-radius: 3px;
+    border: 1px solid rgba(24, 24, 27, 0.12);
+    /* GPU-accelerated opacity: 0 main-thread layout or repaint overhead */
+    opacity: 0;
+    transform: translateZ(0);
+    will-change: opacity;
+    /* Gentle, soothing, responsive decay (0.65s sweet spot: fluid & never sluggish) */
+    transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Silky, responsive fade-in on cursor touch (60ms micro-interpolation) */
+  .pixel-cell:hover {
+    cursor: default !important;
+    opacity: 0.92;
+    transition: opacity 0.06s ease-out !important;
+  }
+
+  /* Soothing GitHub Contribution Palette */
+  .pixel-cell:nth-child(6n + 1) {
+    background-color: #39d353;
+    border-color: #26a641;
+  }
+  .pixel-cell:nth-child(6n + 2) {
+    background-color: #26a641;
+    border-color: #216e39;
+  }
+  .pixel-cell:nth-child(6n + 3) {
+    background-color: #40c463;
+    border-color: #30a14e;
+  }
+  .pixel-cell:nth-child(6n + 4) {
+    background-color: #7ee787;
+    border-color: #40c463;
+  }
+  .pixel-cell:nth-child(6n + 5) {
+    background-color: #2ea043;
+    border-color: #238636;
+  }
+  .pixel-cell:nth-child(6n) {
+    background-color: #56d364;
+    border-color: #2ea043;
+  }
+
+  /* Accessibility & reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .pixel-cell {
+      transition: none !important;
+    }
+  }
+</style>
+

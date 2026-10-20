@@ -13,27 +13,42 @@
 
 ---
 
-## 📸 UI/UX Showcase & Design System
+## 📸 Live UI/UX Showcase (Captured via Playwright)
 
-CampusFix is crafted with a signature **Y2K Retro Neobrutalist design system**, blending tactile retro OS window chrome, pastel accent highlights, 1.5px/2px high-contrast solid borders, and hard-edge drop shadows with hyper-fast **zero-JavaScript** server-rendered HTML.
+CampusFix is crafted with an authentic **Y2K Retro Neobrutalist aesthetic**, combining tactile retro OS window chrome, pastel accent highlights, 1.5px/2px high-contrast solid borders, and 2px hard-edge drop shadows with lightning-fast **zero-JavaScript** server-rendered HTML.
 
 ### 1. Live Public Notice Wall & Hero Radar
-*Features category navigation pills, live "+1 Me Too" peer-endorsement upvote counters, verified author avatar badges, and anonymous whistleblower privacy masking.*
+*Features category navigation pills, live "+1 Me Too" peer-endorsement upvote counters, verified author avatar badges, and anonymous whistleblower privacy masking on a pure CSS interactive grid.*
 
-![CampusFix Public Notice Wall](docs/screenshots/hero-feed-preview.png)
+![CampusFix Public Notice Wall](docs/screenshots/01-home-feed.png)
 
-### 2. Real-Time Ticket Timeline Inspector
-*Native browser `<dialog>` retro window inspector featuring a 4-stage visual lifecycle stepper (Submitted → Triage → Repair → Resolved), technician dispatch logs, and a community discussion feed with inline edit (✏️) and delete (🗑️) controls.*
+---
 
-![Timeline Inspector Modal](docs/screenshots/timeline-inspector-modal.png)
+### 2. Real-Time Ticket Timeline Inspector Modal
+*Native browser `<dialog>` retro window inspector featuring a 4-stage visual progress lifecycle (Submitted → Triage → Repair → Resolved), verified proctor resolution notes, maintenance technician logs, and a community discussion feed with inline edit (✏️) and delete (🗑️) controls.*
 
-### 3. Y2K Neobrutalist Component System
-*Tactile card windows, high-contrast badges, custom status stamps, and pixel-aligned retro buttons.*
+![Timeline Inspector Modal](docs/screenshots/02-timeline-inspector.png)
 
-<p align="center">
-  <img src="docs/screenshots/retro-ui-design-system.png" width="48%" alt="Retro UI System" />
-  <img src="docs/screenshots/retro-cards-reference.png" width="48%" alt="Component Architecture" />
-</p>
+---
+
+### 3. Student Grievance Vault (`/my-complaints`)
+*Confidential personal dashboard for students to track both public grievances and sealed whistleblower reports with real-time status metric counters, confidential privacy badges, and filter bars.*
+
+![Student Grievance Vault](docs/screenshots/03-my-complaints-vault.png)
+
+---
+
+### 4. Real-Time Ticket Radar Scanner (`/track`)
+*Instant grievance scanner allowing students and faculty to track any ticket ID with test chips, live radar sweep animations, verified technician certificates, and timeline logs.*
+
+![Ticket Radar Scanner](docs/screenshots/04-ticket-radar-dossier.png)
+
+---
+
+### 5. Interactive Architecture & ERD Viewer (`/architecture`)
+*Built-in system architecture blueprint viewer displaying live database schema relationships, multi-folder Drizzle definitions, security trust boundaries, and privacy gate specifications.*
+
+![System Architecture Blueprint](docs/screenshots/05-architecture-blueprint.png)
 
 ---
 
@@ -42,7 +57,7 @@ CampusFix is crafted with a signature **Y2K Retro Neobrutalist design system**, 
 - **Pure CSS Interactive Grid:** An ultra-lightweight, 100% GPU-accelerated interactive matrix background that responds smoothly to pointer movements without a single line of client-side JavaScript.
 - **Zero-JS Runtime Overhead:** Built on Astro 5 static and server-rendered architecture — delivering sub-20ms first-contentful-paint (FCP) and optimal accessibility.
 - **Browser-Native Modal System:** Clean, hardware-accelerated modals using HTML5 `<dialog>` and `.showModal()`, preventing bloated third-party JavaScript libraries.
-- **Bi-Directional Localization (i18n):** Native support for both English and Bengali (বাংলা), including numeral conversion (`123` ⇄ `১২৩`) and localized time formatting.
+- **Bi-Directional Localization (i18n):** Native support for both English and Bengali (বাংলা), including numeral conversion (`123` ⇄ `১২৩`) and localized date/time formatting.
 - **Student Profile Avatars & Fallbacks:** High-resolution avatars with initial-letter badges and dedicated privacy silhouettes for whistleblowers.
 
 ---
@@ -88,7 +103,8 @@ nestjs-astro/
 │   │   └── types/                 # TypeScript API contracts
 │   └── package.json               # Astro dependencies
 │
-├── docs/                          # Screenshots, diagrams, and assets
+├── docs/screenshots/             # 📸 High-resolution live Playwright captures
+├── scripts/                       # Automation scripts (capture_screenshots.js)
 ├── templates/                     # Code review, feature planning, and deployment templates
 ├── ARCHITECTURE.md                # In-depth architectural specifications & Mermaid ERD
 ├── package.json                   # Monorepo root orchestration scripts

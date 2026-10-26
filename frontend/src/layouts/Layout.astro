@@ -73,6 +73,15 @@ const {
       const API_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
       let currentActiveTicketId: number | null = null;
 
+      function getAuthHeaders(extraHeaders: Record<string, string> = {}): Record<string, string> {
+        const token = localStorage.getItem('campusfix_auth_token');
+        const headers: Record<string, string> = { ...extraHeaders };
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
+      }
+
       // Toast Notification Helper
       function showToast(msg: string, isError = false) {
         const toast = document.getElementById('toast');
@@ -142,7 +151,10 @@ const {
 
         // 2. Fetch live session from NestJS Better Auth backend
         try {
-          const res = await fetch(`${API_URL}/auth/get-session`, { credentials: 'include' });
+          const res = await fetch(`${API_URL}/auth/get-session`, {
+            headers: getAuthHeaders(),
+            credentials: 'include',
+          });
           if (res.ok) {
             const data = await res.json();
             const user = data?.user;
@@ -188,8 +200,13 @@ const {
         if (isLogged) {
           if (confirm('Do you want to log out of CampusFix?')) {
             localStorage.removeItem('campusfix_mock_user');
+            localStorage.removeItem('campusfix_auth_token');
             try {
-              await fetch(`${API_URL}/auth/sign-out`, { method: 'POST', credentials: 'include' });
+              await fetch(`${API_URL}/auth/sign-out`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                credentials: 'include',
+              });
             } catch {}
             showToast('Logged out successfully');
             setTimeout(() => window.location.reload(), 500);
@@ -272,6 +289,11 @@ const {
               }
             }
             throw new Error(errorMsg);
+          }
+
+          const loginJson = await res.json().catch(() => ({}));
+          if (loginJson?.token) {
+            localStorage.setItem('campusfix_auth_token', loginJson.token);
           }
 
           localStorage.removeItem('campusfix_mock_user');
@@ -427,6 +449,11 @@ const {
             throw new Error(errorMsg);
           }
 
+          const regJson = await res.json().catch(() => ({}));
+          if (regJson?.token) {
+            localStorage.setItem('campusfix_auth_token', regJson.token);
+          }
+
           showToast('Account created! Logged in as student');
           authModal?.close();
           setTimeout(() => window.location.reload(), 600);
@@ -451,7 +478,7 @@ const {
         try {
           const res = await fetch(`${API_URL}/complaints`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
             credentials: 'include',
             body: JSON.stringify({
               title,
@@ -495,6 +522,7 @@ const {
         try {
           const res = await fetch(`${API_URL}/complaints/${complaintId}/upvote`, {
             method: 'POST',
+            headers: getAuthHeaders(),
             credentials: 'include',
           });
 
@@ -795,7 +823,7 @@ const {
         try {
           const res = await fetch(`${API_URL}/complaints/${currentActiveTicketId}/comments`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
             credentials: 'include',
             body: JSON.stringify({
               message: input.value.trim(),

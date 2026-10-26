@@ -10,11 +10,6 @@ export default defineConfig({
     build: {
       cssMinify: true,
       minify: 'esbuild',
-      rollupOptions: {
-        output: {
-          compact: true,
-        },
-      },
     },
     esbuild: {
       legalComments: 'none',

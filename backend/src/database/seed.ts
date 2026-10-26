@@ -16,6 +16,10 @@ async function seed() {
     database: process.env.DB_NAME || 'nest_db',
     waitForConnections: true,
     connectionLimit: 5,
+    ssl:
+      process.env.DB_SSL === 'true'
+        ? { rejectUnauthorized: false }
+        : undefined,
   });
 
   const db = drizzle(pool, { schema, mode: 'default' });

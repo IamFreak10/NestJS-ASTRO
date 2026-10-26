@@ -1,5 +1,5 @@
 /**
- * ⚡ Ultra-Lightweight, Zero-Dependency i18n Translation Engine
+ * Ultra-Lightweight, Zero-Dependency i18n Translation Engine
  * University of Barishal (বরিশাল বিশ্ববিদ্যালয়)
  * Uses O(1) tuple dictionary hashing for <0.5ms zero-overhead switching.
  */
@@ -49,16 +49,16 @@ const DICTIONARY: Record<string, [string, string]> = {
   'brand.title': ['CAMPUSFIX', 'ক্যাম্পাসফিক্স'],
   'brand.uni': ['UNIVERSITY OF BARISHAL', 'বরিশাল বিশ্ববিদ্যালয়'],
   'brand.osBadge': ['v2.0 OS', 'সংস্করণ ২.০'],
-  'brand.drawerTitle': ['📱 BU_NAVIGATION_MENU.SYS', '📱 বিইউ_নেভিগেশন_মেনু.সিস্টেম'],
-  'brand.sosHotlineLabel': ['🚨 SOS HOTLINE:', '🚨 জরুরি হটলাইন:'],
+  'brand.drawerTitle': ['BU_NAVIGATION_MENU.SYS', 'বিইউ_নেভিগেশন_মেনু.সিস্টেম'],
+  'brand.sosHotlineLabel': ['SOS HOTLINE:', 'জরুরি হটলাইন:'],
 
   // Navigation
-  'nav.publicFeed': ['📢 Public Feed', '📢 উন্মুক্ত ফিড'],
-  'nav.myComplaints': ['🔒 My Grievances', '🔒 আমার অভিযোগসমূহ'],
-  'nav.trackId': ['🔎 Track ID', '🔎 ট্র্যাক করুন'],
-  'nav.emergency': ['🚨 Emergency', '🚨 জরুরি সেবা'],
-  'nav.blueprint': ['🗺️ Blueprint', '🗺️ ব্লুপ্রিন্ট'],
-  'nav.fileTicketBtn': ['✉️ + FILE TICKET', '✉️ + অভিযোগ দাখিল'],
+  'nav.publicFeed': ['Public Feed', 'উন্মুক্ত ফিড'],
+  'nav.myComplaints': ['My Grievances', 'আমার অভিযোগসমূহ'],
+  'nav.trackId': ['Track ID', 'ট্র্যাক করুন'],
+  'nav.emergency': ['Emergency', 'জরুরি সেবা'],
+  'nav.blueprint': ['Blueprint', 'ব্লুপ্রিন্ট'],
+  'nav.fileTicketBtn': ['+ FILE TICKET', '+ অভিযোগ দাখিল'],
   'nav.loginBtn': ['LOGIN', 'লগইন'],
   'nav.logoutBtn': ['LOGOUT', 'লগআউট'],
 
@@ -73,28 +73,28 @@ const DICTIONARY: Record<string, [string, string]> = {
     'The official real-time complaint and grievance redressal system of the <strong>University of Barishal</strong>. File classroom maintenance, hostel mess hygiene, campus bus delays, or confidential anti-ragging reports with cryptographic anonymity.',
     '<strong>বরিশাল বিশ্ববিদ্যালয়ের</strong> দাপ্তরিক রিয়েল-টাইম অভিযোগ ও সমস্যা সমাধান পোর্টাল। ক্লাসরুমের বৈদ্যুতিক ত্রুটি, হল ডাইনিংয়ের খাবারের মান, পরিবহন বাসের শিডিউল বা গোপনীয় অ্যান্টি-র‍্যাগিং অভিযোগ দাখিল করুন শতভাগ নিরাপত্তার সাথে।',
   ],
-  'hero.fileBtn': ['✉️ + FILE A COMPLAINT', '✉️ + নতুন অভিযোগ দাখিল'],
-  'hero.trackBtn': ['🔎 TRACK TICKET BY ID', '🔎 অভিযোগ ট্র্যাক করুন'],
-  'hero.emergencyBtn': ['🚨 Emergency Hotlines', '🚨 জরুরি হেল্পলাইন'],
+  'hero.fileBtn': ['+ FILE A COMPLAINT', '+ নতুন অভিযোগ দাখিল'],
+  'hero.trackBtn': ['TRACK TICKET BY ID', 'অভিযোগ ট্র্যাক করুন'],
+  'hero.emergencyBtn': ['Emergency Hotlines', 'জরুরি হেল্পলাইন'],
 
   // Feed & Filters
   'feed.searchPlaceholder': ['Search complaints by keyword, room, or issue...', 'শিরোনাম, স্থান, হল বা সমস্যা দিয়ে অনুসন্ধান করুন...'],
   'feed.filterTitle': ['CAMPUS SECTOR FILTERS', 'ক্যাম্পাস বিভাগসমূহ'],
 
   // Categories
-  'categories.all': ['All Sectors 📋', 'সকল বিভাগ 📋'],
-  'categories.facilities': ['Facilities 🏢', 'অবকাঠামো ও ল্যাব 🏢'],
-  'categories.hostel_canteen': ['Hostel & Mess 🛏️', 'হল ও ডাইনিং 🛏️'],
-  'categories.transport': ['Transport 🚌', 'বাস ও পরিবহন 🚌'],
-  'categories.academics': ['Academics 📚', 'শিক্ষা ও পরীক্ষা 📚'],
-  'categories.safety_bullying': ['Safety & Ragging 🛡️', 'অ্যান্টি-র‍্যাগিং 🛡️'],
-  'categories.administration': ['Admin 📑', 'প্রশাসনিক দপ্তর 📑'],
+  'categories.all': ['All Sectors', 'সকল বিভাগ'],
+  'categories.facilities': ['Facilities', 'অবকাঠামো ও ল্যাব'],
+  'categories.hostel_canteen': ['Hostel & Mess', 'হল ও ডাইনিং'],
+  'categories.transport': ['Transport', 'বাস ও পরিবহন'],
+  'categories.academics': ['Academics', 'শিক্ষা ও পরীক্ষা'],
+  'categories.safety_bullying': ['Safety & Ragging', 'অ্যান্টি-র‍্যাগিং'],
+  'categories.administration': ['Admin', 'প্রশাসনিক দপ্তর'],
 
   // Cards
   'card.upvoteBtn': ['+1 Me Too', '+১ আমিও ভুক্তভোগী'],
-  'card.upvotedBtn': ['Upvoted ✔', 'সমর্থন দিয়েছেন ✔'],
-  'card.anonymousAuthor': ['Anonymous Student 🕶️', 'বেনামি শিক্ষার্থী 🕶️'],
-  'card.viewDetails': ['🔍 Timeline', '🔍 অগ্রগতি ও টাইমলাইন'],
+  'card.upvotedBtn': ['Upvoted', 'সমর্থন দিয়েছেন'],
+  'card.anonymousAuthor': ['Anonymous Student', 'বেনামি শিক্ষার্থী'],
+  'card.viewDetails': ['Timeline', 'অগ্রগতি ও টাইমলাইন'],
   'card.close': ['Close Window', 'উইন্ডো বন্ধ করুন'],
 
   // Vault
@@ -117,10 +117,10 @@ const DICTIONARY: Record<string, [string, string]> = {
     'Your personal grievance vault contains confidential submissions protected by university privacy standards. Sign in with your university account to inspect ticket progression and proctorial notes.',
     'ব্যক্তিগত অভিযোগের অবস্থা এবং গোপনীয় রিপোর্ট দেখতে বরিশাল বিশ্ববিদ্যালয়ের একাউন্ট দিয়ে লগইন করুন।',
   ],
-  'vault.signInBtn': ['SIGN IN WITH STUDENT ID', '🔑 শিক্ষার্থী আইডি দিয়ে লগইন করুন'],
+  'vault.signInBtn': ['SIGN IN WITH STUDENT ID', 'শিক্ষার্থী আইডি দিয়ে লগইন করুন'],
 
   // How It Works
-  'howItWorks.badge': ['⚡ FAST & TRANSPARENT', '⚡ দ্রুত ও স্বচ্ছ ব্যবস্থা'],
+  'howItWorks.badge': ['FAST & TRANSPARENT', 'দ্রুত ও স্বচ্ছ ব্যবস্থা'],
   'howItWorks.title': ['Campus Redressal Pipeline', 'অভিযোগ সমাধান প্রক্রিয়া'],
   'howItWorks.subtitle': [
     'From initial submission to verified maintenance fix, every ticket follows a strict 4-step university protocol.',
@@ -148,48 +148,48 @@ const DICTIONARY: Record<string, [string, string]> = {
   ],
 
   // Track Page
-  'track.badge': ['⚡ INSTANT TICKET RADAR', '⚡ ইনস্ট্যান্ট টিকিট রাডার'],
+  'track.badge': ['INSTANT TICKET RADAR', 'ইনস্ট্যান্ট টিকিট রাডার'],
   'track.title': ['Track Complaint Progress', 'অভিযোগের অগ্রগতি পর্যবেক্ষণ'],
   'track.subtitle': [
     'Enter any complaint ticket number (or click a test ticket below) to inspect real-time maintenance dispatches, proctorial triage notes, and verified resolution sign-offs.',
     'রিয়েল-টাইম মেরামত অগ্রগতি, প্রক্টরিয়াল নোট এবং ভেরিফাইড সমাধানের সনদ দেখতে যে কোনো টিকিট নম্বর লিখুন।',
   ],
   'track.inputPlaceholder': ['Enter Ticket ID (e.g. 101, 103, 105)...', 'টিকিট নম্বর লিখুন (যেমন: ১০১, ১০৩, ১০৫)...'],
-  'track.scanBtn': ['🚀 SCAN TICKET STATUS', '🚀 টিকিট স্ট্যাটাস ট্র্যাক করুন'],
+  'track.scanBtn': ['SCAN TICKET STATUS', 'টিকিট স্ট্যাটাস ট্র্যাক করুন'],
   'track.scanningText': ['RADAR SCANNING UNIVERSITY OF BARISHAL DATABASE...', 'বরিশাল বিশ্ববিদ্যালয় ডাটাবেজ অনুসন্ধান করা হচ্ছে...'],
   'track.quickTicketsLabel': ['Quick Test Tickets:', 'দ্রুত পরীক্ষার টিকিট:'],
 
   // Emergency Page
-  'emergency.badge': ['🚨 24/7 RAPID TRIAGE', '🚨 ২৪/৭ জরুরি সেবা'],
+  'emergency.badge': ['24/7 RAPID TRIAGE', '২৪/৭ জরুরি সেবা'],
   'emergency.title': ['Emergency Hotlines & Student Welfare', 'জরুরি হেল্পলাইন ও ছাত্রকল্যাণ ডেস্ক'],
   'emergency.subtitle': [
     'Direct rapid-response telephone hotlines and confidential support desks across the University of Barishal. All safety reports receive immediate emergency dispatch.',
     'বরিশাল বিশ্ববিদ্যালয়ের সকল দ্রুত-সাড়া প্রদানকারী টেলিফোন হটলাইন ও গোপনীয় সহায়তা কেন্দ্র। সকল নিরাপত্তা রিপোর্টে তাৎক্ষণিক মোবাইল টিম পাঠানো হয়।',
   ],
-  'emergency.sosBannerTitle': ['⚠️ FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?', '⚠️ তাৎক্ষণিক নিরাপত্তা ঝুঁকি বা র‍্যাগিংয়ের মুখোমুখি?'],
+  'emergency.sosBannerTitle': ['FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?', 'তাৎক্ষণিক নিরাপত্তা ঝুঁকি বা র‍্যাগিংয়ের মুখোমুখি?'],
   'emergency.sosBannerDesc': [
     'Do not wait for standard ticket processing. Call the Proctorial Mobile Patrol immediately or file a Sealed Confidential Grievance.',
     'সাধারণ টিকিটের অপেক্ষা না করে অবিলম্বে প্রক্টরিয়াল মোবাইল টহল দলকে কল করুন অথবা গোপনীয় অভিযোগ দাখিল করুন।',
   ],
-  'emergency.sosHotlineBtn': ['📞 CALL SOS HOTLINE', '📞 সরাসরি কল: +৮৮০-১৭০০-BU-HELP'],
+  'emergency.sosHotlineBtn': ['CALL SOS HOTLINE', 'সরাসরি কল: +৮৮০-১৭০০-BU-HELP'],
 
   // Modals
-  'modals.createTitle': ['📝 FILE_CAMPUS_COMPLAINT.EXE', '📝 ক্যাম্পাসের নতুন অভিযোগ দাখিল'],
-  'modals.titleLabel': ['📌 Problem Title *', '📌 অভিযোগের শিরোনাম *'],
+  'modals.createTitle': ['FILE_CAMPUS_COMPLAINT.EXE', 'ক্যাম্পাসের নতুন অভিযোগ দাখিল'],
+  'modals.titleLabel': ['Problem Title *', 'অভিযোগের শিরোনাম *'],
   'modals.titlePlaceholder': ['e.g. AC not cooling in CSE Lab 4, Hall 2 WiFi down...', 'সংক্ষেপে সমস্যাটি লিখুন (যেমন: ৩ নং হলের ৪ তলার ওয়াটার ফিল্টার নষ্ট)...'],
-  'modals.categoryLabel': ['🏢 Category *', '🏢 সমস্যার বিভাগ নির্বাচন করুন *'],
-  'modals.priorityLabel': ['⚡ Urgency Level', '⚡ জরুরি মাত্রা / তীব্রতা'],
-  'modals.descLabel': ['📄 Detailed Description *', '📄 বিস্তারিত বিবরণ *'],
+  'modals.categoryLabel': ['Category *', 'সমস্যার বিভাগ নির্বাচন করুন *'],
+  'modals.priorityLabel': ['Urgency Level', 'জরুরি মাত্রা / তীব্রতা'],
+  'modals.descLabel': ['Detailed Description *', 'বিস্তারিত বিবরণ *'],
   'modals.descPlaceholder': ['Describe the exact location, symptoms, and how long this issue has persisted...', 'নির্দিষ্ট স্থান, সমস্যাটির ধরন এবং কতদিন ধরে সমস্যাটি চলছে তা বিস্তারিত লিখুন...'],
-  'modals.anonTitle': ['🛡️ Student Privacy & Anonymity Gate', '🛡️ শিক্ষার্থী গোপনীয়তা ও পরিচয় সুরক্ষা গেইট'],
-  'modals.anonLabel': ['Submit Anonymously 🕶️', 'বেনামে জমা দিন (পরিচয় গোপন রাখুন) 🕶️'],
+  'modals.anonTitle': ['Student Privacy & Anonymity Gate', 'শিক্ষার্থী গোপনীয়তা ও পরিচয় সুরক্ষা গেইট'],
+  'modals.anonLabel': ['Submit Anonymously', 'বেনামে জমা দিন (পরিচয় গোপন রাখুন)'],
   'modals.anonHint': ['Hides your name and student ID on the public campus board. Your identity remains protected.', 'পাবলিক বোর্ডে আপনার নাম এবং স্টুডেন্ট আইডি সম্পূর্ণ লুকানো থাকবে। আপনার পরিচয় গোপন রাখা হবে।'],
-  'modals.confidentialLabel': ['Seal in Confidential Proctor Vault 🔒', 'শুধুমাত্র প্রক্টর ভল্টে সিলগালা করুন 🔒'],
+  'modals.confidentialLabel': ['Seal in Confidential Proctor Vault', 'শুধুমাত্র প্রক্টর ভল্টে সিলগালা করুন'],
   'modals.confidentialHint': ['For sensitive issues (ragging, personal harassment, exam disputes). Sent directly to the Proctor Office; not visible on public feed.', 'সংবেদনশীল বিষয়ে (র‍্যাগিং, ব্যক্তিগত হয়রানি)। সাধারণ নোটিশ বোর্ডে প্রদর্শিত হবে না।'],
-  'modals.submitComplaintBtn': ['🚀 SUBMIT COMPLAINT', '🚀 অভিযোগ দাখিল করুন'],
+  'modals.submitComplaintBtn': ['SUBMIT COMPLAINT', 'অভিযোগ দাখিল করুন'],
   'modals.cancelBtn': ['Cancel', 'বাতিল'],
 
-  'modals.authTitle': ['🔑 BU_STUDENT_IDENTITY.SYS', '🔑 বিইউ_শিক্ষার্থী_পরিচয়.সিস্টেম'],
+  'modals.authTitle': ['BU_STUDENT_IDENTITY.SYS', 'বিইউ_শিক্ষার্থী_পরিচয়.সিস্টেম'],
   'modals.tabSignIn': ['Sign In (লগইন)', 'সাইন ইন (লগইন)'],
   'modals.tabRegister': ['Register (নতুন একাউন্ট)', 'রেজিস্ট্রেশন (নতুন একাউন্ট)'],
   'modals.emailLabel': ['University Email', 'বিশ্ববিদ্যালয় ইমেইল'],
@@ -197,13 +197,13 @@ const DICTIONARY: Record<string, [string, string]> = {
   'modals.fullNameLabel': ['Full Name', 'পূর্ণ নাম'],
   'modals.studentIdLabel': ['Student ID', 'স্টুডেন্ট আইডি'],
   'modals.departmentLabel': ['Department', 'বিভাগ (ডিপার্টমেন্ট)'],
-  'modals.signInActionBtn': ['🚀 LOGIN TO CAMPUSFIX', '🚀 পোর্টাল লগইন করুন'],
-  'modals.registerActionBtn': ['✨ CREATE STUDENT ACCOUNT', '✨ নতুন শিক্ষার্থী একাউন্ট তৈরি করুন'],
+  'modals.signInActionBtn': ['LOGIN TO CAMPUSFIX', 'পোর্টাল লগইন করুন'],
+  'modals.registerActionBtn': ['CREATE STUDENT ACCOUNT', 'নতুন শিক্ষার্থী একাউন্ট তৈরি করুন'],
 
-  'modals.detailTitle': ['🔍 TICKET_TIMELINE_INSPECTOR.SYS', '🔍 অভিযোগ ও সমাধান বিবরণী'],
-  'modals.discussionTitle': ['💬 Community & Department Discussion', '💬 শিক্ষার্থী আলোচনা ও প্রতিক্রিয়া'],
+  'modals.detailTitle': ['TICKET_TIMELINE_INSPECTOR.SYS', 'অভিযোগ ও সমাধান বিবরণী'],
+  'modals.discussionTitle': ['Community & Department Discussion', 'শিক্ষার্থী আলোচনা ও প্রতিক্রিয়া'],
   'modals.commentPlaceholder': ['Write a comment or follow-up note (requires login)...', 'আপনার মন্তব্য বা মতামত জানান...'],
-  'modals.postCommentBtn': ['💬 POST', '💬 মন্তব্য প্রকাশ করুন'],
+  'modals.postCommentBtn': ['POST', 'মন্তব্য প্রকাশ করুন'],
 
   // Footer
   'footer.portalTitle': ['CAMPUSFIX PORTAL', 'ক্যাম্পাসফিক্স পোর্টাল'],
@@ -211,8 +211,8 @@ const DICTIONARY: Record<string, [string, string]> = {
     'Official grievance and student welfare redressal system of the University of Barishal (বরিশাল বিশ্ববিদ্যালয়). Dedicated to protecting student rights, resolving facility outages, and enforcing zero-tolerance campus safety.',
     'বরিশাল বিশ্ববিদ্যালয়ের শিক্ষার্থী কল্যাণ ও অভিযোগ প্রতিকার ব্যবস্থা। শিক্ষার্থীদের অধিকার সুরক্ষা, দ্রুত মেরামত ও নিরাপদ ক্যাম্পাস প্রতিষ্ঠায় নিবেদিত।',
   ],
-  'footer.antiRaggingBadge': ['🛡️ ANTI-RAGGING CELL', '🛡️ অ্যান্টি-র‍্যাগিং সেল'],
-  'footer.astroBadge': ['⚡ ZERO-JS ASTRO 7', '⚡ অ্যাস্ট্রো ৭ ইঞ্জিন'],
+  'footer.antiRaggingBadge': ['ANTI-RAGGING CELL', 'অ্যান্টি-র‍্যাগিং সেল'],
+  'footer.astroBadge': ['ZERO-JS ASTRO 7', 'অ্যাস্ট্রো ৭ ইঞ্জিন'],
   'footer.navHeading': ['NAVIGATION', 'ওয়েবসাইট লিংক'],
   'footer.triageHeading': ['EMERGENCY TRIAGE', 'জরুরি যোগাযোগ'],
   'footer.specsHeading': ['SYSTEM SPECS', 'প্রযুক্তি কাঠামো'],
@@ -245,7 +245,7 @@ export const TRANSLATIONS = {
  */
 const STATUS_MAP: Record<string, [string, string]> = {
   progress: ['IN PROGRESS', 'কাজ চলমান'],
-  resolve: ['RESOLVED ✔', 'সমাধানকৃত ✔'],
+  resolve: ['RESOLVED', 'সমাধানকৃত'],
   review: ['IN REVIEW', 'পর্যালোচনাধীন'],
   dismiss: ['DISMISSED', 'বাতিলকৃত'],
   submitted: ['SUBMITTED', 'দাখিলকৃত'],
@@ -264,7 +264,7 @@ export function translateStatus(status: string, lang: SupportedLanguage): string
  * Priority translations
  */
 const PRIORITY_MAP: Record<string, [string, string]> = {
-  urgent: ['URGENT ⚡', 'সর্বোচ্চ অগ্রাধিকার ⚡'],
+  urgent: ['URGENT', 'সর্বোচ্চ অগ্রাধিকার'],
   high: ['HIGH', 'জরুরি'],
   low: ['LOW', 'সাধারণ'],
   medium: ['MEDIUM', 'মাঝারি'],

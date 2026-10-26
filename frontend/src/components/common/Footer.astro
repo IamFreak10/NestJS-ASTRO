@@ -1,4 +1,5 @@
 ---
+import { ICONS } from '../../lib/icons.js';
 ---
 
 <footer class="modern-footer">
@@ -17,8 +18,14 @@
           Official grievance and student welfare redressal system of the University of Barishal (বরিশাল বিশ্ববিদ্যালয়). Dedicated to protecting student rights, resolving facility outages, and enforcing zero-tolerance campus safety.
         </p>
         <div class="footer-badge-row">
-          <span class="retro-badge" style="background: var(--pastel-mint)" data-i18n="footer.antiRaggingBadge">🛡️ ANTI-RAGGING CELL</span>
-          <span class="retro-badge" style="background: var(--pastel-yellow)" data-i18n="footer.astroBadge">⚡ ZERO-JS ASTRO 7</span>
+          <span class="retro-badge" style="background: var(--pastel-mint)">
+            <span set:html={ICONS.shieldCheck}></span>
+            <span data-i18n="footer.antiRaggingBadge">ANTI-RAGGING CELL</span>
+          </span>
+          <span class="retro-badge" style="background: var(--pastel-yellow)">
+            <span set:html={ICONS.zap}></span>
+            <span data-i18n="footer.astroBadge">ZERO-JS ASTRO 7</span>
+          </span>
         </div>
       </div>
 
@@ -26,11 +33,36 @@
       <div class="footer-col">
         <h5 class="col-heading" data-i18n="footer.navHeading">NAVIGATION</h5>
         <ul class="col-links">
-          <li><a href="/" data-i18n="nav.publicFeed">📢 Public Notice Feed</a></li>
-          <li><a href="/my-complaints" data-i18n="nav.myComplaints">🔒 My Confidential Vault</a></li>
-          <li><a href="/track" data-i18n="nav.trackId">🔎 Track Ticket Status</a></li>
-          <li><a href="/emergency" data-i18n="nav.emergency">🚨 Emergency Desk & Hotlines</a></li>
-          <li><a href="/architecture" data-i18n="nav.blueprint">🗺️ System Architecture & ERD</a></li>
+          <li>
+            <a href="/">
+              <span set:html={ICONS.bullhorn}></span>
+              <span data-i18n="nav.publicFeed">Public Notice Feed</span>
+            </a>
+          </li>
+          <li>
+            <a href="/my-complaints">
+              <span set:html={ICONS.lock}></span>
+              <span data-i18n="nav.myComplaints">My Confidential Vault</span>
+            </a>
+          </li>
+          <li>
+            <a href="/track">
+              <span set:html={ICONS.search}></span>
+              <span data-i18n="nav.trackId">Track Ticket Status</span>
+            </a>
+          </li>
+          <li>
+            <a href="/emergency">
+              <span set:html={ICONS.phoneAlert}></span>
+              <span data-i18n="nav.emergency">Emergency Desk & Hotlines</span>
+            </a>
+          </li>
+          <li>
+            <a href="/architecture">
+              <span set:html={ICONS.blueprint}></span>
+              <span data-i18n="nav.blueprint">System Architecture & ERD</span>
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -66,9 +98,9 @@
         © 2026 University of Barishal (বরিশাল বিশ্ববিদ্যালয়). All complaints securely moderated.
       </p>
       <div class="footer-stickers">
-        <span class="cloud-badge">🦖 DINO-VERIFIED</span>
-        <span class="cloud-badge">💾 AUTO-SAVED</span>
-        <span class="cloud-badge">✨ 100% RETRO</span>
+        <span class="cloud-badge"><span set:html={ICONS.checkCircle}></span> BU-VERIFIED</span>
+        <span class="cloud-badge"><span set:html={ICONS.database}></span> AUTO-SAVED</span>
+        <span class="cloud-badge"><span set:html={ICONS.sparkles}></span> 100% RETRO</span>
       </div>
     </div>
   </div>
@@ -89,51 +121,47 @@
     gap: 2.5rem;
     margin-bottom: 3rem;
   }
+  .col-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
   .footer-brand-header {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
-    margin-bottom: 0.85rem;
+    gap: 0.75rem;
   }
   .footer-seal-img {
-    width: 34px;
-    height: 34px;
     border-radius: 50%;
-    object-fit: contain;
-    border: 1.5px solid var(--border-black);
-    flex-shrink: 0;
-    box-shadow: var(--shadow-neo-sm);
+    border: 1px solid var(--border-black);
   }
   .brand-title {
     font-family: var(--font-retro);
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--border-black);
   }
   .brand-sub {
     font-size: 0.72rem;
-    font-weight: 600;
     color: #6b7280;
-    display: block;
+    font-weight: 600;
   }
   .footer-desc {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: #4b5563;
     line-height: 1.6;
-    margin-bottom: 1rem;
   }
   .footer-badge-row {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
   .col-heading {
     font-family: var(--font-retro);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 700;
+    margin-bottom: 1rem;
     color: var(--border-black);
     letter-spacing: 0.05em;
-    margin-bottom: 1rem;
   }
   .col-links {
     list-style: none;
@@ -143,63 +171,62 @@
   }
   .col-links a {
     text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 600;
     color: #4b5563;
+    font-size: 0.8rem;
+    font-weight: 600;
     transition: color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
   }
   .col-links a:hover {
-    color: #000000;
+    color: var(--border-black);
     text-decoration: underline;
   }
-  .col-links li {
-    font-size: 0.8rem;
-    color: #4b5563;
-    line-height: 1.5;
-  }
   .footer-quote {
-    margin-top: 0.85rem;
-    font-style: italic;
-    font-size: 0.75rem;
-    color: #6b7280;
-    border-left: 2px solid var(--pastel-pink);
-    padding-left: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--pastel-yellow);
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
     line-height: 1.4;
   }
   .footer-bottom-bar {
-    border-top: 1.5px solid #f1f5f9;
+    border-top: 1.5px dashed #e5e7eb;
     padding-top: 1.5rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
   }
   .copyright-text {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: #6b7280;
-    font-weight: 600;
   }
   .footer-stickers {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
   }
-  @media (max-width: 960px) {
+
+  @media (max-width: 900px) {
     .footer-grid {
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
     }
   }
-  @media (max-width: 600px) {
-    .modern-footer {
-      padding-top: 2rem;
-      padding-bottom: 5.5rem; /* Clearance for fixed mobile bottom navigation bar */
-    }
+
+  @media (max-width: 640px) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      gap: 1.75rem;
+    }
+    .modern-footer {
+      padding-top: 2rem;
+      padding-bottom: 5.5rem; /* Clearance for mobile bottom nav */
     }
     .footer-bottom-bar {
       flex-direction: column;

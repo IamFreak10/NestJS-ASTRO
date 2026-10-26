@@ -1,19 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { ICONS } from '../lib/icons.js';
 ---
 
 <Layout title="Fullstack Engineering Blueprint & System Architecture — CampusFix | University of Barishal" currentPath="/architecture">
   <!-- Page Header -->
   <section class="page-intro-header text-center max-w-4xl mx-auto mb-8 sm:mb-10">
     <div class="inline-flex items-center gap-2 mb-3 flex-wrap justify-center">
-      <span class="retro-badge" style="background: var(--pastel-cyan)">
-        🗺️ FULLSTACK ARCHITECTURE BLUEPRINT
+      <span class="retro-badge inline-flex items-center gap-1.5" style="background: var(--pastel-cyan)">
+        <span class="inline-flex items-center" set:html={ICONS.blueprint}></span> FULLSTACK ARCHITECTURE BLUEPRINT
       </span>
-      <span class="retro-badge" style="background: var(--pastel-yellow)">
-        ⚡ ASTRO 7 VIBE CODING
+      <span class="retro-badge inline-flex items-center gap-1.5" style="background: var(--pastel-yellow)">
+        <span class="inline-flex items-center" set:html={ICONS.zap}></span> ASTRO 7 VIBE CODING
       </span>
-      <span class="retro-badge" style="background: var(--pastel-mint)">
-        🛡️ NESTJS 12 ENTERPRISE BACKEND
+      <span class="retro-badge inline-flex items-center gap-1.5" style="background: var(--pastel-mint)">
+        <span class="inline-flex items-center" set:html={ICONS.shieldCheck}></span> NESTJS 12 ENTERPRISE BACKEND
       </span>
     </div>
     <h1 class="text-3xl sm:text-5xl font-extrabold text-black tracking-tight mb-3">
@@ -47,20 +48,20 @@ import Layout from '../layouts/Layout.astro';
   <!-- Interactive Architecture Tab Switcher -->
   <div class="max-w-5xl mx-auto mb-10">
     <div class="arch-tabs-nav flex items-center justify-center gap-2 flex-wrap mb-6">
-      <button type="button" class="arch-tab-btn active" data-target="astroSection">
-        <span>⚡</span>
+      <button type="button" class="arch-tab-btn active inline-flex items-center gap-1.5" data-target="astroSection">
+        <span class="inline-flex items-center" set:html={ICONS.zap}></span>
         <span>Astro 7 Vibe Coding</span>
       </button>
-      <button type="button" class="arch-tab-btn" data-target="nestSection">
-        <span>🛡️</span>
+      <button type="button" class="arch-tab-btn inline-flex items-center gap-1.5" data-target="nestSection">
+        <span class="inline-flex items-center" set:html={ICONS.shieldCheck}></span>
         <span>NestJS 12 Backend</span>
       </button>
-      <button type="button" class="arch-tab-btn" data-target="drizzleSection">
-        <span>💾</span>
+      <button type="button" class="arch-tab-btn inline-flex items-center gap-1.5" data-target="drizzleSection">
+        <span class="inline-flex items-center" set:html={ICONS.vault}></span>
         <span>Drizzle & Schema Design</span>
       </button>
-      <button type="button" class="arch-tab-btn" data-target="dashboardSection">
-        <span>📊</span>
+      <button type="button" class="arch-tab-btn inline-flex items-center gap-1.5" data-target="dashboardSection">
+        <span class="inline-flex items-center" set:html={ICONS.radar}></span>
         <span>Live Interactive ERD</span>
       </button>
     </div>
@@ -69,15 +70,15 @@ import Layout from '../layouts/Layout.astro';
     <div id="astroSection" class="arch-tab-panel">
       <div class="retro-window mb-8">
         <div class="retro-titlebar yellow flex items-center justify-between">
-          <span class="retro-title text-xs sm:text-sm">
-            ⚡ ASTRO_VIBE_CODING_PLAYBOOK.MD
+          <span class="retro-title text-xs sm:text-sm inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center" set:html={ICONS.zap}></span> ASTRO_VIBE_CODING_PLAYBOOK.MD
           </span>
           <span class="cloud-badge text-xs">HTML-FIRST ARCHITECTURE</span>
         </div>
 
         <div class="p-6 sm:p-8 bg-white">
           <div class="flex items-center gap-3 mb-4">
-            <span class="text-3xl">🚀</span>
+            <div class="w-10 h-10 rounded-lg border-2 border-black bg-yellow-100 flex items-center justify-center" set:html={ICONS.zap}></div>
             <div>
               <h2 class="text-xl sm:text-2xl font-extrabold text-black">
                 The Astro Vibe Coding Philosophy
@@ -95,7 +96,7 @@ import Layout from '../layouts/Layout.astro';
           <!-- 4 Pillar Feature Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="arch-feature-card">
-              <div class="feat-icon-badge" style="background: var(--pastel-yellow)">🧩</div>
+              <div class="feat-icon-badge" style="background: var(--pastel-yellow)" set:html={ICONS.tool}></div>
               <div>
                 <h4 class="font-extrabold text-sm text-black mb-1">Domain-Driven Component Hierarchy</h4>
                 <p class="text-xs text-gray-600 leading-relaxed">
@@ -105,7 +106,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <div class="arch-feature-card">
-              <div class="feat-icon-badge" style="background: var(--pastel-mint)">🌐</div>
+              <div class="feat-icon-badge" style="background: var(--pastel-mint)" set:html={ICONS.globe}></div>
               <div>
                 <h4 class="font-extrabold text-sm text-black mb-1">Instant Pure Bangla i18n Engine</h4>
                 <p class="text-xs text-gray-600 leading-relaxed">
@@ -115,7 +116,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <div class="arch-feature-card">
-              <div class="feat-icon-badge" style="background: var(--pastel-pink)">🪟</div>
+              <div class="feat-icon-badge" style="background: var(--pastel-pink)" set:html={ICONS.blueprint}></div>
               <div>
                 <h4 class="font-extrabold text-sm text-black mb-1">Native HTML5 Dialog Modals</h4>
                 <p class="text-xs text-gray-600 leading-relaxed">
@@ -125,9 +126,15 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <div class="arch-feature-card">
-              <div class="feat-icon-badge" style="background: var(--pastel-cyan)">⚡</div>
+              <div class="feat-icon-badge" style="background: var(--pastel-cyan)" set:html={ICONS.zap}></div>
               <div>
                 <h4 class="font-extrabold text-sm text-black mb-1">Inline Stylesheets & Lazy Chunking</h4>
+                <p class="text-xs text-gray-600 leading-relaxed">
+                  Configured Astro with <code>inlineStylesheets: 'always'</code> to eliminate render-blocking CSS network roundtrips. Fallback sample datasets use dynamic <code>await import()</code> so they never load unless offline.
+                </p>
+              </div>
+            </div>
+          </div>
                 <p class="text-xs text-gray-600 leading-relaxed">
                   Configured Astro with <code>inlineStylesheets: 'always'</code> to eliminate render-blocking CSS network roundtrips. Fallback sample datasets use dynamic <code>await import()</code> so they never load unless offline.
                 </p>
@@ -143,13 +150,13 @@ import Layout from '../layouts/Layout.astro';
             </div>
             <pre class="code-content"><code>// O(1) Instant Hash Lookup with Zero Network Overhead
 const DICTIONARY: Record&lt;string, [string, string]&gt; = &#123;
-  'nav.publicFeed': ['📢 Public Feed', '📢 উন্মুক্ত ফিড'],
-  'nav.myComplaints': ['🔒 My Grievances', '🔒 আমার অভিযোগসমূহ'],
+  'nav.publicFeed': ['Public Feed', 'উন্মুক্ত ফিড'],
+  'nav.myComplaints': ['My Grievances', 'আমার অভিযোগসমূহ'],
   'hero.headline': [
     'Resolve Campus Problems. &lt;br /&gt;&lt;span&gt;Empower Student Voices.&lt;/span&gt;',
     'ক্যাম্পাসের সমস্যা সমাধান হোক দ্রুত। &lt;br /&gt;&lt;span&gt;শিক্ষার্থীদের কণ্ঠস্বর হোক শক্তিশালী।&lt;/span&gt;',
   ],
-  'status.resolved': ['RESOLVED ✔', 'সমাধানকৃত ✔'],
+  'status.resolved': ['RESOLVED', 'সমাধানকৃত'],
   'card.upvoteBtn': ['+1 Me Too', '+১ আমিও ভুক্তভোগী'],
 &#125;;
 
@@ -165,15 +172,15 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
     <div id="nestSection" class="arch-tab-panel hidden">
       <div class="retro-window mb-8">
         <div class="retro-titlebar rose flex items-center justify-between">
-          <span class="retro-title text-xs sm:text-sm">
-            🛡️ NESTJS_ENTERPRISE_ARCHITECTURE.MD
+          <span class="retro-title text-xs sm:text-sm inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center" set:html={ICONS.shieldCheck}></span> NESTJS_ENTERPRISE_ARCHITECTURE.MD
           </span>
           <span class="cloud-badge text-xs">MODULAR DOMAIN DESIGN</span>
         </div>
 
         <div class="p-6 sm:p-8 bg-white">
           <div class="flex items-center gap-3 mb-4">
-            <span class="text-3xl">🏛️</span>
+            <div class="w-10 h-10 rounded-lg border-2 border-black bg-rose-100 flex items-center justify-center" set:html={ICONS.shieldCheck}></div>
             <div>
               <h2 class="text-xl sm:text-2xl font-extrabold text-black">
                 NestJS 12 Domain-Driven Backend
@@ -191,7 +198,7 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
           <!-- Modules Breakdown Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div class="module-card">
-              <div class="mod-icon">🔐</div>
+              <div class="mod-icon w-8 h-8 mb-2 flex items-center justify-center" set:html={ICONS.lock}></div>
               <h4 class="font-extrabold text-sm mb-1">AuthModule</h4>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Better Auth integration with Scrypt password hashing, sliding session cookies, and RBAC guards (Admin, Staff, Student).
@@ -199,7 +206,7 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
             </div>
 
             <div class="module-card">
-              <div class="mod-icon">📋</div>
+              <div class="mod-icon w-8 h-8 mb-2 flex items-center justify-center" set:html={ICONS.fileText}></div>
               <h4 class="font-extrabold text-sm mb-1">ComplaintsModule</h4>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Public notice board queries, confidential vault isolation, category filtering, and atomic upvoting transactions.
@@ -207,7 +214,7 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
             </div>
 
             <div class="module-card">
-              <div class="mod-icon">🎫</div>
+              <div class="mod-icon w-8 h-8 mb-2 flex items-center justify-center" set:html={ICONS.tool}></div>
               <h4 class="font-extrabold text-sm mb-1">TicketsModule</h4>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Maintenance technician lifecycle management, dispatch logs, resolution verification, and timeline generation.
@@ -215,7 +222,7 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
             </div>
 
             <div class="module-card">
-              <div class="mod-icon">🗄️</div>
+              <div class="mod-icon w-8 h-8 mb-2 flex items-center justify-center" set:html={ICONS.vault}></div>
               <h4 class="font-extrabold text-sm mb-1">DatabaseModule</h4>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Multi-folder Drizzle ORM client provider connected to MySQL 8 with connection pooling and automated migrations.
@@ -227,16 +234,16 @@ export function resolveTranslation(lang: 'en' | 'bn', key: string): string &#123
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
             <div class="p-5 border-2 border-black rounded-xl bg-orange-50/50 shadow-neo-sm">
               <h4 class="font-extrabold text-sm text-black mb-2 flex items-center gap-2">
-                <span>🛡️</span> Strict Privacy Gate for Whistleblowers
+                <span class="inline-flex items-center" set:html={ICONS.userMask}></span> Strict Privacy Gate for Whistleblowers
               </h4>
               <p class="text-xs text-gray-700 leading-relaxed font-medium">
-                When a student submits with <code>isAnonymous: true</code>, the service transforms the record before dispatching to the public feed. Identifiers like <code>studentId</code> and <code>email</code> are stripped into <code>Anonymous Student 🕶️</code>, while internally maintaining cryptographic ownership for administrative safety.
+                When a student submits with <code>isAnonymous: true</code>, the service transforms the record before dispatching to the public feed. Identifiers like <code>studentId</code> and <code>email</code> are stripped into <code>Anonymous Student</code>, while internally maintaining cryptographic ownership for administrative safety.
               </p>
             </div>
 
             <div class="p-5 border-2 border-black rounded-xl bg-emerald-50/50 shadow-neo-sm">
               <h4 class="font-extrabold text-sm text-black mb-2 flex items-center gap-2">
-                <span>👍</span> Atomic Upvoting & Concurrency Safety
+                <span class="inline-flex items-center" set:html={ICONS.thumbsUp}></span> Atomic Upvoting & Concurrency Safety
               </h4>
               <p class="text-xs text-gray-700 leading-relaxed font-medium">
                 The <code>complaint_upvotes</code> table enforces a compound unique key constraint on <code>(complaintId, userId)</code>. Upvoting executes inside an atomic database transaction that toggles vote records and safely updates counters without race conditions.
@@ -256,7 +263,7 @@ export function sanitizePublicComplaint(c: ComplaintWithAuthor) &#123;
   return &#123;
     ...c,
     author: &#123;
-      name: 'Anonymous Student 🕶️',
+      name: 'Anonymous Student',
       department: c.author?.department || 'Student Body',
       studentId: null, // Redacted
       email: null,     // Redacted
@@ -272,15 +279,15 @@ export function sanitizePublicComplaint(c: ComplaintWithAuthor) &#123;
     <div id="drizzleSection" class="arch-tab-panel hidden">
       <div class="retro-window mb-8">
         <div class="retro-titlebar mint flex items-center justify-between">
-          <span class="retro-title text-xs sm:text-sm">
-            💾 DRIZZLE_MULTI_FOLDER_SCHEMA.MD
+          <span class="retro-title text-xs sm:text-sm inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center" set:html={ICONS.vault}></span> DRIZZLE_MULTI_FOLDER_SCHEMA.MD
           </span>
           <span class="cloud-badge text-xs">MYSQL 8 RELATIONAL MODEL</span>
         </div>
 
         <div class="p-6 sm:p-8 bg-white">
           <div class="flex items-center gap-3 mb-4">
-            <span class="text-3xl">🗄️</span>
+            <div class="w-10 h-10 rounded-lg border-2 border-black bg-emerald-100 flex items-center justify-center" set:html={ICONS.vault}></div>
             <div>
               <h2 class="text-xl sm:text-2xl font-extrabold text-black">
                 Drizzle ORM Multi-Folder Architecture
@@ -342,7 +349,7 @@ export function sanitizePublicComplaint(c: ComplaintWithAuthor) &#123;
           <!-- Production Deployment Note -->
           <div class="p-5 border-2 border-black rounded-xl bg-yellow-50/70 shadow-neo-sm">
             <h4 class="font-extrabold text-sm text-black mb-1 flex items-center gap-2">
-              <span>🚀</span> 1-Command Production Deployment Pipeline
+              <span class="inline-flex items-center" set:html={ICONS.zap}></span> 1-Command Production Deployment Pipeline
             </h4>
             <p class="text-xs text-gray-700 leading-relaxed font-medium">
               We configured <code>npm run zip:all</code> which builds the NestJS backend into <code>backend-deploy.zip</code> (complete with cPanel Passenger <code>app.js</code> entrypoint and production lockfiles) and compiles Astro static assets into <code>frontend-dist.zip</code> in under 3 seconds!
@@ -356,8 +363,8 @@ export function sanitizePublicComplaint(c: ComplaintWithAuthor) &#123;
     <div id="dashboardSection" class="arch-tab-panel hidden">
       <div class="retro-window mb-8">
         <div class="retro-titlebar cyan flex items-center justify-between">
-          <span class="retro-title text-xs sm:text-sm">
-            📊 INTERACTIVE_ARCHITECTURE_DASHBOARD.HTML
+          <span class="retro-title text-xs sm:text-sm inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center" set:html={ICONS.radar}></span> INTERACTIVE_ARCHITECTURE_DASHBOARD.HTML
           </span>
           <a
             href="/ARCHITECTURE_DASHBOARD.html"

@@ -1,9 +1,13 @@
 ---
+import { ICONS } from '../../lib/icons.js';
 ---
 
 <section class="how-it-works-section">
   <div class="section-header-centered">
-    <span class="retro-badge" style="background: var(--pastel-mint)" data-i18n="howItWorks.badge">⚡ FAST & TRANSPARENT</span>
+    <span class="retro-badge" style="background: var(--pastel-mint)">
+      <span set:html={ICONS.zap}></span>
+      <span data-i18n="howItWorks.badge">FAST & TRANSPARENT</span>
+    </span>
     <h3 class="section-title" data-i18n="howItWorks.title">Campus Redressal Pipeline</h3>
     <p class="section-subtitle" data-i18n="howItWorks.subtitle">
       From initial submission to verified maintenance fix, every ticket follows a strict 4-step university protocol.
@@ -14,12 +18,10 @@
     <!-- Step 1 -->
     <div class="neo-card step-card">
       <div class="step-badge-tag">STEP 01</div>
-      <div class="step-icon-wrap" style="background: var(--pastel-yellow)">
-        <span>📝</span>
-      </div>
+      <div class="step-icon-wrap" style="background: var(--pastel-yellow)" set:html={ICONS.fileText}></div>
       <h4 class="step-heading" data-i18n="howItWorks.step1Title">File Complaint</h4>
       <p class="step-desc" data-i18n="howItWorks.step1Desc">
-        Submit issue with location and priority. Toggle <strong>Public Wall</strong> or sealed <strong>Confidential Vault</strong> with 🕶️ Anonymous Protection.
+        Submit issue with location and priority. Toggle <strong>Public Wall</strong> or sealed <strong>Confidential Vault</strong> with Anonymous Protection.
       </p>
       <div class="step-footer-tag">Instant Ticket ID</div>
     </div>
@@ -27,9 +29,7 @@
     <!-- Step 2 -->
     <div class="neo-card step-card">
       <div class="step-badge-tag">STEP 02</div>
-      <div class="step-icon-wrap" style="background: var(--pastel-lavender)">
-        <span>🛡️</span>
-      </div>
+      <div class="step-icon-wrap" style="background: var(--pastel-lavender)" set:html={ICONS.shieldAlert}></div>
       <h4 class="step-heading" data-i18n="howItWorks.step2Title">Proctorial Triage</h4>
       <p class="step-desc" data-i18n="howItWorks.step2Desc">
         Proctor Office verifies ticket validity within 2 hours. Ragging, harassment, and electrical hazards trigger emergency dispatch.
@@ -40,9 +40,7 @@
     <!-- Step 3 -->
     <div class="neo-card step-card">
       <div class="step-badge-tag">STEP 03</div>
-      <div class="step-icon-wrap" style="background: var(--pastel-cyan)">
-        <span>👷</span>
-      </div>
+      <div class="step-icon-wrap" style="background: var(--pastel-cyan)" set:html={ICONS.tool}></div>
       <h4 class="step-heading" data-i18n="howItWorks.step3Title">Technician Action</h4>
       <p class="step-desc" data-i18n="howItWorks.step3Desc">
         Campus electricians, plumbers, or transport mechanics are assigned. Real-time updates and parts orders are logged on your ticket.
@@ -53,14 +51,12 @@
     <!-- Step 4 -->
     <div class="neo-card step-card">
       <div class="step-badge-tag">STEP 04</div>
-      <div class="step-icon-wrap" style="background: var(--pastel-mint)">
-        <span>✅</span>
-      </div>
+      <div class="step-icon-wrap" style="background: var(--pastel-mint)" set:html={ICONS.checkCircle}></div>
       <h4 class="step-heading" data-i18n="howItWorks.step4Title">Verified Fix</h4>
       <p class="step-desc" data-i18n="howItWorks.step4Desc">
-        Once inspected and completed, an official written resolution note is published. The ticket gets the green <strong>RESOLVED ✔</strong> stamp.
+        Once inspected and completed, an official written resolution note is published. The ticket gets the green RESOLVED stamp.
       </p>
-      <div class="step-footer-tag">Official Sign-off</div>
+      <div class="step-footer-tag">Proctor Sign-Off</div>
     </div>
   </div>
 </section>
@@ -71,15 +67,15 @@
   }
   .section-header-centered {
     text-align: center;
-    max-width: 680px;
-    margin: 0 auto 2rem auto;
+    max-width: 600px;
+    margin: 0 auto 2.25rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.65rem;
   }
   .section-title {
-    font-size: 1.65rem;
+    font-size: 1.85rem;
     font-weight: 800;
     color: var(--border-black);
     letter-spacing: -0.02em;
@@ -91,75 +87,78 @@
   }
   .steps-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
   }
   .step-card {
     padding: 1.5rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
-    position: relative;
     background: #ffffff;
     border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    gap: 0.85rem;
   }
   .step-badge-tag {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
     font-family: var(--font-retro);
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    color: #6b7280;
+    background: #f3f4f6;
+    border: 1.5px solid var(--border-black);
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-pill);
+    color: var(--border-black);
   }
   .step-icon-wrap {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--border-black);
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-black);
-    box-shadow: 1.5px 1.5px 0px var(--border-black);
+    box-shadow: var(--shadow-neo-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
-    margin-bottom: 1rem;
   }
   .step-heading {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 800;
-    margin-bottom: 0.4rem;
     color: var(--border-black);
   }
   .step-desc {
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.78rem;
     color: #4b5563;
-    margin-bottom: 1.25rem;
+    line-height: 1.55;
     flex: 1;
   }
   .step-footer-tag {
-    font-family: var(--font-retro);
-    font-size: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
     font-weight: 700;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid var(--border-black);
-    border-radius: var(--radius-sm);
-    background: #f8fafc;
-    align-self: flex-start;
+    color: #6b7280;
+    border-top: 1.5px dashed #e5e7eb;
+    width: 100%;
+    padding-top: 0.65rem;
   }
 
-  @media (max-width: 640px) {
-    .section-title {
-      font-size: 1.35rem;
+  @media (max-width: 900px) {
+    .steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
     }
+  }
+
+  @media (max-width: 480px) {
     .steps-grid {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 0.85rem;
+    }
+    .section-title {
+      font-size: 1.5rem;
     }
     .step-card {
       padding: 1.15rem 1rem;
-      min-height: auto;
     }
   }
 </style>

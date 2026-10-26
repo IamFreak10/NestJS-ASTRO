@@ -1,4 +1,6 @@
 ---
+import { ICONS } from '../../lib/icons.js';
+
 interface Props {
   currentPath?: string;
 }
@@ -22,20 +24,25 @@ const { currentPath = '/' } = Astro.props;
 
     <!-- Desktop Navigation Pills (Hidden on mobile) -->
     <nav class="nav-pill-group desktop-nav" aria-label="Desktop Navigation">
-      <a href="/" class={`nav-pill ${currentPath === '/' ? 'active' : ''}`} data-i18n="nav.publicFeed">
-        📢 Public Feed
+      <a href="/" class={`nav-pill ${currentPath === '/' ? 'active' : ''}`}>
+        <span set:html={ICONS.bullhorn}></span>
+        <span data-i18n="nav.publicFeed">Public Feed</span>
       </a>
-      <a href="/my-complaints" class={`nav-pill ${currentPath === '/my-complaints' ? 'active' : ''}`} data-i18n="nav.myComplaints">
-        🔒 My Grievances
+      <a href="/my-complaints" class={`nav-pill ${currentPath === '/my-complaints' ? 'active' : ''}`}>
+        <span set:html={ICONS.lock}></span>
+        <span data-i18n="nav.myComplaints">My Grievances</span>
       </a>
-      <a href="/track" class={`nav-pill ${currentPath === '/track' ? 'active' : ''}`} data-i18n="nav.trackId">
-        🔎 Track ID
+      <a href="/track" class={`nav-pill ${currentPath === '/track' ? 'active' : ''}`}>
+        <span set:html={ICONS.search}></span>
+        <span data-i18n="nav.trackId">Track ID</span>
       </a>
-      <a href="/emergency" class={`nav-pill ${currentPath === '/emergency' ? 'active' : ''}`} data-i18n="nav.emergency">
-        🚨 Emergency
+      <a href="/emergency" class={`nav-pill ${currentPath === '/emergency' ? 'active' : ''}`}>
+        <span set:html={ICONS.phoneAlert}></span>
+        <span data-i18n="nav.emergency">Emergency</span>
       </a>
-      <a href="/architecture" class={`nav-pill ${currentPath === '/architecture' ? 'active' : ''}`} data-i18n="nav.blueprint">
-        🗺️ Blueprint
+      <a href="/architecture" class={`nav-pill ${currentPath === '/architecture' ? 'active' : ''}`}>
+        <span set:html={ICONS.blueprint}></span>
+        <span data-i18n="nav.blueprint">Blueprint</span>
       </a>
     </nav>
 
@@ -49,17 +56,20 @@ const { currentPath = '/' } = Astro.props;
         aria-label="Toggle language between English and Bangla"
         title="ভাষা পরিবর্তন / Switch Language (বাংলা / EN)"
       >
-        🌐 <span id="langBtnLabel">বাংলা</span>
+        <span class="btn-icon" set:html={ICONS.globe}></span>
+        <span id="langBtnLabel">বাংলা</span>
       </button>
 
       <!-- Universal Auth Button (Works on both desktop & mobile) -->
       <button id="openAuthModalBtn" class="retro-btn retro-btn-sm retro-btn-yellow auth-btn" aria-label="Login or View Account">
-        🔑 <span id="authBtnText" data-i18n="nav.loginBtn">LOGIN</span>
+        <span id="authBtnIcon" class="btn-icon" set:html={ICONS.key}></span>
+        <span id="authBtnText" data-i18n="nav.loginBtn">LOGIN</span>
       </button>
 
       <!-- Desktop + File Ticket Button -->
-      <button id="openCreateModalBtn" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink desktop-only-btn open-create-modal-trigger" data-i18n="nav.fileTicketBtn">
-        ✉️ + FILE TICKET
+      <button id="openCreateModalBtn" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink desktop-only-btn open-create-modal-trigger">
+        <span class="btn-icon" set:html={ICONS.plus}></span>
+        <span data-i18n="nav.fileTicketBtn">FILE TICKET</span>
       </button>
 
       <!-- Mobile Hamburger Button -->
@@ -70,7 +80,7 @@ const { currentPath = '/' } = Astro.props;
         aria-label="Toggle navigation menu"
         aria-expanded="false"
       >
-        <span id="menuIcon" class="menu-icon-symbol">☰</span>
+        <span id="menuIcon" class="menu-icon-symbol" set:html={ICONS.menu}></span>
       </button>
     </div>
   </div>
@@ -79,13 +89,16 @@ const { currentPath = '/' } = Astro.props;
   <div id="mobileNavDrawer" class="mobile-drawer hidden">
     <div class="container drawer-container">
       <div class="drawer-header-bar">
-        <span class="drawer-title">📱 BU_NAVIGATION_MENU.SYS</span>
+        <div class="flex items-center gap-1.5 font-bold">
+          <span set:html={ICONS.university}></span>
+          <span class="drawer-title" data-i18n="brand.drawerTitle">BU_NAVIGATION_MENU.SYS</span>
+        </div>
         <span class="cloud-badge text-xs">v2.0 ACTIVE</span>
       </div>
 
       <nav class="drawer-nav-list" aria-label="Mobile Drawer Navigation">
         <a href="/" class={`drawer-nav-link ${currentPath === '/' ? 'active' : ''}`}>
-          <span class="drawer-icon">📢</span>
+          <span class="drawer-icon" set:html={ICONS.bullhorn}></span>
           <div class="drawer-link-text">
             <strong>Public Campus Feed (উন্মুক্ত ফিড)</strong>
             <small>Browse active grievances & upvote</small>
@@ -94,7 +107,7 @@ const { currentPath = '/' } = Astro.props;
         </a>
 
         <a href="/my-complaints" class={`drawer-nav-link ${currentPath === '/my-complaints' ? 'active' : ''}`}>
-          <span class="drawer-icon">🔒</span>
+          <span class="drawer-icon" set:html={ICONS.lock}></span>
           <div class="drawer-link-text">
             <strong>My Grievances (আমার অভিযোগসমূহ)</strong>
             <small>Track personal complaints & private reports</small>
@@ -103,7 +116,7 @@ const { currentPath = '/' } = Astro.props;
         </a>
 
         <a href="/track" class={`drawer-nav-link ${currentPath === '/track' ? 'active' : ''}`}>
-          <span class="drawer-icon">🔎</span>
+          <span class="drawer-icon" set:html={ICONS.search}></span>
           <div class="drawer-link-text">
             <strong>Track Ticket by ID (ট্র্যাক করুন)</strong>
             <small>Inspect repair logs & technician dispatches</small>
@@ -112,7 +125,7 @@ const { currentPath = '/' } = Astro.props;
         </a>
 
         <a href="/emergency" class={`drawer-nav-link ${currentPath === '/emergency' ? 'active' : ''}`}>
-          <span class="drawer-icon">🚨</span>
+          <span class="drawer-icon" set:html={ICONS.phoneAlert}></span>
           <div class="drawer-link-text">
             <strong>Emergency Desk & Hotlines (জরুরি সেবা)</strong>
             <small>24/7 Anti-Ragging & Proctor Patrol</small>
@@ -121,7 +134,7 @@ const { currentPath = '/' } = Astro.props;
         </a>
 
         <a href="/architecture" class={`drawer-nav-link ${currentPath === '/architecture' ? 'active' : ''}`}>
-          <span class="drawer-icon">🗺️</span>
+          <span class="drawer-icon" set:html={ICONS.blueprint}></span>
           <div class="drawer-link-text">
             <strong>System Blueprint (ব্লুপ্রিন্ট)</strong>
             <small>NestJS, MySQL & Drizzle Architecture</small>
@@ -135,13 +148,17 @@ const { currentPath = '/' } = Astro.props;
         <button
           type="button"
           id="drawerCreateBtn"
-          class="retro-btn retro-btn-pixel retro-btn-pink w-full open-create-modal-trigger"
+          class="retro-btn retro-btn-pixel retro-btn-pink w-full open-create-modal-trigger inline-flex items-center justify-center gap-2"
         >
-          ✉️ + FILE A CAMPUS COMPLAINT
+          <span set:html={ICONS.plus}></span>
+          <span data-i18n="hero.fileBtn">FILE A CAMPUS COMPLAINT</span>
         </button>
 
         <a href="tel:+8801700284357" class="drawer-hotline-pill">
-          <span>🚨 SOS HOTLINE:</span>
+          <span class="flex items-center gap-1.5">
+            <span set:html={ICONS.phoneAlert}></span>
+            <span data-i18n="brand.sosHotlineLabel">SOS HOTLINE:</span>
+          </span>
           <strong>+880-1700-BU-HELP</strong>
         </a>
       </div>
@@ -150,6 +167,8 @@ const { currentPath = '/' } = Astro.props;
 </header>
 
 <script>
+  import { ICONS } from '../../lib/icons.js';
+
   // Mobile Menu Toggle Logic
   const toggleBtn = document.getElementById('mobileMenuToggleBtn');
   const drawer = document.getElementById('mobileNavDrawer');
@@ -158,40 +177,39 @@ const { currentPath = '/' } = Astro.props;
   const drawerCreateBtn = document.getElementById('drawerCreateBtn');
 
   function toggleMobileMenu() {
-    if (!drawer || !menuIcon || !toggleBtn) return;
-    const isHidden = drawer.classList.contains('hidden');
+    if (!drawer) return;
+    const isExpanded = toggleBtn?.getAttribute('aria-expanded') === 'true';
+    const nextState = !isExpanded;
 
-    if (isHidden) {
+    toggleBtn?.setAttribute('aria-expanded', String(nextState));
+
+    if (nextState) {
       drawer.classList.remove('hidden');
-      menuIcon.textContent = '✕';
-      toggleBtn.setAttribute('aria-expanded', 'true');
-      toggleBtn.style.backgroundColor = 'var(--pastel-rose)';
+      if (menuIcon) menuIcon.innerHTML = ICONS.close;
     } else {
       drawer.classList.add('hidden');
-      menuIcon.textContent = '☰';
-      toggleBtn.setAttribute('aria-expanded', 'false');
-      toggleBtn.style.backgroundColor = '';
+      if (menuIcon) menuIcon.innerHTML = ICONS.menu;
     }
   }
 
   toggleBtn?.addEventListener('click', toggleMobileMenu);
 
-  // Close drawer when clicking modal trigger inside drawer
-  drawerCreateBtn?.addEventListener('click', () => {
-    drawer?.classList.add('hidden');
-    if (menuIcon) menuIcon.textContent = '☰';
-    toggleBtn?.setAttribute('aria-expanded', 'false');
-    if (toggleBtn) toggleBtn.style.backgroundColor = '';
-    createModal?.showModal();
+  // Close drawer on link click
+  document.querySelectorAll('.drawer-nav-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      drawer?.classList.add('hidden');
+      toggleBtn?.setAttribute('aria-expanded', 'false');
+      if (menuIcon) menuIcon.innerHTML = ICONS.menu;
+    });
   });
 
-  // Close drawer if resized back to desktop
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900 && drawer && !drawer.classList.contains('hidden')) {
-      drawer.classList.add('hidden');
-      if (menuIcon) menuIcon.textContent = '☰';
-      toggleBtn?.setAttribute('aria-expanded', 'false');
-      if (toggleBtn) toggleBtn.style.backgroundColor = '';
+  // Drawer File Complaint Trigger
+  drawerCreateBtn?.addEventListener('click', () => {
+    drawer?.classList.add('hidden');
+    toggleBtn?.setAttribute('aria-expanded', 'false');
+    if (menuIcon) menuIcon.innerHTML = ICONS.menu;
+    if (createModal) {
+      createModal.showModal();
     }
   });
 </script>
@@ -211,13 +229,13 @@ const { currentPath = '/' } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .brand-link {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.5rem;
     text-decoration: none;
     color: inherit;
     flex-shrink: 0;
@@ -229,14 +247,14 @@ const { currentPath = '/' } = Astro.props;
     gap: 0.5rem;
     background: #ffffff;
     border: var(--border-width) solid var(--border-black);
-    padding: 0.35rem 0.65rem;
+    padding: 0.3rem 0.55rem;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-neo-sm);
   }
 
   .brand-seal-img {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     object-fit: contain;
     display: block;
@@ -245,29 +263,25 @@ const { currentPath = '/' } = Astro.props;
     flex-shrink: 0;
   }
 
-  .brand-dino {
-    font-size: 1.35rem;
-  }
-
   .brand-text {
     display: flex;
     flex-direction: column;
-    line-height: 1;
+    line-height: 1.1;
   }
 
   .brand-title {
     font-family: var(--font-retro);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--border-black);
   }
 
   .brand-uni {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 800;
     color: #6b7280;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
   }
 
   .header-pill {
@@ -289,6 +303,9 @@ const { currentPath = '/' } = Astro.props;
   }
 
   .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     text-decoration: none;
     font-size: 0.78rem;
     font-weight: 700;
@@ -312,24 +329,30 @@ const { currentPath = '/' } = Astro.props;
   .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
     flex-shrink: 0;
+  }
+
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .mobile-menu-btn {
     display: none;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     align-items: center;
     justify-content: center;
-    font-size: 1.15rem;
-    font-weight: 900;
     background: #ffffff;
   }
 
   .menu-icon-symbol {
-    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Mobile Drawer Menu */
@@ -357,7 +380,7 @@ const { currentPath = '/' } = Astro.props;
   }
 
   .drawer-container {
-    padding: 1rem 1rem 1.25rem 1rem;
+    padding: 1rem 0.85rem 1.25rem 0.85rem;
     max-width: 600px;
     margin: 0 auto;
   }
@@ -378,15 +401,15 @@ const { currentPath = '/' } = Astro.props;
   .drawer-nav-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
   }
 
   .drawer-nav-link {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.7rem 0.85rem;
+    padding: 0.65rem 0.75rem;
     border: 1.5px solid var(--border-black);
     border-radius: var(--radius-md);
     background: #fdfaf6;
@@ -408,7 +431,11 @@ const { currentPath = '/' } = Astro.props;
   }
 
   .drawer-icon {
-    font-size: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
   }
 
@@ -447,9 +474,9 @@ const { currentPath = '/' } = Astro.props;
   .drawer-hotline-pill {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.6rem 0.85rem;
     background: var(--pastel-rose);
     border: 1.5px solid var(--border-black);
     border-radius: var(--radius-md);
@@ -491,22 +518,18 @@ const { currentPath = '/' } = Astro.props;
     }
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     .brand-uni {
       display: none;
     }
 
-    .brand-dino {
-      font-size: 1.15rem;
-    }
-
     .navbar-actions {
-      gap: 0.35rem;
+      gap: 0.3rem;
     }
 
     .auth-btn,
     .lang-btn {
-      padding: 0.35rem 0.55rem;
+      padding: 0.35rem 0.5rem;
       font-size: 0.72rem;
     }
   }
@@ -514,13 +537,23 @@ const { currentPath = '/' } = Astro.props;
   .lang-btn {
     background: var(--pastel-mint);
     font-weight: 700;
-    padding: 0.4rem 0.65rem;
+    padding: 0.35rem 0.65rem;
     font-family: var(--font-bangla);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     cursor: pointer;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
+
   .lang-btn:hover {
     background: var(--pastel-yellow);
+  }
+
+  .auth-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 </style>

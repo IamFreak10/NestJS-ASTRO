@@ -1,19 +1,23 @@
 ---
+import { ICONS } from '../../lib/icons.js';
 ---
 
 <dialog id="createComplaintModal" class="retro-modal">
   <div class="retro-window modal-window">
     <div class="retro-titlebar pink">
-      <span class="retro-title" data-i18n="modals.createTitle">📝 FILE_CAMPUS_COMPLAINT.EXE</span>
+      <div class="flex items-center gap-2">
+        <span set:html={ICONS.fileText}></span>
+        <span class="retro-title" data-i18n="modals.createTitle">FILE_CAMPUS_COMPLAINT.EXE</span>
+      </div>
       <div class="retro-controls">
-        <button type="button" class="modal-close-btn" id="closeCreateModalBtn">✕</button>
+        <button type="button" class="modal-close-btn" id="closeCreateModalBtn" aria-label="Close dialog" set:html={ICONS.close}></button>
       </div>
     </div>
 
     <form id="createComplaintForm" class="modal-body">
       <div class="form-group">
         <label for="complaintTitle" class="form-label" data-i18n="modals.titleLabel">
-          📌 Problem Title <span class="required">*</span>
+          Problem Title <span class="required">*</span>
         </label>
         <input
           type="text"
@@ -31,34 +35,34 @@
       <div class="form-row">
         <div class="form-group half">
           <label for="complaintCategory" class="form-label" data-i18n="modals.categoryLabel">
-            🏢 Category <span class="required">*</span>
+            Category <span class="required">*</span>
           </label>
           <select id="complaintCategory" name="category" class="retro-input retro-select" required>
-            <option value="facilities">🏢 Facilities & Classrooms</option>
-            <option value="hostel_canteen">🛏️ Hostel & Mess/Canteen</option>
-            <option value="transport">🚌 Bus & Campus Transport</option>
-            <option value="academics">📚 Academics & Lab Exam</option>
-            <option value="safety_bullying">🛡️ Safety & Anti-Bullying</option>
-            <option value="administration">📑 Administration & ID Cards</option>
+            <option value="facilities">Facilities & Classrooms</option>
+            <option value="hostel_canteen">Hostel & Mess/Canteen</option>
+            <option value="transport">Bus & Campus Transport</option>
+            <option value="academics">Academics & Lab Exam</option>
+            <option value="safety_bullying">Safety & Anti-Ragging</option>
+            <option value="administration">Administration & ID Cards</option>
           </select>
         </div>
 
         <div class="form-group half">
           <label for="complaintPriority" class="form-label" data-i18n="modals.priorityLabel">
-            ⚡ Urgency Level
+            Urgency Level
           </label>
           <select id="complaintPriority" name="priority" class="retro-input retro-select">
-            <option value="low">🟢 Low (Routine maintenance)</option>
-            <option value="medium" selected>🟡 Medium (Standard priority)</option>
-            <option value="high">🟠 High (Impacting classes)</option>
-            <option value="urgent">🔴 Urgent (Immediate safety hazard)</option>
+            <option value="low">Low (Routine maintenance)</option>
+            <option value="medium" selected>Medium (Standard priority)</option>
+            <option value="high">High (Impacting classes)</option>
+            <option value="urgent">Urgent (Immediate safety hazard)</option>
           </select>
         </div>
       </div>
 
       <div class="form-group">
         <label for="complaintDescription" class="form-label" data-i18n="modals.descLabel">
-          📄 Detailed Description <span class="required">*</span>
+          Detailed Description <span class="required">*</span>
         </label>
         <textarea
           id="complaintDescription"
@@ -74,12 +78,18 @@
 
       <!-- Privacy & Anonymity Controls (Special BU Feature) -->
       <div class="privacy-box">
-        <div class="privacy-title" data-i18n="modals.anonTitle">🛡️ Student Privacy & Anonymity Gate</div>
+        <div class="privacy-title">
+          <span set:html={ICONS.shieldAlert}></span>
+          <span data-i18n="modals.anonTitle">Student Privacy & Anonymity Gate</span>
+        </div>
         
         <label class="privacy-toggle-label">
           <input type="checkbox" id="complaintIsAnonymous" name="isAnonymous" value="true" class="retro-checkbox" />
           <div>
-            <strong data-i18n="modals.anonLabel">Submit Anonymously 🕶️</strong>
+            <strong class="flex items-center gap-1.5" data-i18n="modals.anonLabel">
+              <span set:html={ICONS.userMask}></span>
+              <span>Submit Anonymously</span>
+            </strong>
             <p class="privacy-hint" data-i18n="modals.anonHint">Hides your name and student ID on the public campus board. Your identity remains protected.</p>
           </div>
         </label>
@@ -87,93 +97,101 @@
         <label class="privacy-toggle-label mt-2">
           <input type="checkbox" id="complaintIsPrivate" name="isPrivate" value="true" class="retro-checkbox" />
           <div>
-            <strong data-i18n="modals.confidentialLabel">Seal in Confidential Proctor Vault 🔒</strong>
+            <strong class="flex items-center gap-1.5" data-i18n="modals.confidentialLabel">
+              <span set:html={ICONS.lock}></span>
+              <span>Seal in Confidential Proctor Vault</span>
+            </strong>
             <p class="privacy-hint" data-i18n="modals.confidentialHint">For sensitive issues (ragging, personal harassment, exam disputes). Sent directly to the Proctor Office; not visible on public feed.</p>
           </div>
         </label>
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="retro-btn" id="cancelCreateModalBtn" data-i18n="modals.cancelBtn">Cancel</button>
-        <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink" id="submitComplaintBtn" data-i18n="modals.submitComplaintBtn">
-          🚀 SUBMIT COMPLAINT
+        <button type="button" class="retro-btn" id="cancelCreateModalBtn" data-i18n="modals.cancelBtn">
+          Cancel
+        </button>
+        <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink inline-flex items-center gap-2" id="submitComplaintBtn">
+          <span set:html={ICONS.send}></span>
+          <span data-i18n="modals.submitComplaintBtn">SUBMIT COMPLAINT</span>
         </button>
       </div>
     </form>
   </div>
 </dialog>
 
+<script>
+  const createModal = document.getElementById('createComplaintModal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('closeCreateModalBtn');
+  const cancelBtn = document.getElementById('cancelCreateModalBtn');
+
+  function closeModal() {
+    createModal?.close();
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+
+  // Close when clicking outside dialog backdrop
+  createModal?.addEventListener('click', (e) => {
+    const dialogDimensions = createModal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      createModal.close();
+    }
+  });
+</script>
+
 <style>
-  .retro-modal {
-    margin: auto;
-    border: none;
-    background: transparent;
-    padding: 1rem;
-    max-width: 620px;
-    width: 100%;
-  }
-  .retro-modal::backdrop {
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(2px);
-  }
-  .modal-window {
-    width: 100%;
-  }
-  .modal-close-btn {
-    background: var(--pastel-rose);
-    border: 1.5px solid var(--border-black);
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    font-weight: 900;
-    font-size: 0.9rem;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .modal-body {
-    padding: 1.25rem;
-    background: var(--card-bg);
-    max-height: calc(88dvh - 44px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
   .form-group {
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
   }
   .form-row {
     display: flex;
     gap: 1rem;
+    margin-bottom: 1.15rem;
+  }
+  .form-row .form-group {
+    margin-bottom: 0;
   }
   .form-group.half {
     flex: 1;
   }
   .form-label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin-bottom: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--border-black);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
   }
   .required {
-    color: #e11d48;
+    color: #ef4444;
   }
   .privacy-box {
-    background: var(--pastel-yellow);
-    border: var(--border-width) solid var(--border-black);
-    border-radius: 8px;
-    padding: 0.85rem;
+    background: #fdfaf6;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-md);
+    padding: 1rem;
     margin-bottom: 1.25rem;
-    box-shadow: 2px 2px 0px var(--border-black);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
   }
   .privacy-title {
-    font-family: var(--font-retro);
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--border-black);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed #d1d5db;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
   }
   .privacy-toggle-label {
     display: flex;
@@ -183,47 +201,39 @@
     font-size: 0.8rem;
   }
   .privacy-hint {
-    font-size: 0.72rem;
-    color: #4b5563;
-    margin-top: 0.15rem;
-    line-height: 1.3;
+    font-size: 0.7rem;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-top: 0.2rem;
   }
   .retro-checkbox {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--border-black);
-    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--pastel-pink);
+    border: 1.5px solid var(--border-black);
+    border-radius: 4px;
     margin-top: 2px;
+    cursor: pointer;
     flex-shrink: 0;
   }
   .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
-    border-top: var(--border-width) solid var(--border-black);
-    padding-top: 1rem;
+    margin-top: 0.75rem;
   }
 
   @media (max-width: 640px) {
-    .retro-modal {
-      padding: 0.5rem;
-    }
-    .modal-body {
-      padding: 1rem 0.85rem;
-    }
     .form-row {
       flex-direction: column;
-      gap: 0;
+      gap: 1rem;
     }
     .modal-actions {
-      flex-direction: column-reverse;
-      gap: 0.5rem;
+      flex-direction: column;
     }
-    .modal-actions .retro-btn {
+    .modal-actions button {
       width: 100%;
       justify-content: center;
-      padding: 0.7rem;
     }
   }
 </style>
-

@@ -1,12 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { ICONS } from '../lib/icons.js';
 ---
 
 <Layout title="Track Campus Complaint by ID — CampusFix | University of Barishal" currentPath="/track">
   <!-- Page Header -->
   <section class="page-intro-header text-center max-w-3xl mx-auto mb-6 sm:mb-8">
     <div class="inline-flex items-center gap-2 mb-2">
-      <span class="retro-badge" style="background: var(--pastel-yellow)" data-i18n="track.badge">⚡ INSTANT TICKET RADAR</span>
+      <span class="retro-badge inline-flex items-center gap-1.5" style="background: var(--pastel-yellow)" data-i18n="track.badge">
+        <span class="inline-flex items-center" set:html={ICONS.radar}></span> INSTANT TICKET RADAR
+      </span>
       <span class="cloud-badge text-xs">BU REAL-TIME SCAN</span>
     </div>
     <h1 class="text-2xl sm:text-4xl font-extrabold text-black tracking-tight mb-2" data-i18n="track.title">
@@ -22,7 +25,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="retro-titlebar yellow flex items-center justify-between">
       <span class="retro-title flex items-center gap-2 text-xs sm:text-sm">
         <span class="radar-ping-dot"></span>
-        <span>📡 COMPLAINT_RADAR_SCANNER.SYS</span>
+        <span class="inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.radar}></span> COMPLAINT_RADAR_SCANNER.SYS</span>
       </span>
       <div class="retro-controls">
         <span class="retro-ctrl-btn">_</span>
@@ -45,7 +48,7 @@ import Layout from '../layouts/Layout.astro';
           />
         </div>
         <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink h-12 px-6 justify-center flex items-center gap-2 text-sm" data-i18n="track.scanBtn">
-          <span>🚀</span>
+          <span class="inline-flex items-center" set:html={ICONS.search}></span>
           <span>SCAN TICKET STATUS</span>
         </button>
       </form>
@@ -53,21 +56,21 @@ import Layout from '../layouts/Layout.astro';
       <!-- Quick Demo Chips Bar -->
       <div class="quick-chips-section mt-5 pt-4 border-t border-gray-200">
         <div class="text-xs font-bold text-gray-500 mb-2.5 flex items-center gap-1.5" data-i18n="track.quickTicketsLabel">
-          <span>⚡</span>
+          <span class="inline-flex items-center" set:html={ICONS.zap}></span>
           <span>Quick Test Tickets:</span>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
           <button type="button" class="quick-chip chip-facilities" data-id="101">
-            <span class="chip-badge">#101</span> Water Filter Leaking <span class="chip-state">🔨 In Progress</span>
+            <span class="chip-badge">#101</span> Water Filter Leaking <span class="chip-state">In Progress</span>
           </button>
           <button type="button" class="quick-chip chip-mess" data-id="102">
-            <span class="chip-badge">#102</span> Canteen Hygiene <span class="chip-state">👀 Review</span>
+            <span class="chip-badge">#102</span> Canteen Hygiene <span class="chip-state">Review</span>
           </button>
           <button type="button" class="quick-chip chip-transport" data-id="103">
-            <span class="chip-badge">#103</span> Route 4 Bus Delay <span class="chip-state">✔ Resolved</span>
+            <span class="chip-badge">#103</span> Route 4 Bus Delay <span class="chip-state">Resolved</span>
           </button>
           <button type="button" class="quick-chip chip-safety" data-id="105">
-            <span class="chip-badge">#105</span> North Gate Streetlight <span class="chip-state">✔ Resolved</span>
+            <span class="chip-badge">#105</span> North Gate Streetlight <span class="chip-state">Resolved</span>
           </button>
         </div>
       </div>
@@ -91,8 +94,8 @@ import Layout from '../layouts/Layout.astro';
   <div id="trackResultContainer" class="hidden max-w-3xl mx-auto mb-12">
     <div class="retro-window result-window">
       <div class="retro-titlebar cyan flex items-center justify-between" id="resultTitlebar">
-        <span class="retro-title text-xs sm:text-sm" id="resultTitle">
-          📋 TICKET DOSSIER
+        <span class="retro-title text-xs sm:text-sm inline-flex items-center gap-1.5" id="resultTitle">
+          <span class="inline-flex items-center" set:html={ICONS.fileText}></span> TICKET DOSSIER
         </span>
         <div class="retro-controls">
           <span class="retro-ctrl-btn">_</span>
@@ -277,10 +280,12 @@ import Layout from '../layouts/Layout.astro';
 
     if (!ticket) {
       resultContainer.classList.remove('hidden');
-      if (resultTitle) resultTitle.textContent = isBn ? `⚠️ টিকিট #${toBengaliDigits(id)} পাওয়া যায়নি` : `⚠️ TICKET #${id} NOT FOUND`;
+      if (resultTitle) resultTitle.textContent = isBn ? `টিকিট #${toBengaliDigits(id)} পাওয়া যায়নি` : `TICKET #${id} NOT FOUND`;
       resultBody.innerHTML = `
         <div class="text-center py-10">
-          <div class="text-5xl mb-3">🕵️‍♂️</div>
+          <div class="w-12 h-12 rounded-full border-2 border-black bg-yellow-100 flex items-center justify-center mx-auto mb-3 text-black">
+            ${ICONS.search}
+          </div>
           <h4 class="font-extrabold text-lg mb-1.5 text-black">
             ${isBn ? `আইডি #${toBengaliDigits(id)} এর কোনো অভিযোগ পাওয়া যায়নি` : `No complaint ticket found with ID #${id}`}
           </h4>
@@ -288,11 +293,11 @@ import Layout from '../layouts/Layout.astro';
             ${isBn ? 'টিকিট নম্বরটি সঠিক কিনা পরীক্ষা করুন অথবা এটি কোনো গোপনীয় হুইসেলব্লোয়ার রিপোর্ট কিনা নিশ্চিত হোন।' : 'Please verify the ticket ID number or check if this report was sealed under confidential whistleblower status.'}
           </p>
           <div class="flex items-center justify-center gap-2 flex-wrap">
-            <a href="/" class="retro-btn retro-btn-pixel retro-btn-yellow text-xs">
-              📢 ${isBn ? 'উন্মুক্ত ফিড ব্রাউজ করুন' : 'Browse Public Feed'}
+            <a href="/" class="retro-btn retro-btn-pixel retro-btn-yellow text-xs inline-flex items-center gap-1.5">
+              ${ICONS.bullhorn} <span>${isBn ? 'উন্মুক্ত ফিড ব্রাউজ করুন' : 'Browse Public Feed'}</span>
             </a>
-            <button type="button" class="retro-btn retro-btn-sm" onclick="document.getElementById('trackInput')?.focus()">
-              🔄 ${isBn ? 'পুনরায় খুঁজুন' : 'Try Another ID'}
+            <button type="button" class="retro-btn retro-btn-sm inline-flex items-center gap-1.5" onclick="document.getElementById('trackInput')?.focus()">
+              ${ICONS.radar} <span>${isBn ? 'পুনরায় খুঁজুন' : 'Try Another ID'}</span>
             </button>
           </div>
         </div>
@@ -315,8 +320,8 @@ import Layout from '../layouts/Layout.astro';
     resultContainer.classList.remove('hidden');
     if (resultTitle) {
       resultTitle.textContent = isBn
-        ? `📋 টিকিট #${ticketIdStr} • ${catLabel}`
-        : `📋 TICKET #${ticket.id} • ${ticket.category.toUpperCase()}`;
+        ? `টিকিট #${ticketIdStr} • ${catLabel}`
+        : `TICKET #${ticket.id} • ${ticket.category.toUpperCase()}`;
     }
 
     resultBody.innerHTML = `
@@ -328,10 +333,10 @@ import Layout from '../layouts/Layout.astro';
               <span class="category-pill-sm font-bold text-xs" style="background: ${catMeta.color}; border: 1.5px solid var(--border-black); padding: 0.2rem 0.55rem; border-radius: 6px;">
                 ${catMeta.icon} ${catLabel}
               </span>
-              <span class="retro-badge text-xs font-bold priority-badge priority-${ticket.priority}">
-                ⚡ ${priLabel.toUpperCase()}
+              <span class="retro-badge text-xs font-bold priority-badge priority-${ticket.priority} inline-flex items-center gap-1">
+                ${ICONS.lightning} ${priLabel.toUpperCase()}
               </span>
-              ${ticket.visibility === 'private' ? '<span class="retro-badge" style="background: var(--pastel-rose)">🔒 ' + (isBn ? 'গোপনীয় ভল্ট' : 'CONFIDENTIAL') + '</span>' : ''}
+              ${ticket.visibility === 'private' ? '<span class="retro-badge inline-flex items-center gap-1" style="background: var(--pastel-rose)">' + ICONS.lock + ' ' + (isBn ? 'গোপনীয় ভল্ট' : 'CONFIDENTIAL') + '</span>' : ''}
             </div>
             <h2 class="font-extrabold text-xl sm:text-2xl text-black tracking-tight">${ticket.title}</h2>
           </div>
@@ -345,7 +350,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full border-2 border-black overflow-hidden bg-yellow-200 flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">
               ${ticket.isAnonymous
-                ? '<span class="text-base">🕶️</span>'
+                ? '<span class="inline-flex items-center">' + ICONS.userMask + '</span>'
                 : (ticket.author?.image
                     ? `<img src="${ticket.author.image}" alt="${ticket.author.name || 'Author'}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><span class="hidden font-bold">${(ticket.author?.name || 'S').charAt(0).toUpperCase()}</span>`
                     : `<span>${(ticket.author?.name || 'S').charAt(0).toUpperCase()}</span>`
@@ -355,7 +360,7 @@ import Layout from '../layouts/Layout.astro';
             <div>
               <div class="flex items-center gap-2">
                 <span class="font-extrabold text-xs sm:text-sm text-black">
-                  ${ticket.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student 🕶️') : (ticket.author?.name || (isBn ? 'শিক্ষার্থী' : 'Student'))}
+                  ${ticket.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student') : (ticket.author?.name || (isBn ? 'শিক্ষার্থী' : 'Student'))}
                 </span>
                 <span class="retro-badge text-[10px] py-0.5 px-1.5" style="background: ${ticket.isAnonymous ? 'var(--pastel-blue)' : 'var(--pastel-yellow)'}">
                   ${ticket.isAnonymous ? (isBn ? 'হুইসেলব্লোয়ার' : 'WHISTLEBLOWER') : (isBn ? 'অভিযোগকারী' : 'COMPLAINANT')}
@@ -385,20 +390,20 @@ import Layout from '../layouts/Layout.astro';
           </div>
 
           <div class="grid grid-cols-4 gap-2 text-center text-xs">
-            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg bg-emerald-200 font-bold shadow-sm">
-              <div class="text-sm mb-0.5">✔</div>
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg bg-emerald-200 font-bold shadow-sm flex flex-col items-center justify-center">
+              <div class="w-4 h-4 mb-1">${ICONS.check}</div>
               <span>${isBn ? '১. দাখিল' : '1. Submitted'}</span>
             </div>
-            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isReview || isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
-              <div class="text-sm mb-0.5">${isReview || isProgress || isResolved ? '✔' : '⏳'}</div>
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isReview || isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'} flex flex-col items-center justify-center">
+              <div class="w-4 h-4 mb-1">${isReview || isProgress || isResolved ? ICONS.check : ICONS.clock}</div>
               <span>${isBn ? '২. যাচাই' : '2. Triage'}</span>
             </div>
-            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
-              <div class="text-sm mb-0.5">${isProgress ? '🔨' : isResolved ? '✔' : '🔧'}</div>
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isProgress || isResolved ? 'bg-emerald-200 font-bold shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'} flex flex-col items-center justify-center">
+              <div class="w-4 h-4 mb-1">${isProgress ? ICONS.tool : isResolved ? ICONS.check : ICONS.tool}</div>
               <span>${isBn ? '৩. মেরামত' : '3. Repair'}</span>
             </div>
-            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isResolved ? 'bg-emerald-300 font-extrabold text-emerald-950 shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'}">
-              <div class="text-sm mb-0.5">${isResolved ? '🎉' : '🏁'}</div>
+            <div class="p-2 sm:p-2.5 border-2 border-black rounded-lg ${isResolved ? 'bg-emerald-300 font-extrabold text-emerald-950 shadow-sm' : 'bg-gray-100 text-gray-400 opacity-60'} flex flex-col items-center justify-center">
+              <div class="w-4 h-4 mb-1">${isResolved ? ICONS.shieldCheck : ICONS.flag}</div>
               <span>${isBn ? '৪. সমাধান' : '4. Resolved'}</span>
             </div>
           </div>
@@ -407,7 +412,7 @@ import Layout from '../layouts/Layout.astro';
         <!-- Issue Description Box -->
         <div class="p-4 sm:p-5 border-2 border-black rounded-xl bg-white shadow-neo-sm">
           <div class="font-bold text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <span>📄</span>
+            <span class="inline-flex items-center">${ICONS.fileText}</span>
             <span>${isBn ? 'অভিযোগের বিবরণ ও ভৌগোলিক অবস্থান' : 'COMPLAINT DETAILS & LOCATION'}</span>
           </div>
           <p class="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
@@ -422,7 +427,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="p-5 border-2 border-emerald-600 rounded-xl bg-emerald-50 text-emerald-950 shadow-neo-sm">
             <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
               <span class="font-mono text-xs font-extrabold flex items-center gap-1.5 text-emerald-800 uppercase tracking-wider">
-                <span>🛠️</span>
+                <span class="inline-flex items-center">${ICONS.shieldCheck}</span>
                 <span>${isBn ? 'যাচাইকৃত প্রক্টরিয়াল সমাধান সনদ:' : 'OFFICIAL VERIFIED RESOLUTION CERTIFICATE:'}</span>
               </span>
               ${ticket.resolvedAt ? '<span class="retro-badge text-[10px]" style="background: var(--pastel-mint)">' + (isBn ? formatBengaliDate(ticket.resolvedAt) : formatDate(ticket.resolvedAt)) + '</span>' : ''}
@@ -431,7 +436,7 @@ import Layout from '../layouts/Layout.astro';
               ${ticket.resolutionNote}
             </p>
             <div class="text-[11px] font-mono text-emerald-700 flex items-center gap-2">
-              <span>✍️ Verified By: University Maintenance & Proctorial Authority</span>
+              <span>Verified By: University Maintenance & Proctorial Authority</span>
             </div>
           </div>
         `
@@ -444,7 +449,7 @@ import Layout from '../layouts/Layout.astro';
             ? `
           <div class="pt-2">
             <h4 class="font-mono text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <span>⏱️</span>
+              <span class="inline-flex items-center">${ICONS.clock}</span>
               <span>${isBn ? 'মেরামত কার্যক্রম ও টেকনিশিয়ান লগ' : 'DISPATCH TIMELINE & TECHNICIAN LOGS'}</span>
             </h4>
             <div class="flex flex-col gap-2.5">
@@ -457,7 +462,7 @@ import Layout from '../layouts/Layout.astro';
                       <div class="w-6 h-6 rounded-full border border-black overflow-hidden bg-yellow-200 flex items-center justify-center text-[10px] flex-shrink-0">
                         ${t.authorImage
                           ? `<img src="${t.authorImage}" alt="${t.author}" class="w-full h-full object-cover" />`
-                          : (t.author ? t.author.charAt(0).toUpperCase() : '👤')
+                          : (t.author ? t.author.charAt(0).toUpperCase() : 'A')
                         }
                       </div>
                       <span>${t.author}</span>
@@ -479,18 +484,18 @@ import Layout from '../layouts/Layout.astro';
         <!-- Action Footer -->
         <div class="pt-4 border-t border-gray-200 flex items-center justify-between gap-3 flex-wrap">
           <div class="flex items-center gap-2 flex-wrap">
-            <button type="button" class="retro-btn retro-btn-sm card-upvote-btn" data-id="${ticket.id}">
-              <span>👍</span>
+            <button type="button" class="retro-btn retro-btn-sm card-upvote-btn inline-flex items-center gap-1.5" data-id="${ticket.id}">
+              <span class="inline-flex items-center">${ICONS.thumbsUp}</span>
               <span>${isBn ? '+১ আমিও ভুক্তভোগী' : '+1 Me Too'}</span>
               <span class="font-mono font-bold">(${upvotesStr})</span>
             </button>
-            <button type="button" class="retro-btn retro-btn-sm" id="shareTrackLinkBtn">
-              <span>🔗</span>
+            <button type="button" class="retro-btn retro-btn-sm inline-flex items-center gap-1.5" id="shareTrackLinkBtn">
+              <span class="inline-flex items-center">${ICONS.copy}</span>
               <span>${isBn ? 'লিংক কপি করুন' : 'Share Ticket'}</span>
             </button>
           </div>
-          <button type="button" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink open-create-modal-trigger">
-            <span>✉️</span>
+          <button type="button" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink open-create-modal-trigger inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center">${ICONS.plus}</span>
             <span>${isBn ? '+ নতুন অভিযোগ দাখিল' : '+ File New Issue'}</span>
           </button>
         </div>
@@ -503,7 +508,7 @@ import Layout from '../layouts/Layout.astro';
       navigator.clipboard.writeText(shareUrl);
       const toast = document.getElementById('toast');
       if (toast) {
-        toast.textContent = isBn ? '✔ টিকিট লিংক কপি করা হয়েছে' : '✔ Ticket link copied to clipboard';
+        toast.textContent = isBn ? 'টিকিট লিংক কপি করা হয়েছে' : 'Ticket link copied to clipboard';
         toast.className = 'retro-toast show';
         setTimeout(() => (toast.className = 'retro-toast'), 2500);
       }

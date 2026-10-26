@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { ICONS } from '../lib/icons.js';
 
 const emergencyContacts = [
   {
@@ -13,7 +14,7 @@ const emergencyContacts = [
     descBn: 'নবীন শিক্ষার্থীদের হয়রানি, র‍্যাগিং ও ভয়ভীতি প্রদর্শনের বিরুদ্ধে সার্বক্ষণিক গোপনীয় হেল্পলাইন। তাৎক্ষণিক মোবাইল টিম পাঠানো হয়।',
     color: 'rose',
     tag: '24/7 RAPID TRIAGE',
-    icon: '🛡️',
+    icon: ICONS.shieldAlert,
   },
   {
     role: 'Chief Proctor Office & Security',
@@ -26,7 +27,7 @@ const emergencyContacts = [
     descBn: 'ক্যাম্পাস শৃঙ্খলা, বহিরাগতদের অনধিকার প্রবেশ রোধ, সীমানা পাহারা ও বিশ্ববিদ্যালয়ের আইন-শৃঙ্খলা রক্ষা।',
     color: 'yellow',
     tag: 'SECURITY & LAW',
-    icon: '🏛️',
+    icon: ICONS.building,
   },
   {
     role: 'Hall Provost & Wardens Council',
@@ -39,7 +40,7 @@ const emergencyContacts = [
     descBn: 'আবাসিক সিট সমস্যা, গভীর রাতে বিদ্যুৎ বা পানি সরবরাহ বন্ধ হওয়া ও ডাইনিং সংক্রান্ত জরুরি ব্যবস্থাপনা।',
     color: 'mint',
     tag: 'RESIDENTIAL',
-    icon: '🛏️',
+    icon: ICONS.home,
   },
   {
     role: 'Medical Center & Ambulance',
@@ -52,7 +53,7 @@ const emergencyContacts = [
     descBn: 'জরুরি প্রাথমিক চিকিৎসা, অক্সিজেন সাপোর্ট, সার্বক্ষণিক অ্যাম্বুলেন্স প্রেরণ ও চিকিৎসক সেবা।',
     color: 'pink',
     tag: '24/7 HEALTH & AMBULANCE',
-    icon: '🩺',
+    icon: ICONS.phoneAlert,
   },
   {
     role: 'Campus Transport Directorate',
@@ -65,7 +66,7 @@ const emergencyContacts = [
     descBn: 'ক্যাম্পাস বাসের শিডিউল সমস্যা, অতিরিক্ত ভিড় নিরসনে অতিরিক্ত বাস প্রেরণ ও বাসে ফেলে যাওয়া সামগ্রী উদ্ধার।',
     color: 'cyan',
     tag: 'TRANSIT OPERATIONS',
-    icon: '🚌',
+    icon: ICONS.bus,
   },
   {
     role: 'Counseling & Mental Wellbeing',
@@ -78,7 +79,7 @@ const emergencyContacts = [
     descBn: 'পড়াশোনার চাপ, বিষণ্ণতা ও ব্যক্তিগত সমস্যা নিরসনে অভিজ্ঞ মনোবিজ্ঞানীদের সম্পূর্ণ গোপনীয় কাউন্সেলিং।',
     color: 'lavender',
     tag: 'CONFIDENTIAL SUPPORT',
-    icon: '🧠',
+    icon: ICONS.shieldCheck,
   },
 ];
 ---
@@ -87,8 +88,8 @@ const emergencyContacts = [
   <!-- Page Header -->
   <section class="page-intro-header text-center max-w-3xl mx-auto mb-6 sm:mb-8">
     <div class="inline-flex items-center gap-2 mb-2">
-      <span class="retro-badge" style="background: var(--pastel-rose); color: #881337" data-i18n="emergency.badge">
-        🚨 24/7 RAPID TRIAGE
+      <span class="retro-badge inline-flex items-center gap-1.5" style="background: var(--pastel-rose); color: #881337" data-i18n="emergency.badge">
+        <span class="inline-flex items-center" set:html={ICONS.phoneAlert}></span> 24/7 RAPID TRIAGE
       </span>
       <span class="cloud-badge text-xs">OFFICIAL HOTLINES</span>
     </div>
@@ -106,7 +107,7 @@ const emergencyContacts = [
       <div class="retro-titlebar rose flex items-center justify-between">
         <span class="retro-title flex items-center gap-2 text-xs sm:text-sm">
           <span class="sos-beacon"></span>
-          <span>🚨 CRISIS_RAPID_DISPATCH_CONSOLE.SYS</span>
+          <span class="inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.phoneAlert}></span> CRISIS_RAPID_DISPATCH_CONSOLE.SYS</span>
         </span>
         <span class="cloud-badge text-xs font-bold bg-white">STATUS: ACTIVE</span>
       </div>
@@ -114,8 +115,8 @@ const emergencyContacts = [
       <div class="p-5 sm:p-7 bg-gradient-to-br from-rose-50 via-white to-orange-50">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div class="flex-1">
-            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-red-100 border border-red-300 text-red-800 text-xs font-extrabold mb-2" data-i18n="emergency.sosBannerTitle">
-              <span>⚠️</span> FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-red-100 border border-red-300 text-red-800 text-xs font-extrabold mb-2" data-i18n="emergency.sosBannerTitle">
+              <span class="inline-flex items-center" set:html={ICONS.shieldAlert}></span> FACING AN IMMEDIATE SAFETY THREAT OR RAGGING?
             </div>
             <p class="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium" data-i18n="emergency.sosBannerDesc">
               Do not wait for standard ticket processing. Call the Proctorial Mobile Patrol immediately or file a Sealed Confidential Grievance.
@@ -128,14 +129,14 @@ const emergencyContacts = [
               class="retro-btn retro-btn-pixel retro-btn-pink h-12 px-6 flex items-center justify-center gap-2 font-extrabold text-sm"
               data-i18n="emergency.sosHotlineBtn"
             >
-              <span>📞</span>
+              <span class="inline-flex items-center" set:html={ICONS.phoneAlert}></span>
               <span>CALL: +880-1700-BU-HELP</span>
             </a>
             <button
               type="button"
               class="retro-btn retro-btn-pixel retro-btn-yellow h-12 px-5 flex items-center justify-center gap-2 font-bold text-xs open-create-modal-trigger"
             >
-              <span>🔒</span>
+              <span class="inline-flex items-center" set:html={ICONS.lock}></span>
               <span>FILE CONFIDENTIAL TICKET</span>
             </button>
           </div>
@@ -151,7 +152,7 @@ const emergencyContacts = [
         <!-- Titlebar with Department Color -->
         <div class={`retro-titlebar ${contact.color} flex items-center justify-between`}>
           <span class="retro-title text-xs flex items-center gap-1.5 font-bold">
-            <span>{contact.icon}</span>
+            <span class="inline-flex items-center" set:html={contact.icon}></span>
             <span>{contact.tag}</span>
           </span>
           <div class="retro-controls">
@@ -172,8 +173,8 @@ const emergencyContacts = [
             <p class="text-xs text-gray-600 leading-relaxed mb-3">
               {contact.desc}
             </p>
-            <div class="text-[11px] font-mono text-gray-500 flex items-center gap-1 mb-4 bg-gray-50 p-2 rounded border border-gray-200">
-              <span>📍</span>
+            <div class="text-[11px] font-mono text-gray-500 flex items-center gap-1.5 mb-4 bg-gray-50 p-2 rounded border border-gray-200">
+              <span class="inline-flex items-center" set:html={ICONS.building}></span>
               <span>{contact.ext}</span>
             </div>
           </div>
@@ -189,16 +190,16 @@ const emergencyContacts = [
                 class="retro-btn retro-btn-sm retro-btn-pink font-bold text-xs flex items-center gap-1"
                 title="Direct Phone Call"
               >
-                <span>📞</span>
+                <span class="inline-flex items-center" set:html={ICONS.phoneAlert}></span>
                 <span>Call</span>
               </a>
               <button
                 type="button"
-                class="copy-phone-btn retro-btn retro-btn-sm text-xs font-bold"
+                class="copy-phone-btn retro-btn retro-btn-sm text-xs font-bold inline-flex items-center gap-1"
                 data-phone={contact.hotline}
                 title="Copy Number"
               >
-                <span>📋</span>
+                <span class="inline-flex items-center" set:html={ICONS.copy}></span>
                 <span>Copy</span>
               </button>
             </div>
@@ -212,7 +213,7 @@ const emergencyContacts = [
   <section class="retro-window max-w-4xl mx-auto mb-12 charter-window">
     <div class="retro-titlebar mint flex items-center justify-between">
       <span class="retro-title flex items-center gap-2 text-xs sm:text-sm font-bold">
-        <span>📜</span>
+        <span class="inline-flex items-center" set:html={ICONS.fileText}></span>
         <span>UNIVERSITY_OF_BARISHAL_STUDENT_CHARTER.DOC</span>
       </span>
       <span class="cloud-badge text-xs">OFFICIAL POLICY</span>
@@ -361,7 +362,7 @@ const emergencyContacts = [
       if (phone) {
         navigator.clipboard.writeText(phone);
         const originalText = btn.innerHTML;
-        btn.innerHTML = '<span>✔</span><span>Copied!</span>';
+        btn.innerHTML = '<span>Copied!</span>';
         btn.classList.add('bg-emerald-200');
         setTimeout(() => {
           btn.innerHTML = originalText;

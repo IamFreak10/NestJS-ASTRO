@@ -169,8 +169,8 @@ import VaultEmptyState from '../components/vault/VaultEmptyState.astro';
           <span class="demo-banner-tag">PREVIEW MODE</span>
           <span class="demo-banner-text">Displaying sample student grievance cards. Log in with your university account to access live database tickets.</span>
         </div>
-        <button type="button" class="retro-btn retro-btn-sm retro-btn-yellow" onclick="document.getElementById('authModal').showModal()">
-          🔑 Sign In
+        <button type="button" class="retro-btn retro-btn-sm retro-btn-yellow inline-flex items-center gap-1.5" onclick="document.getElementById('authModal').showModal()">
+          ${ICONS.key} Sign In
         </button>
       `;
       const hero = document.querySelector('.vault-hero-section');
@@ -281,7 +281,7 @@ import VaultEmptyState from '../components/vault/VaultEmptyState.astro';
                 <div class="vault-author-badge">
                   <div class="vault-author-avatar-wrap ${c.isAnonymous ? 'anonymous-avatar' : ''}">
                     ${c.isAnonymous
-                      ? '<span class="vault-author-icon">🕶️</span>'
+                      ? `<span class="vault-author-icon inline-flex items-center">${ICONS.userMask}</span>`
                       : (c.author?.image
                           ? `<img src="${c.author.image}" alt="${c.author.name || 'Author'}" class="vault-author-avatar-img" />`
                           : `<span class="vault-author-initial">${(c.author?.name || 'S').charAt(0).toUpperCase()}</span>`
@@ -290,7 +290,7 @@ import VaultEmptyState from '../components/vault/VaultEmptyState.astro';
                   </div>
                   <div class="vault-author-meta">
                     <span class="vault-author-name">
-                      ${c.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student 🕶️') : (c.author?.name || 'Student')}
+                      ${c.isAnonymous ? (isBn ? 'বেনামি শিক্ষার্থী' : 'Anonymous Student') : (c.author?.name || 'Student')}
                     </span>
                     <span class="vault-author-sub">
                       ${c.isAnonymous
@@ -344,7 +344,7 @@ import VaultEmptyState from '../components/vault/VaultEmptyState.astro';
                         data-id="${c.id}"
                         title="Toggle +1 Me Too Upvote"
                       >
-                        <span class="upvote-icon">👍</span>
+                        <span class="upvote-icon inline-flex items-center">${ICONS.thumbsUp}</span>
                         <span class="upvote-label">${c.hasUpvoted ? (isBn ? 'সমর্থিত' : 'Upvoted') : (isBn ? '+১ ভুক্তভোগী' : 'Me Too')}</span>
                         <span class="upvote-count font-mono font-bold">(${upvotesStr})</span>
                       </button>

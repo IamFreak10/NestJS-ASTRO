@@ -6,6 +6,7 @@ import ComplaintCard from '../components/feed/ComplaintCard.astro';
 import HowItWorks from '../components/feed/HowItWorks.astro';
 import FAQSection from '../components/feed/FAQSection.astro';
 import { SAMPLE_COMPLAINTS } from '../services/sampleData.js';
+import { ICONS } from '../lib/icons.js';
 import type { Complaint, ComplaintCategory } from '../types/complaint.js';
 
 const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
@@ -90,23 +91,26 @@ const stats = {
 
       <!-- Action Button Group -->
       <div class="hero-action-row">
-        <button class="retro-btn retro-btn-pixel retro-btn-pink hero-btn-lg open-create-modal-trigger" data-i18n="hero.fileBtn">
-          ✉️ + FILE A COMPLAINT
+        <button class="retro-btn retro-btn-pixel retro-btn-pink hero-btn-lg open-create-modal-trigger inline-flex items-center justify-center gap-2">
+          <span class="inline-flex items-center" set:html={ICONS.plus}></span>
+          <span data-i18n="hero.fileBtn">FILE A COMPLAINT</span>
         </button>
-        <a href="/track" class="retro-btn retro-btn-pixel retro-btn-yellow hero-btn-lg" data-i18n="hero.trackBtn">
-          🔎 TRACK TICKET BY ID
+        <a href="/track" class="retro-btn retro-btn-pixel retro-btn-yellow hero-btn-lg inline-flex items-center justify-center gap-2">
+          <span class="inline-flex items-center" set:html={ICONS.search}></span>
+          <span data-i18n="hero.trackBtn">TRACK TICKET BY ID</span>
         </a>
-        <a href="/emergency" class="retro-btn hero-btn-lg emergency-hero-btn" style="background: var(--pastel-rose); color: #881337" data-i18n="hero.emergencyBtn">
-          🚨 Emergency Hotlines
+        <a href="/emergency" class="retro-btn hero-btn-lg emergency-hero-btn inline-flex items-center justify-center gap-2" style="background: var(--pastel-rose); color: #881337">
+          <span class="inline-flex items-center" set:html={ICONS.phoneAlert}></span>
+          <span data-i18n="hero.emergencyBtn">Emergency Hotlines</span>
         </a>
       </div>
 
       <!-- Quick Trust Indicators -->
       <div class="hero-trust-bar">
-        <span class="trust-pill">⚡ &lt; 2h Triage Response</span>
-        <span class="trust-pill">🕶️ 100% Anonymous Option</span>
-        <span class="trust-pill">🛡️ Zero-Tolerance Ragging</span>
-        <span class="trust-pill">✔ Verified Technician Sign-off</span>
+        <span class="trust-pill inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.zap}></span> &lt; 2h Triage Response</span>
+        <span class="trust-pill inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.userMask}></span> 100% Anonymous Option</span>
+        <span class="trust-pill inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.shieldAlert}></span> Zero-Tolerance Ragging</span>
+        <span class="trust-pill inline-flex items-center gap-1.5"><span class="inline-flex items-center" set:html={ICONS.shieldCheck}></span> Verified Technician Sign-off</span>
       </div>
     </div>
   </section>
@@ -129,25 +133,26 @@ const stats = {
   <section class="complaints-feed-section">
     <div class="feed-section-header">
       <div class="header-left">
-        <h3 class="feed-title">
-          📌 Active Campus Reports
+        <h3 class="feed-title inline-flex items-center gap-2">
+          <span class="inline-flex items-center text-black" set:html={ICONS.bullhorn}></span>
+          Active Campus Reports
         </h3>
         <span class="cloud-badge feed-count-pill">{complaints.length} ISSUES FOUND</span>
       </div>
       <div class="header-right text-xs text-gray-500 font-medium">
-        Sorted by <strong>Upvotes & Recency</strong> • Click <strong>🔍 Timeline</strong> to view repair log
+        Sorted by <strong>Upvotes & Recency</strong> • Click <strong>Timeline</strong> to view repair log
       </div>
     </div>
 
     {complaints.length === 0 ? (
       <div class="neo-card empty-state-box">
-        <span class="empty-icon text-4xl block mb-2">🦖</span>
+        <div class="empty-icon inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-black bg-yellow-100 mx-auto mb-3" set:html={ICONS.search}></div>
         <h4 class="font-extrabold text-base mb-1">No complaints found in this category!</h4>
         <p class="text-xs text-gray-500 max-w-sm mx-auto mb-4">
           Everything in this department seems to be running smoothly. Facing a maintenance issue?
         </p>
-        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink">
-          ✉️ + FILE FIRST COMPLAINT
+        <button onclick="document.getElementById('createComplaintModal').showModal()" class="retro-btn retro-btn-pixel retro-btn-pink inline-flex items-center gap-2 mx-auto">
+          <span class="inline-flex items-center" set:html={ICONS.plus}></span> FILE FIRST COMPLAINT
         </button>
       </div>
     ) : (

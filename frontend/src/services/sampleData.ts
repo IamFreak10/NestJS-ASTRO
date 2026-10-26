@@ -3,7 +3,7 @@ import type { Complaint } from '../types/complaint.js';
 export const SAMPLE_COMPLAINTS: Complaint[] = [
   {
     id: 101,
-    title: '🏢 Hall 3 (South Wing) 4th Floor Water Filter Leaking & Low Pressure',
+    title: 'Hall 3 (South Wing) 4th Floor Water Filter Leaking & Low Pressure',
     description:
       'The central drinking water purifier on the 4th floor has been leaking continuously since Tuesday morning. Low water pressure is forcing 120+ residents to carry buckets down to the 2nd floor.',
     category: 'facilities',
@@ -44,7 +44,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
   },
   {
     id: 102,
-    title: '🛏️ Central Canteen Lunch Hygiene & Cold Food Complaint',
+    title: 'Central Canteen Lunch Hygiene & Cold Food Complaint',
     description:
       'Several resident students reported undercooked chicken and cold rice served during lunch on Monday. Water cups on dining tables were not properly sanitized. Requesting urgent food safety inspection.',
     category: 'hostel_canteen',
@@ -59,7 +59,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
     updatedAt: new Date(Date.now() - 3600 * 1000 * 6).toISOString(),
     author: {
       id: null,
-      name: 'Anonymous Student 🕶️',
+      name: 'Anonymous Student',
       department: null,
       image: null,
     },
@@ -77,7 +77,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
   },
   {
     id: 103,
-    title: '🚌 Route 4 Campus Bus Overcrowding & Morning Delay (8:15 AM)',
+    title: 'Route 4 Campus Bus Overcrowding & Morning Delay (8:15 AM)',
     description:
       'Route 4 bus from Chawkbazar to campus arrives 25 minutes late consistently, causing students to miss 9:00 AM lab attendance. The bus is dangerously overloaded with students standing on footboards.',
     category: 'transport',
@@ -111,7 +111,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
   },
   {
     id: 104,
-    title: '📚 Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently',
+    title: 'Central Library 3rd Floor Wi-Fi Router Disconnecting Frequently',
     description:
       'The access point "BU-STUDENT-LIB-03" drops connection every 10-15 minutes, interrupting digital resource access for midterm research students. Signal strength fluctuates severely.',
     category: 'academics',
@@ -134,7 +134,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
   },
   {
     id: 105,
-    title: '🛡️ Streetlight Outage & Ragging Patrol Request at North Boundary Gate',
+    title: 'Streetlight Outage & Ragging Patrol Request at North Boundary Gate',
     description:
       'Two high-pressure sodium street lamps near the botanical garden walkway have been dead for a week. Freshers reported intimidation attempts around 9:30 PM. Urgent mobile proctor patrol needed.',
     category: 'safety_bullying',
@@ -150,7 +150,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
     updatedAt: new Date(Date.now() - 3600 * 1000 * 12).toISOString(),
     author: {
       id: null,
-      name: 'Anonymous Student 🕶️',
+      name: 'Anonymous Student',
       department: null,
       image: null,
     },
@@ -158,7 +158,7 @@ export const SAMPLE_COMPLAINTS: Complaint[] = [
   },
   {
     id: 106,
-    title: '📑 Semester 5 Grade Sheet Discrepancy Correction Desk Delay',
+    title: 'Semester 5 Grade Sheet Discrepancy Correction Desk Delay',
     description:
       'The exam controller office counter #3 is only open for 45 minutes a day, creating an unruly queue of 80+ students trying to resolve course credit mismatches before registration deadline.',
     category: 'administration',

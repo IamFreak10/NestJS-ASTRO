@@ -1,5 +1,6 @@
 ---
 import type { Ticket } from '../../types/ticket.js';
+import { ICONS } from '../../lib/icons.js';
 
 interface Props {
   ticket: Ticket;
@@ -35,8 +36,8 @@ const titlebarColor =
 >
   <!-- Retro Titlebar -->
   <div class={`retro-titlebar ${titlebarColor}`}>
-    <span class="retro-title">
-      <span>✉️</span> TICKET_#{ticket.id}.TXT
+    <span class="retro-title inline-flex items-center gap-1.5">
+      <span class="inline-flex items-center" set:html={ICONS.fileText}></span> TICKET_#{ticket.id}.TXT
     </span>
     <div class="retro-controls">
       <span class="retro-ctrl-btn">_</span>
@@ -52,7 +53,7 @@ const titlebarColor =
         ● {ticket.status}
       </span>
       <span class={`retro-badge badge-priority-${ticket.priority}`}>
-        ★ {ticket.priority}
+        {ticket.priority.toUpperCase()}
       </span>
     </div>
 
@@ -62,36 +63,36 @@ const titlebarColor =
 
   <!-- Footer Actions -->
   <div class="ticket-footer">
-    <div class="ticket-meta">
-      <span class="date-icon">📅</span>
+    <div class="ticket-meta flex items-center gap-1.5">
+      <span class="date-icon inline-flex items-center" set:html={ICONS.clock}></span>
       <time class="ticket-date">{formattedDate}</time>
     </div>
 
     <div class="ticket-actions">
       {ticket.status === 'open' && (
         <button 
-          class="retro-btn retro-btn-sm retro-btn-yellow btn-edit"
+          class="retro-btn retro-btn-sm retro-btn-yellow btn-edit inline-flex items-center gap-1"
           data-id={ticket.id}
           data-subject={ticket.subject}
           data-description={ticket.description || ''}
           data-priority={ticket.priority}
         >
-          ✏️ Edit
+          <span class="inline-flex items-center" set:html={ICONS.edit}></span> Edit
         </button>
       )}
 
       {ticket.status === 'open' && (
         <button 
-          class="retro-btn retro-btn-sm retro-btn-danger btn-close"
+          class="retro-btn retro-btn-sm retro-btn-danger btn-close inline-flex items-center gap-1"
           data-id={ticket.id}
         >
-          ✕ Close
+          <span class="inline-flex items-center" set:html={ICONS.close}></span> Close
         </button>
       )}
 
       {ticket.status === 'closed' && (
-        <span class="closed-label">
-          ✔ RESOLVED
+        <span class="closed-label inline-flex items-center gap-1">
+          <span class="inline-flex items-center" set:html={ICONS.check}></span> RESOLVED
         </span>
       )}
     </div>

@@ -1,4 +1,6 @@
 ---
+import { ICONS } from '../../lib/icons.js';
+
 interface Props {
   activeCategory?: string;
 }
@@ -6,27 +8,29 @@ interface Props {
 const { activeCategory = 'all' } = Astro.props;
 
 const categories = [
-  { id: 'all', label: 'All Issues 📋' },
-  { id: 'facilities', label: 'Facilities 🏢' },
-  { id: 'hostel_canteen', label: 'Hostel & Mess 🛏️' },
-  { id: 'transport', label: 'Transport 🚌' },
-  { id: 'academics', label: 'Academics 📚' },
-  { id: 'safety_bullying', label: 'Safety & Ragging 🛡️' },
-  { id: 'administration', label: 'Admin 📑' },
+  { id: 'all', label: 'All Issues', icon: ICONS.all },
+  { id: 'facilities', label: 'Facilities', icon: ICONS.building },
+  { id: 'hostel_canteen', label: 'Hostel & Mess', icon: ICONS.home },
+  { id: 'transport', label: 'Transport', icon: ICONS.bus },
+  { id: 'academics', label: 'Academics', icon: ICONS.book },
+  { id: 'safety_bullying', label: 'Safety & Ragging', icon: ICONS.shieldAlert },
+  { id: 'administration', label: 'Admin', icon: ICONS.fileText },
 ];
 ---
 
 <div class="filter-toolbar neo-card">
-  <!-- Left: Category Pills -->
-  <div class="category-pills-row">
+  <!-- Left: Category Pills (Horizontal scrollable on mobile) -->
+  <div class="category-pills-row" role="tablist" aria-label="Complaint Categories">
     {categories.map((cat) => (
       <a
         href={cat.id === 'all' ? '/' : `/?category=${cat.id}`}
         class={`category-chip ${activeCategory === cat.id ? 'active' : ''}`}
         data-category={cat.id}
-        data-i18n={`categories.${cat.id}`}
+        role="tab"
+        aria-selected={activeCategory === cat.id}
       >
-        {cat.label}
+        <span class="tab-icon" set:html={cat.icon}></span>
+        <span class="tab-label" data-i18n={`categories.${cat.id}`}>{cat.label}</span>
       </a>
     ))}
   </div>
@@ -37,13 +41,14 @@ const categories = [
       <input type="hidden" name="category" value={activeCategory} />
     )}
     <div class="search-input-wrap">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon" set:html={ICONS.search}></span>
       <input
         type="text"
         name="search"
         placeholder="Search keywords, rooms, buses..."
         data-i18n-placeholder="feed.searchPlaceholder"
         class="search-input"
+        aria-label="Search complaints"
       />
     </div>
   </form>
@@ -51,79 +56,126 @@ const categories = [
 
 <style>
   .filter-toolbar {
-    padding: 0.85rem 1.25rem;
+    padding: 0.75rem 1rem;
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
+    gap: 1rem;
     background: #ffffff;
     border-radius: var(--radius-lg);
   }
+
   .category-pills-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
     overflow-x: auto;
-    padding-bottom: 2px;
+    padding-bottom: 3px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    flex: 1;
   }
+
   .category-pills-row::-webkit-scrollbar {
     display: none;
   }
+
   .category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     text-decoration: none;
     font-size: 0.78rem;
     font-weight: 700;
-    padding: 0.4rem 0.85rem;
+    padding: 0.45rem 0.8rem;
     border-radius: var(--radius-pill);
+    background: #fdfaf6;
     border: 1.5px solid var(--border-black);
-    background: #f8fafc;
     color: var(--border-black);
+    box-shadow: 1px 1px 0px var(--border-black);
+    transition: all 0.12s ease;
     white-space: nowrap;
-    transition: all 0.15s ease;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
   }
+
   .category-chip:hover {
     background: var(--pastel-yellow);
     transform: translateY(-1px);
-    box-shadow: 1.5px 1.5px 0px var(--border-black);
-  }
-  .category-chip.active {
-    background: var(--pastel-lavender);
-    border-color: var(--border-black);
     box-shadow: 2px 2px 0px var(--border-black);
   }
-  .filter-search-form {
-    min-width: 260px;
+
+  .category-chip:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 0px var(--border-black);
   }
+
+  .category-chip.active {
+    background: var(--border-black);
+    color: #ffffff;
+    box-shadow: 2px 2px 0px var(--pastel-yellow);
+  }
+
+  .tab-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filter-search-form {
+    flex-shrink: 0;
+    width: 260px;
+  }
+
   .search-input-wrap {
     position: relative;
     display: flex;
     align-items: center;
   }
+
   .search-icon {
     position: absolute;
     left: 0.75rem;
-    font-size: 0.85rem;
     pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    color: #6b7280;
   }
+
   .search-input {
     width: 100%;
-    padding: 0.45rem 0.85rem 0.45rem 2.2rem;
-    font-size: 0.82rem;
+    padding: 0.45rem 0.75rem 0.45rem 2.2rem;
+    border: 1.5px solid var(--border-black);
     border-radius: var(--radius-pill);
-    box-shadow: 1.5px 1.5px 0px var(--border-black);
+    font-size: 0.78rem;
+    font-weight: 600;
+    outline: none;
+    background: #ffffff;
+    transition: box-shadow 0.15s ease;
   }
-  @media (max-width: 900px) {
+
+  .search-input:focus {
+    box-shadow: 2px 2px 0px var(--border-black);
+    border-color: var(--border-black);
+  }
+
+  @media (max-width: 768px) {
     .filter-toolbar {
       flex-direction: column;
       align-items: stretch;
-      padding: 1rem;
-      gap: 1rem;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
     }
+
     .filter-search-form {
-      min-width: 100%;
+      width: 100%;
+    }
+
+    .category-chip {
+      font-size: 0.74rem;
+      padding: 0.4rem 0.7rem;
     }
   }
 </style>

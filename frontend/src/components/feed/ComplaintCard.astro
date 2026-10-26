@@ -1,5 +1,6 @@
 ---
 import type { Complaint } from '../../types/complaint.js';
+import { ICONS } from '../../lib/icons.js';
 
 interface Props {
   complaint: Complaint;
@@ -17,16 +18,26 @@ const categoryColors: Record<string, string> = {
 };
 
 const categoryLabels: Record<string, string> = {
-  facilities: '🏢 Facilities',
-  hostel_canteen: '🛏️ Hostel & Mess',
-  transport: '🚌 Transport',
-  academics: '📚 Academics',
-  safety_bullying: '🛡️ Safety & Anti-Ragging',
-  administration: '📑 Administration',
+  facilities: 'Facilities',
+  hostel_canteen: 'Hostel & Mess',
+  transport: 'Transport',
+  academics: 'Academics',
+  safety_bullying: 'Safety & Anti-Ragging',
+  administration: 'Administration',
+};
+
+const categoryIcons: Record<string, string> = {
+  facilities: ICONS.building,
+  hostel_canteen: ICONS.home,
+  transport: ICONS.bus,
+  academics: ICONS.book,
+  safety_bullying: ICONS.shieldAlert,
+  administration: ICONS.fileText,
 };
 
 const categoryColor = categoryColors[complaint.category] || 'var(--pastel-cyan)';
 const categoryLabel = categoryLabels[complaint.category] || complaint.category;
+const categoryIcon = categoryIcons[complaint.category] || ICONS.building;
 
 const isResolved = complaint.status === 'resolved';
 
@@ -43,29 +54,33 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     <div class="card-top-row">
       <div class="badge-cluster">
         <span class="category-pill" style={`background: ${categoryColor}`} data-category={complaint.category}>
-          {categoryLabel}
+          <span class="pill-icon" set:html={categoryIcon}></span>
+          <span>{categoryLabel}</span>
         </span>
         <span class={`retro-badge priority-badge priority-${complaint.priority}`} data-priority={complaint.priority}>
-          ⚡ {complaint.priority.toUpperCase()}
+          <span class="pill-icon" set:html={ICONS.zap}></span>
+          <span>{complaint.priority.toUpperCase()}</span>
         </span>
         {complaint.visibility === 'private' && (
           <span class="retro-badge badge-private" data-i18n="vault.confidential">
-            🔒 CONFIDENTIAL
+            <span class="pill-icon" set:html={ICONS.lock}></span>
+            <span>CONFIDENTIAL</span>
           </span>
         )}
       </div>
 
       <!-- Status Stamp -->
       <div class={`status-stamp stamp-${complaint.status}`} data-status={complaint.status}>
-        {complaint.status.replace('_', ' ').toUpperCase()}
-        {isResolved && ' ✔'}
+        {isResolved && <span class="pill-icon mr-1" set:html={ICONS.check}></span>}
+        <span>{complaint.status.replace('_', ' ').toUpperCase()}</span>
       </div>
     </div>
 
     <!-- Complaint Title & Description -->
     <div class="card-main-content">
       <h3 class="complaint-card-title">
-        <span class="ticket-id-tag">#{complaint.id}</span> {complaint.title}
+        <span class="ticket-id-tag">#{complaint.id}</span>
+        <span class="title-text">{complaint.title}</span>
       </h3>
       <p class="complaint-card-desc">{complaint.description}</p>
     </div>
@@ -74,7 +89,10 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     {complaint.resolutionNote && (
       <div class="resolution-callout">
         <div class="res-header">
-          <span class="res-tag">🛠️ OFFICIAL VERIFIED FIX:</span>
+          <span class="res-tag">
+            <span set:html={ICONS.shieldCheck}></span>
+            <span>OFFICIAL VERIFIED FIX:</span>
+          </span>
           {complaint.resolvedAt && (
             <span class="res-date">{new Date(complaint.resolvedAt).toLocaleDateString()}</span>
           )}
@@ -89,7 +107,7 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
         {complaint.isAnonymous ? (
           <div class="author-profile-group">
             <div class="author-avatar-wrap anonymous-avatar" title="Whistleblower identity protected">
-              <span class="avatar-icon">🕶️</span>
+              <span class="avatar-icon" set:html={ICONS.userMask}></span>
             </div>
             <div class="author-text-col">
               <span class="author-tag anonymous" data-i18n="card.anonymousAuthor">
@@ -101,7 +119,7 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
         ) : (
           <div class="author-profile-group">
             <div class="author-avatar-wrap">
-              {complaint.author.image ? (
+              {complaint.author?.image ? (
                 <>
                   <img
                     src={complaint.author.image}
@@ -115,14 +133,14 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
                 </>
               ) : (
                 <span class="author-avatar-fallback">
-                  {complaint.author.name ? complaint.author.name.charAt(0).toUpperCase() : 'S'}
+                  {complaint.author?.name ? complaint.author.name.charAt(0).toUpperCase() : 'S'}
                 </span>
               )}
             </div>
             <div class="author-text-col">
               <span class="author-tag verified">
-                {complaint.author.name}
-                {complaint.author.department && <small class="author-dept">({complaint.author.department})</small>}
+                {complaint.author?.name || 'Student'}
+                {complaint.author?.department && <small class="author-dept">({complaint.author.department})</small>}
               </span>
               <span class="timestamp-text">{formattedDate}</span>
             </div>
@@ -138,7 +156,8 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
           data-i18n="card.viewDetails"
           title="Inspect timeline and technician logs"
         >
-          🔍 Timeline
+          <span class="btn-icon" set:html={ICONS.search}></span>
+          <span>Timeline</span>
         </button>
 
         {complaint.visibility === 'public' && (
@@ -147,8 +166,9 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
             class={`upvote-btn card-upvote-btn ${complaint.hasUpvoted ? 'upvoted' : ''}`}
             data-id={complaint.id}
             data-upvoted={complaint.hasUpvoted ? 'true' : 'false'}
+            aria-label="Upvote this complaint"
           >
-            <span class="upvote-icon">👍</span>
+            <span class="upvote-icon" set:html={ICONS.thumbsUp}></span>
             <span class="upvote-label">{complaint.hasUpvoted ? 'Upvoted' : '+1 Me Too'}</span>
             <span class="upvote-count font-mono font-bold">({complaint.upvotesCount})</span>
           </button>
@@ -160,131 +180,166 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
 
 <style>
   .modern-complaint-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
     background: #ffffff;
     border-radius: var(--radius-lg);
-  }
-  .resolved-card {
-    border-color: #059669;
-  }
-  .card-inner {
-    padding: 1.35rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    gap: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
+
+  .modern-complaint-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-neo-lg);
+  }
+
+  .resolved-card {
+    border-color: #15803d;
+    background: #f0fdf4;
+  }
+
+  .card-inner {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.85rem;
+  }
+
   .card-top-row {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.65rem;
+    align-items: flex-start;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
+
   .badge-cluster {
     display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
+    align-items: center;
   }
+
   .category-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.2rem 0.6rem;
-    border: 1.5px solid var(--border-black);
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.55rem;
     border-radius: var(--radius-pill);
-    font-size: 0.72rem;
-    font-weight: 700;
+    border: 1.5px solid var(--border-black);
     color: var(--border-black);
-    box-shadow: 1px 1px 0px var(--border-black);
   }
-  .priority-badge {
-    font-size: 0.68rem;
-    font-weight: 700;
+
+  .pill-icon {
+    display: inline-flex;
+    align-items: center;
   }
+
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.3rem;
+  }
+
   .badge-private {
-    background: #f3e8ff;
-    color: #6b21a8;
-    border-color: #7e22ce;
+    background: var(--pastel-rose);
   }
+
   .card-main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.45rem;
   }
+
   .complaint-card-title {
     font-size: 1.05rem;
     font-weight: 800;
     line-height: 1.35;
     color: var(--border-black);
+    word-break: break-word;
   }
+
   .ticket-id-tag {
     font-family: var(--font-retro);
     font-size: 0.85rem;
-    color: #6b7280;
-    margin-right: 0.2rem;
+    background: #f3f4f6;
+    border: 1.5px solid var(--border-black);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    margin-right: 0.3rem;
+    display: inline-block;
   }
+
   .complaint-card-desc {
     font-size: 0.82rem;
-    line-height: 1.55;
     color: #4b5563;
+    line-height: 1.55;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   .resolution-callout {
-    background: #f0fdf4;
-    border: 1.5px solid #059669;
+    background: #dcfce7;
+    border: 1.5px solid #16a34a;
     border-radius: var(--radius-md);
-    padding: 0.75rem 0.85rem;
-    box-shadow: 2px 2px 0px #059669;
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
+
   .res-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--font-retro);
     font-size: 0.68rem;
-    font-weight: 700;
-    color: #065f46;
-    margin-bottom: 0.25rem;
+    font-weight: 800;
+    color: #166534;
   }
+
+  .res-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .res-date {
+    font-size: 0.65rem;
+    color: #15803d;
+  }
+
   .res-note-text {
-    font-size: 0.78rem;
-    color: #047857;
+    font-size: 0.76rem;
+    color: #14532d;
     line-height: 1.45;
   }
+
   .card-bottom-row {
-    border-top: 1.5px solid #f1f5f9;
-    padding-top: 0.85rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    border-top: 1.5px dashed #e5e7eb;
+    padding-top: 0.85rem;
     gap: 0.75rem;
     flex-wrap: wrap;
   }
-  .author-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
+
   .author-profile-group {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
+
   .author-avatar-wrap {
     width: 32px;
     height: 32px;
-    border-radius: 9999px;
+    border-radius: 50%;
     border: 1.5px solid var(--border-black);
-    box-shadow: 1px 1px 0 var(--border-black);
     overflow: hidden;
     background: var(--pastel-yellow);
     display: flex;
@@ -292,110 +347,124 @@ const formattedDate = new Date(complaint.createdAt).toLocaleDateString('en-US', 
     justify-content: center;
     flex-shrink: 0;
   }
-  .author-avatar-wrap.anonymous-avatar {
-    background: #e2e8f0;
+
+  .anonymous-avatar {
+    background: #18181b;
+    color: #ffffff;
   }
+
+  .avatar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .author-avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
+
   .author-avatar-fallback {
-    font-weight: 800;
-    font-size: 0.75rem;
-    color: var(--border-black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-  .avatar-icon {
     font-size: 0.85rem;
-    line-height: 1;
+    font-weight: 800;
+    color: var(--border-black);
   }
+
   .author-text-col {
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
+    line-height: 1.2;
   }
-  .author-dept {
-    font-size: 0.7rem;
-    color: #4b5563;
-    font-weight: 500;
-    margin-left: 0.25rem;
-  }
+
   .author-tag {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 700;
-  }
-  .author-tag.anonymous {
-    color: #6b7280;
-    font-style: italic;
-  }
-  .author-tag.verified {
     color: var(--border-black);
   }
+
+  .author-dept {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #6b7280;
+    margin-left: 0.2rem;
+  }
+
   .timestamp-text {
     font-size: 0.68rem;
-    color: #9ca3af;
-    font-weight: 500;
+    color: #6b7280;
   }
+
   .card-action-bar {
     display: flex;
     align-items: center;
     gap: 0.45rem;
   }
+
+  .open-detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.65rem;
+  }
+
   .upvote-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    background: #ffffff;
+    padding: 0.4rem 0.75rem;
     border: 1.5px solid var(--border-black);
-    box-shadow: var(--shadow-neo-sm);
-    border-radius: var(--radius-md);
-    padding: 0.35rem 0.65rem;
-    font-size: 0.78rem;
+    border-radius: var(--radius-sm);
+    background: #ffffff;
+    font-size: 0.75rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.12s ease;
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+    transition: transform 0.1s ease, background 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
   }
-  .upvote-btn:hover {
-    background: var(--pastel-yellow);
-    transform: translate(-1px, -1px);
-    box-shadow: var(--shadow-neo);
-  }
+
   .upvote-btn:active {
     transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0px var(--border-black);
+    box-shadow: 0.5px 0.5px 0px var(--border-black);
   }
+
   .upvote-btn.upvoted {
     background: var(--pastel-mint);
-    border-color: #047857;
-    box-shadow: 1.5px 1.5px 0px #047857;
+    border-color: #15803d;
+  }
+
+  .upvote-icon {
+    display: inline-flex;
+    align-items: center;
   }
 
   @media (max-width: 640px) {
     .card-inner {
-      padding: 1rem;
-      gap: 0.85rem;
+      padding: 0.95rem;
+      gap: 0.65rem;
     }
+
     .complaint-card-title {
       font-size: 0.98rem;
     }
+
     .card-bottom-row {
       flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
+      align-items: stretch;
+      gap: 0.65rem;
     }
+
     .card-action-bar {
-      width: 100%;
       justify-content: flex-end;
     }
-    .card-action-bar .retro-btn, .upvote-btn {
-      min-height: 38px;
-      padding: 0.4rem 0.75rem;
+
+    .upvote-btn,
+    .open-detail-btn {
+      flex: 1;
+      justify-content: center;
+      padding: 0.45rem 0.5rem;
     }
   }
 </style>

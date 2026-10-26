@@ -5,11 +5,20 @@ import {
   text,
   boolean,
   timestamp,
+  mysqlEnum,
   index,
 } from 'drizzle-orm/mysql-core';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
-import { complaints, complaintStatusEnum } from './complaints.schema.js';
+import { complaints } from './complaints.schema.js';
 import { user } from './auth.schema.js';
+
+export const commentStatusChangeEnum = mysqlEnum('status_change_to', [
+  'submitted',
+  'under_review',
+  'in_progress',
+  'resolved',
+  'rejected',
+]);
 
 export const complaintComments = mysqlTable(
   'complaint_comments',
@@ -22,7 +31,7 @@ export const complaintComments = mysqlTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     message: text('message').notNull(),
-    statusChangeTo: complaintStatusEnum,
+    statusChangeTo: commentStatusChangeEnum,
     isInternalNote: boolean('is_internal_note').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },

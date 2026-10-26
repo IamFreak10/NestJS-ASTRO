@@ -1,20 +1,28 @@
 ---
+import { ICONS } from '../../lib/icons.js';
 ---
 
 <dialog id="authModal" class="retro-modal">
   <div class="retro-window modal-window">
     <div class="retro-titlebar lavender">
-      <span class="retro-title">🔑 BU_STUDENT_IDENTITY.SYS</span>
+      <div class="flex items-center gap-2">
+        <span set:html={ICONS.key}></span>
+        <span class="retro-title" data-i18n="modals.authTitle">BU_STUDENT_IDENTITY.SYS</span>
+      </div>
       <div class="retro-controls">
-        <button type="button" class="modal-close-btn" id="closeAuthModalBtn">✕</button>
+        <button type="button" class="modal-close-btn" id="closeAuthModalBtn" aria-label="Close dialog" set:html={ICONS.close}></button>
       </div>
     </div>
 
     <div class="modal-body">
       <!-- Auth Switcher Tabs -->
-      <div class="auth-tabs">
-        <button type="button" id="tabLoginBtn" class="auth-tab-btn active">Sign In (লগইন)</button>
-        <button type="button" id="tabRegisterBtn" class="auth-tab-btn">Register (নতুন একাউন্ট)</button>
+      <div class="auth-tabs" role="tablist">
+        <button type="button" id="tabLoginBtn" class="auth-tab-btn active" role="tab" aria-selected="true" data-i18n="modals.tabSignIn">
+          Sign In (লগইন)
+        </button>
+        <button type="button" id="tabRegisterBtn" class="auth-tab-btn" role="tab" aria-selected="false" data-i18n="modals.tabRegister">
+          Register (নতুন একাউন্ট)
+        </button>
       </div>
 
       <!-- Sign In Form -->
@@ -45,25 +53,30 @@
 
         <!-- 1-Click Demo Accounts -->
         <div class="demo-login-box mb-4 p-3 bg-gray-50 border border-gray-300 rounded text-xs">
-          <div class="font-bold text-gray-700 mb-1.5 flex items-center gap-1">
-            <span>⚡</span> Quick Demo Test Accounts (Click to Fill):
+          <div class="font-bold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <span set:html={ICONS.zap}></span>
+            <span>Quick Demo Test Accounts (Click to Fill):</span>
           </div>
           <div class="flex gap-2 flex-wrap">
             <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="student@kcku.edu" data-pass="student123">
-              👤 Student
+              <span set:html={ICONS.user}></span>
+              <span>Student</span>
             </button>
             <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="technician@kcku.edu" data-pass="tech1234">
-              👷 Staff/Tech
+              <span set:html={ICONS.tool}></span>
+              <span>Staff/Tech</span>
             </button>
             <button type="button" class="demo-acc-btn retro-btn retro-btn-sm" data-email="proctor@kcku.edu" data-pass="admin123">
-              👑 Proctor/Admin
+              <span set:html={ICONS.shieldCheck}></span>
+              <span>Proctor/Admin</span>
             </button>
           </div>
         </div>
 
         <div class="modal-actions">
-          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-yellow w-full" id="submitLoginBtn" data-i18n="modals.signInActionBtn">
-            🚀 LOGIN TO CAMPUSFIX
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-yellow w-full inline-flex items-center justify-center gap-2" id="submitLoginBtn">
+            <span set:html={ICONS.key}></span>
+            <span data-i18n="modals.signInActionBtn">LOGIN TO CAMPUSFIX</span>
           </button>
         </div>
       </form>
@@ -73,12 +86,12 @@
         <!-- Student Avatar / Photo Upload Widget -->
         <div class="avatar-upload-row">
           <div class="avatar-preview-box" id="avatarPreviewBox">
-            <span id="avatarPlaceholderIcon">🎓</span>
+            <span id="avatarPlaceholderIcon" set:html={ICONS.user}></span>
             <img id="avatarPreviewImg" class="hidden avatar-preview-img" alt="Student Photo Preview" />
           </div>
           <div class="avatar-upload-info">
             <label for="regAvatarInput" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-mint cursor-pointer inline-flex items-center gap-1.5 text-xs">
-              <span>📷</span>
+              <span set:html={ICONS.plus}></span>
               <span id="avatarUploadBtnText">Upload Student Photo</span>
             </label>
             <input
@@ -92,25 +105,26 @@
         </div>
 
         <div class="form-group">
-          <label for="regName" class="form-label" data-i18n="modals.fullNameLabel">Full Name</label>
+          <label for="regName" class="form-label" data-i18n="modals.fullNameLabel">Full Name *</label>
           <input
             type="text"
             id="regName"
             name="name"
             class="retro-input"
-            placeholder="e.g. Tanvir Ahmed"
+            placeholder="e.g. Tanvir Hossain"
             required
+            minlength="3"
           />
         </div>
 
         <div class="form-group">
-          <label for="regEmail" class="form-label" data-i18n="modals.emailLabel">University Email</label>
+          <label for="regEmail" class="form-label" data-i18n="modals.emailLabel">University Email *</label>
           <input
             type="email"
             id="regEmail"
             name="email"
             class="retro-input"
-            placeholder="tanvir@kcku.edu"
+            placeholder="student@bu.ac.bd"
             required
           />
         </div>
@@ -123,38 +137,38 @@
               id="regStudentId"
               name="studentId"
               class="retro-input"
-              placeholder="BU-2024-089"
+              placeholder="e.g. BU-2023-0101"
             />
           </div>
-
           <div class="form-group half">
-            <label for="regDepartment" class="form-label" data-i18n="modals.departmentLabel">Department</label>
+            <label for="regDept" class="form-label" data-i18n="modals.departmentLabel">Department</label>
             <input
               type="text"
-              id="regDepartment"
+              id="regDept"
               name="department"
               class="retro-input"
-              placeholder="e.g. CSE, EEE"
+              placeholder="e.g. CSE / EEE / BBA"
             />
           </div>
         </div>
 
         <div class="form-group">
-          <label for="regPassword" class="form-label" data-i18n="modals.passwordLabel">Password (Min 8 chars)</label>
+          <label for="regPassword" class="form-label" data-i18n="modals.passwordLabel">Create Password *</label>
           <input
             type="password"
             id="regPassword"
             name="password"
             class="retro-input"
-            placeholder="••••••••"
+            placeholder="Minimum 6 characters"
             required
-            minlength="8"
+            minlength="6"
           />
         </div>
 
         <div class="modal-actions">
-          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-pink w-full" id="submitRegisterBtn" data-i18n="modals.registerActionBtn">
-            ✨ CREATE STUDENT ACCOUNT
+          <button type="submit" class="retro-btn retro-btn-pixel retro-btn-mint w-full inline-flex items-center justify-center gap-2" id="submitRegisterBtn">
+            <span set:html={ICONS.plus}></span>
+            <span data-i18n="modals.registerActionBtn">CREATE STUDENT ACCOUNT</span>
           </button>
         </div>
       </form>
@@ -162,50 +176,144 @@
   </div>
 </dialog>
 
-<style>
-  .modal-close-btn {
-    background: var(--pastel-rose);
-    border: 1.5px solid var(--border-black);
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    font-weight: 900;
-    font-size: 0.9rem;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
+<script>
+  const authModal = document.getElementById('authModal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('closeAuthModalBtn');
+  const tabLogin = document.getElementById('tabLoginBtn');
+  const tabRegister = document.getElementById('tabRegisterBtn');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+
+  function closeModal() {
+    authModal?.close();
   }
-  .modal-window {
-    max-width: 480px;
-    width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
+
+  closeBtn?.addEventListener('click', closeModal);
+
+  // Tab switching
+  tabLogin?.addEventListener('click', () => {
+    tabLogin.classList.add('active');
+    tabRegister?.classList.remove('active');
+    loginForm?.classList.remove('hidden');
+    registerForm?.classList.add('hidden');
+  });
+
+  tabRegister?.addEventListener('click', () => {
+    tabRegister.classList.add('active');
+    tabLogin?.classList.remove('active');
+    registerForm?.classList.remove('hidden');
+    loginForm?.classList.add('hidden');
+  });
+
+  // Close on outside backdrop click
+  authModal?.addEventListener('click', (e) => {
+    const dialogDimensions = authModal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      authModal.close();
+    }
+  });
+
+  // Demo auto-fill buttons
+  document.querySelectorAll('.demo-acc-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const email = btn.getAttribute('data-email');
+      const pass = btn.getAttribute('data-pass');
+      const emailInput = document.getElementById('loginEmail') as HTMLInputElement | null;
+      const passInput = document.getElementById('loginPassword') as HTMLInputElement | null;
+      if (emailInput && passInput && email && pass) {
+        emailInput.value = email;
+        passInput.value = pass;
+      }
+    });
+  });
+</script>
+
+<style>
+  .auth-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border-black);
+    margin-bottom: 1.25rem;
+    gap: 0.25rem;
+  }
+  .auth-tab-btn {
+    flex: 1;
+    padding: 0.65rem;
+    background: #f3f4f6;
+    border: none;
+    border-top-left-radius: var(--radius-sm);
+    border-top-right-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.1s ease;
+  }
+  .auth-tab-btn.active {
+    background: #ffffff;
+    color: var(--border-black);
+    border: 2px solid var(--border-black);
+    border-bottom: none;
+    margin-bottom: -2px;
+  }
+  .form-group {
+    margin-bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+  }
+  .form-row .form-group {
+    margin-bottom: 0;
+  }
+  .form-group.half {
+    flex: 1;
+  }
+  .form-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--border-black);
+  }
+  .demo-login-box {
+    border: 1.5px dashed var(--border-black);
+    border-radius: var(--radius-sm);
+    background: #faf8f5;
+  }
+  .demo-acc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.55rem;
   }
   .avatar-upload-row {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-    padding: 0.65rem 0.85rem;
-    background: #fbf7f4;
-    border: 1.5px dashed var(--border-black);
+    gap: 1rem;
+    padding: 0.85rem;
+    background: #f8fafc;
+    border: 1.5px solid var(--border-black);
     border-radius: var(--radius-md);
-    margin-bottom: 1rem;
+    margin-bottom: 1.15rem;
   }
   .avatar-preview-box {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     border: 2px solid var(--border-black);
-    background: #ffffff;
+    background: var(--pastel-yellow);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
     overflow: hidden;
-    box-shadow: 2px 2px 0px var(--border-black);
     flex-shrink: 0;
   }
   .avatar-preview-img {
@@ -215,80 +323,12 @@
   }
   .avatar-upload-info {
     flex: 1;
-    min-width: 0;
-  }
-  .modal-body {
-    padding: 1.25rem;
-    background: var(--card-bg);
-    max-height: calc(88dvh - 44px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    box-sizing: border-box;
-  }
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  .form-row {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .form-group.half {
-    flex: 1;
-  }
-  .form-label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin-bottom: 0.35rem;
-  }
-  .auth-tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    border-bottom: var(--border-width) solid var(--border-black);
-    padding-bottom: 0.5rem;
-  }
-  .auth-tab-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    font-family: var(--font-retro);
-    font-size: 0.75rem;
-    padding: 0.65rem 0.5rem;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: 700;
-    min-height: 42px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .auth-tab-btn.active {
-    background: var(--pastel-yellow);
-    border: 1.5px solid var(--border-black);
-    box-shadow: 2px 2px 0px var(--border-black);
-  }
-  .hidden {
-    display: none !important;
-  }
-  .w-full {
-    width: 100%;
-    justify-content: center;
-    padding: 0.7rem;
   }
 
   @media (max-width: 640px) {
-    .modal-body {
-      padding: 1rem 0.85rem;
-    }
     .form-row {
       flex-direction: column;
-      gap: 0;
-    }
-    .demo-acc-btn {
-      flex: 1;
-      min-width: 90px;
-      justify-content: center;
+      gap: 1rem;
     }
   }
 </style>
-

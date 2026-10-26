@@ -67,6 +67,7 @@ const {
     <!-- Core Interactive Client Script (<120 lines pure Vanilla JS) -->
     <script>
       import { TRANSLATIONS, toBengaliDigits, translateEntirePage } from '../lib/i18n.js';
+      import { ICONS } from '../lib/icons.js';
 
       const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
       let currentActiveTicketId: number | null = null;
@@ -82,14 +83,14 @@ const {
         }, 3200);
       }
 
-      // 🌐 Pure Bangla & English Language Switcher Engine
+      // Pure Bangla & English Language Switcher Engine
       let currentLang: 'en' | 'bn' = (localStorage.getItem('campusfix_lang') as 'en' | 'bn') || 'en';
 
       function applyLanguage(lang: 'en' | 'bn') {
         currentLang = lang;
         localStorage.setItem('campusfix_lang', lang);
 
-        // 🚀 Master DOM Translation: Translates the entire system instantly!
+        // Master DOM Translation: Translates the entire system instantly!
         translateEntirePage(lang);
 
         const openAuthModalBtn = document.getElementById('openAuthModalBtn');
@@ -112,7 +113,7 @@ const {
       document.getElementById('langToggleBtn')?.addEventListener('click', () => {
         const nextLang = currentLang === 'en' ? 'bn' : 'en';
         applyLanguage(nextLang);
-        showToast(nextLang === 'bn' ? '🇧🇩 পুরো সিস্টেম বাংলায় পরিবর্তিত হয়েছে' : '🌐 System switched to English');
+        showToast(nextLang === 'bn' ? 'পুরো সিস্টেম বাংলায় পরিবর্তিত হয়েছে' : 'System switched to English');
       });
 
       // Check current login state on page load
@@ -127,11 +128,11 @@ const {
           try {
             const user = JSON.parse(mockUserStr);
             (window as any).__currentUser = user;
-            const roleEmoji = user.role === 'admin' ? '👑' : user.role === 'staff' ? '👷' : '👤';
+            const roleIcon = user.role === 'admin' ? ICONS.shieldCheck : user.role === 'staff' ? ICONS.tool : ICONS.user;
             if (user.image && (user.image.startsWith('data:image') || user.image.startsWith('http'))) {
               authBtnText.innerHTML = `<img src="${user.image}" class="user-avatar-mini" alt="${user.name}" /><span>${user.name.split(' ')[0]} (${user.role || 'student'})</span>`;
             } else {
-              authBtnText.textContent = `${roleEmoji} ${user.name.split(' ')[0]} (${user.role || 'student'})`;
+              authBtnText.innerHTML = `${roleIcon} <span>${user.name.split(' ')[0]} (${user.role || 'student'})</span>`;
             }
             openAuthModalBtn?.setAttribute('data-logged-in', 'true');
             return;
@@ -146,11 +147,11 @@ const {
             const user = data?.user;
             if (user && user.name) {
               (window as any).__currentUser = user;
-              const roleEmoji = user.role === 'admin' ? '👑' : user.role === 'staff' ? '👷' : '👤';
+              const roleIcon = user.role === 'admin' ? ICONS.shieldCheck : user.role === 'staff' ? ICONS.tool : ICONS.user;
               if (user.image && (user.image.startsWith('data:image') || user.image.startsWith('http'))) {
                 authBtnText.innerHTML = `<img src="${user.image}" class="user-avatar-mini" alt="${user.name}" /><span>${user.name.split(' ')[0]} (${user.role || 'student'})</span>`;
               } else {
-                authBtnText.textContent = `${roleEmoji} ${user.name.split(' ')[0]} (${user.role || 'student'})`;
+                authBtnText.innerHTML = `${roleIcon} <span>${user.name.split(' ')[0]} (${user.role || 'student'})</span>`;
               }
               openAuthModalBtn?.setAttribute('data-logged-in', 'true');
             }
@@ -273,7 +274,7 @@ const {
           }
 
           localStorage.removeItem('campusfix_mock_user');
-          showToast('Welcome back! Login successful ✨');
+          showToast('Welcome back! Login successful');
           authModal?.close();
           setTimeout(() => window.location.reload(), 600);
         } catch (err: any) {
@@ -286,7 +287,7 @@ const {
               role: 'staff',
               department: 'Campus Electrical & Plumbing Cell'
             }));
-            showToast('Logged in as Kamal Uddin (Staff/Technician) 👷 [Demo Mode]');
+            showToast('Logged in as Kamal Uddin (Staff/Technician) [Demo Mode]');
             authModal?.close();
             setTimeout(() => window.location.reload(), 500);
             return;
@@ -298,7 +299,7 @@ const {
               role: 'admin',
               department: 'Proctor Office & Student Welfare'
             }));
-            showToast('Logged in as Dr. Rafiqul Islam (Chief Proctor/Admin) 👑 [Demo Mode]');
+            showToast('Logged in as Dr. Rafiqul Islam (Chief Proctor/Admin) [Demo Mode]');
             authModal?.close();
             setTimeout(() => window.location.reload(), 500);
             return;
@@ -310,7 +311,7 @@ const {
               role: 'student',
               department: 'Computer Science & Engineering'
             }));
-            showToast('Logged in as Tanvir Hossain (Student) 👤 [Demo Mode]');
+            showToast('Logged in as Tanvir Hossain (Student) [Demo Mode]');
             authModal?.close();
             setTimeout(() => window.location.reload(), 500);
             return;
@@ -378,8 +379,8 @@ const {
             avatarPreviewImg.classList.remove('hidden');
           }
           avatarPlaceholderIcon?.classList.add('hidden');
-          if (avatarUploadBtnText) avatarUploadBtnText.textContent = 'Photo Ready ✔';
-          showToast('Photo uploaded & optimized! 📷');
+          if (avatarUploadBtnText) avatarUploadBtnText.textContent = 'Photo Ready';
+          showToast('Photo uploaded & optimized!');
         } catch {
           showToast('Failed to process image file', true);
         }
@@ -425,7 +426,7 @@ const {
             throw new Error(errorMsg);
           }
 
-          showToast('Account created! Logged in as student 🎉');
+          showToast('Account created! Logged in as student');
           authModal?.close();
           setTimeout(() => window.location.reload(), 600);
         } catch (err: any) {
@@ -471,7 +472,7 @@ const {
             throw new Error(err.message || 'Failed to submit');
           }
 
-          showToast('Complaint submitted successfully! 🚀');
+          showToast('Complaint submitted successfully!');
           createModal?.close();
           (complaintForm as HTMLFormElement).reset();
           setTimeout(() => window.location.reload(), 800);
@@ -520,7 +521,7 @@ const {
           });
 
           if (data.upvoted) {
-            showToast('Upvoted! +1 recorded 👍');
+            showToast('Upvoted! +1 recorded');
           } else {
             showToast('Upvote removed');
           }
@@ -588,9 +589,9 @@ const {
 
         if (titleEl) titleEl.textContent = ticket.title;
         if (descEl) descEl.textContent = ticket.description;
-        if (catBadge) catBadge.textContent = `🏢 ${ticket.category.toUpperCase()}`;
-        if (priBadge) priBadge.textContent = `⚡ ${ticket.priority.toUpperCase()}`;
-        if (visBadge) visBadge.textContent = ticket.visibility === 'private' ? '🔒 CONFIDENTIAL' : '📢 PUBLIC BOARD';
+        if (catBadge) catBadge.textContent = ticket.category.toUpperCase();
+        if (priBadge) priBadge.textContent = ticket.priority.toUpperCase();
+        if (visBadge) visBadge.textContent = ticket.visibility === 'private' ? 'CONFIDENTIAL' : 'PUBLIC BOARD';
         if (statusStamp) {
           statusStamp.textContent = ticket.status.replace('_', ' ').toUpperCase();
           statusStamp.className = `status-stamp stamp-${ticket.status}`;
@@ -605,7 +606,7 @@ const {
         const authorPill = document.getElementById('detailAuthorPill');
 
         if (ticket.isAnonymous) {
-          if (authorNameEl) authorNameEl.textContent = 'Anonymous Student 🕶️';
+          if (authorNameEl) authorNameEl.textContent = 'Anonymous Student';
           if (authorDeptEl) authorDeptEl.textContent = 'Whistleblower identity protected by University Privacy Gate';
           if (authorPill) {
             authorPill.textContent = 'WHISTLEBLOWER';
@@ -613,7 +614,7 @@ const {
           }
           if (authorAvatarImg) authorAvatarImg.classList.add('hidden');
           if (authorAvatarFallback) {
-            authorAvatarFallback.textContent = '🕶️';
+            authorAvatarFallback.innerHTML = ICONS.userMask;
             authorAvatarFallback.classList.remove('hidden');
           }
         } else {
@@ -724,8 +725,8 @@ const {
 
                 const commentActions = (canEdit || canDelete) && comm.id ? `
                   <div class="comment-actions-cluster">
-                    ${canEdit ? `<button type="button" class="comment-action-btn comment-edit-btn" data-comment-id="${comm.id}" data-current-msg="${encodeURIComponent(comm.message || comm.content || '')}" title="Edit Comment">✏️</button>` : ''}
-                    ${canDelete ? `<button type="button" class="comment-action-btn comment-delete-btn" data-comment-id="${comm.id}" title="Delete Comment">🗑️</button>` : ''}
+                    ${canEdit ? `<button type="button" class="comment-action-btn comment-edit-btn" data-comment-id="${comm.id}" data-current-msg="${encodeURIComponent(comm.message || comm.content || '')}" title="Edit Comment">${ICONS.edit}</button>` : ''}
+                    ${canDelete ? `<button type="button" class="comment-action-btn comment-delete-btn" data-comment-id="${comm.id}" title="Delete Comment">${ICONS.trash}</button>` : ''}
                   </div>
                 ` : '';
 
@@ -814,7 +815,7 @@ const {
             throw new Error(errMsg);
           }
 
-          showToast('Comment posted! 💬');
+          showToast('Comment posted!');
           input.value = '';
           openDetailModal(currentActiveTicketId);
         } catch (err: any) {
@@ -850,7 +851,7 @@ const {
               throw new Error(err.message || 'Could not update comment');
             }
 
-            showToast('Comment updated! ✏️');
+            showToast('Comment updated!');
             if (currentActiveTicketId) openDetailModal(currentActiveTicketId);
           } catch (err: any) {
             showToast(err.message, true);
@@ -878,7 +879,7 @@ const {
               throw new Error(err.message || 'Could not delete comment');
             }
 
-            showToast('Comment deleted! 🗑️');
+            showToast('Comment deleted!');
             if (currentActiveTicketId) openDetailModal(currentActiveTicketId);
           } catch (err: any) {
             showToast(err.message, true);
@@ -915,7 +916,7 @@ const {
             throw new Error(err.message || 'Status update failed. Staff privileges required.');
           }
 
-          showToast('Status & Resolution updated successfully! 🛠️');
+          showToast('Status and resolution updated successfully');
           openDetailModal(currentActiveTicketId);
         } catch (err: any) {
           // Fallback / instant preview update for offline demo mode
@@ -946,7 +947,7 @@ const {
             if (resDate) resDate.textContent = new Date().toLocaleDateString();
           }
 
-          showToast(`Resolution state updated to [${status.toUpperCase()}]! 🛠️`);
+          showToast(`Resolution state updated to [${status.toUpperCase()}]`);
         }
       });
 
@@ -955,7 +956,7 @@ const {
         if (!currentActiveTicketId) return;
         const shareUrl = `${window.location.origin}/track?id=${currentActiveTicketId}`;
         navigator.clipboard.writeText(shareUrl);
-        showToast('Ticket tracking link copied to clipboard! 📋');
+        showToast('Ticket tracking link copied to clipboard');
       });
 
       // Run on init

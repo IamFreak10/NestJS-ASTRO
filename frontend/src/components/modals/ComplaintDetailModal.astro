@@ -1,12 +1,16 @@
 ---
+import { ICONS } from '../../lib/icons.js';
 ---
 
 <dialog id="complaintDetailModal" class="retro-modal">
   <div class="retro-window modal-window detail-modal-window">
     <div class="retro-titlebar cyan" id="detailModalTitlebar">
-      <span class="retro-title" id="detailModalTitle" data-i18n="modals.detailTitle">🔍 TICKET_TIMELINE_INSPECTOR.SYS</span>
+      <div class="flex items-center gap-2">
+        <span set:html={ICONS.search}></span>
+        <span class="retro-title" id="detailModalTitle" data-i18n="modals.detailTitle">TICKET_TIMELINE_INSPECTOR.SYS</span>
+      </div>
       <div class="retro-controls">
-        <button type="button" class="modal-close-btn" id="closeDetailModalBtn">✕</button>
+        <button type="button" class="modal-close-btn" id="closeDetailModalBtn" aria-label="Close dialog" set:html={ICONS.close}></button>
       </div>
     </div>
 
@@ -14,9 +18,9 @@
       <!-- Top Meta Row -->
       <div class="detail-header-row">
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="retro-badge" id="detailCategoryBadge">🏢 Facilities</span>
-          <span class="retro-badge" id="detailPriorityBadge">⚡ HIGH PRIORITY</span>
-          <span class="retro-badge" id="detailVisibilityBadge">📢 PUBLIC BOARD</span>
+          <span class="retro-badge" id="detailCategoryBadge">Facilities</span>
+          <span class="retro-badge" id="detailPriorityBadge">HIGH PRIORITY</span>
+          <span class="retro-badge" id="detailVisibilityBadge">PUBLIC BOARD</span>
         </div>
         <div class="status-stamp" id="detailStatusStamp">IN PROGRESS</div>
       </div>
@@ -29,7 +33,7 @@
       <div class="detail-author-card" id="detailAuthorBar">
         <div class="detail-author-avatar-wrap" id="detailAuthorAvatarWrap">
           <img id="detailAuthorAvatarImg" class="detail-author-avatar-img hidden" src="" alt="Author" />
-          <span id="detailAuthorAvatarFallback" class="detail-author-avatar-fallback">👤</span>
+          <span id="detailAuthorAvatarFallback" class="detail-author-avatar-fallback" set:html={ICONS.user}></span>
         </div>
         <div class="detail-author-info">
           <div class="flex items-center gap-2">
@@ -72,7 +76,10 @@
       <!-- Official Resolution Box (shown if resolved) -->
       <div id="detailResolutionBox" class="hidden resolution-box mb-4">
         <div class="resolution-header">
-          <span>🛠️ OFFICIAL PROCTOR RESOLUTION NOTE</span>
+          <span class="flex items-center gap-1.5">
+            <span set:html={ICONS.shieldCheck}></span>
+            <span>OFFICIAL PROCTOR RESOLUTION NOTE</span>
+          </span>
           <span id="detailResolvedDate" class="resolved-date">Date</span>
         </div>
         <p id="detailResolutionText" class="resolution-text">Resolution text goes here...</p>
@@ -80,7 +87,10 @@
 
       <!-- Real-time Timeline Logs -->
       <div class="timeline-logs-box">
-        <h4 class="logs-title">📋 Activity & Maintenance Log</h4>
+        <h4 class="logs-title flex items-center gap-1.5">
+          <span set:html={ICONS.fileText}></span>
+          <span>Activity & Maintenance Log</span>
+        </h4>
         <div class="logs-list" id="detailTimelineList">
           <!-- Populated by JS -->
         </div>
@@ -88,7 +98,10 @@
 
       <!-- Student & Staff Comments Section -->
       <div class="comments-section">
-        <h4 class="logs-title" data-i18n="modals.discussionTitle">💬 Community & Department Discussion</h4>
+        <h4 class="logs-title flex items-center gap-1.5" data-i18n="modals.discussionTitle">
+          <span set:html={ICONS.messageSquare}></span>
+          <span>Community & Department Discussion</span>
+        </h4>
         <div class="comments-feed" id="detailCommentsFeed">
           <p class="text-xs text-gray-500 italic py-2">No discussion notes yet. Leave an update below.</p>
         </div>
@@ -100,53 +113,38 @@
             class="retro-input text-xs"
             placeholder="Write a comment or follow-up note (requires login)..."
             data-i18n-placeholder="modals.commentPlaceholder"
+            maxlength="1000"
             required
           />
-          <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-pink" data-i18n="modals.postCommentBtn">
-            💬 POST
+          <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-yellow text-xs inline-flex items-center gap-1.5" id="submitCommentBtn">
+            <span set:html={ICONS.send}></span>
+            <span data-i18n="modals.postCommentBtn">POST</span>
           </button>
         </form>
       </div>
 
-      <!-- Staff & Proctor Resolution Desk (Exclusively revealed for staff & admin roles) -->
-      <div id="staffResolutionPanel" class="staff-triage-panel hidden">
-        <div class="staff-triage-header">
-          <span class="flex items-center gap-1.5 font-extrabold text-xs text-amber-950">
-            <span>🛠️</span>
-            <span>STAFF & PROCTORIAL RESOLUTION DESK</span>
-          </span>
-          <span class="retro-badge text-[10px]" style="background: var(--pastel-yellow)">RBAC SECURED</span>
+      <!-- Staff / Admin Triage Panel (Hidden for Students) -->
+      <div id="staffTriagePanel" class="hidden triage-box mt-4 p-3 bg-amber-50 border border-amber-400 rounded-md">
+        <div class="font-bold text-xs text-amber-900 mb-2 flex items-center gap-1.5">
+          <span set:html={ICONS.tool}></span>
+          <span>STAFF / PROCTOR TRIAGE CONTROLS</span>
         </div>
-
-        <form id="staffStatusUpdateForm" class="staff-triage-body">
-          <div class="form-row">
-            <div class="form-group half">
-              <label for="staffStatusSelect" class="form-label text-xs">Update Status</label>
-              <select id="staffStatusSelect" name="status" class="retro-input retro-select text-xs">
-                <option value="submitted">📥 Submitted / Logged (দাখিলকৃত)</option>
-                <option value="under_review">👀 Under Review (পর্যালোচনাধীন)</option>
-                <option value="in_progress">🔨 In Progress (কাজ চলমান)</option>
-                <option value="resolved">✔ Resolved (সমাধান সম্পন্ন)</option>
-                <option value="rejected">✕ Rejected / Dismissed (বাতিল)</option>
-              </select>
-            </div>
-            <div class="form-group half">
-              <label for="staffAssignedId" class="form-label text-xs">Assigned Technician</label>
-              <input
-                type="text"
-                id="staffAssignedId"
-                name="assignedStaffId"
-                class="retro-input text-xs"
-                placeholder="e.g. usr_staff_tech (Kamal)"
-              />
-            </div>
+        <form id="staffResolutionForm" class="flex flex-col gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <label class="text-xs font-bold text-gray-700">Update Status:</label>
+            <select id="staffStatusSelect" class="retro-input text-xs py-1 px-2">
+              <option value="submitted">SUBMITTED</option>
+              <option value="under_review">UNDER REVIEW</option>
+              <option value="in_progress">IN PROGRESS</option>
+              <option value="resolved">RESOLVED</option>
+              <option value="rejected">REJECTED</option>
+            </select>
           </div>
 
-          <div class="form-group mt-2">
-            <label for="staffResolutionNote" class="form-label text-xs">Official Verified Fix & Resolution Note</label>
+          <div class="flex flex-col gap-1 mt-1">
+            <label class="text-xs font-bold text-gray-700">Official Resolution Note (Published on fix):</label>
             <textarea
-              id="staffResolutionNote"
-              name="resolutionNote"
+              id="staffResolutionNoteInput"
               class="retro-input text-xs"
               rows="2"
               placeholder="Detail the on-ground repair actions taken, parts replaced, or proctorial findings..."
@@ -154,8 +152,9 @@
           </div>
 
           <div class="flex justify-end gap-2 mt-3">
-            <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-mint text-xs">
-              💾 SAVE RESOLUTION & SIGN-OFF FIX
+            <button type="submit" class="retro-btn retro-btn-sm retro-btn-pixel retro-btn-mint text-xs inline-flex items-center gap-1.5">
+              <span set:html={ICONS.check}></span>
+              <span>SAVE RESOLUTION & SIGN-OFF FIX</span>
             </button>
           </div>
         </form>
@@ -164,20 +163,47 @@
       <!-- Modal Footer Actions -->
       <div class="modal-actions mt-4 pt-3 border-t border-gray-200">
         <button type="button" class="upvote-btn retro-btn text-xs" id="detailModalUpvoteBtn" data-id="">
-          <span class="upvote-icon">👍</span>
+          <span class="upvote-icon" set:html={ICONS.thumbsUp}></span>
           <span class="upvote-label">Me Too</span>
           <span class="upvote-count font-mono font-bold">(0)</span>
         </button>
-        <button type="button" class="retro-btn text-xs" id="shareTicketBtn">
-          🔗 Copy Share Link
+        <button type="button" class="retro-btn text-xs inline-flex items-center gap-1" id="shareTicketBtn">
+          <span set:html={ICONS.copy}></span>
+          <span>Copy Share Link</span>
         </button>
-        <button type="button" class="retro-btn text-xs retro-btn-yellow" id="closeDetailActionBtn">
+        <button type="button" class="retro-btn text-xs retro-btn-yellow" id="closeDetailActionBtn" data-i18n="card.close">
           Close Window
         </button>
       </div>
     </div>
   </div>
 </dialog>
+
+<script>
+  const detailModal = document.getElementById('complaintDetailModal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('closeDetailModalBtn');
+  const closeActionBtn = document.getElementById('closeDetailActionBtn');
+
+  function closeModal() {
+    detailModal?.close();
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  closeActionBtn?.addEventListener('click', closeModal);
+
+  // Close when clicking backdrop
+  detailModal?.addEventListener('click', (e) => {
+    const dialogDimensions = detailModal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      detailModal.close();
+    }
+  });
+</script>
 
 <style>
   .modal-close-btn {
@@ -187,8 +213,6 @@
     height: 28px;
     border-radius: 4px;
     font-weight: 900;
-    font-size: 0.9rem;
-    line-height: 1;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -300,38 +324,30 @@
     height: 3px;
     background: #e5e7eb;
     margin: 0 4px;
-    position: relative;
-    top: -9px;
+    margin-top: -16px;
+    z-index: 1;
   }
   .step-line.active {
-    background: var(--border-black);
-  }
-  .timeline-logs-box, .comments-section {
-    border: var(--border-width) solid var(--border-black);
-    border-radius: 8px;
-    padding: 0.85rem;
-    background: #ffffff;
-    margin-bottom: 1rem;
+    background: var(--pastel-mint);
+    border: 1px solid var(--border-black);
   }
   .detail-author-card {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.65rem 0.85rem;
-    background: #fefce8;
+    padding: 0.75rem;
+    background: #f8fafc;
     border: 1.5px solid var(--border-black);
-    border-radius: 8px;
-    box-shadow: var(--shadow-neo-sm);
-    margin-bottom: 0.9rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.25rem;
   }
   .detail-author-avatar-wrap {
-    width: 40px;
-    height: 40px;
-    border-radius: 9999px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
     border: 1.5px solid var(--border-black);
-    box-shadow: 1px 1px 0 var(--border-black);
     overflow: hidden;
-    background: var(--pastel-yellow);
+    background: var(--pastel-cyan);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -341,235 +357,169 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
   .detail-author-avatar-fallback {
-    font-weight: 800;
-    font-size: 1rem;
-    color: var(--border-black);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .detail-author-info {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    min-width: 0;
+    gap: 0.15rem;
   }
   .detail-author-name {
     font-weight: 800;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--border-black);
   }
   .detail-author-pill {
-    font-size: 0.65rem;
     font-family: var(--font-retro);
-    font-weight: 800;
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    border: 1px solid var(--border-black);
+    font-size: 0.62rem;
     background: var(--pastel-yellow);
+    border: 1px solid var(--border-black);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
   }
   .detail-author-dept {
     font-size: 0.72rem;
-    color: #4b5563;
-    font-weight: 500;
+    color: #6b7280;
   }
-  .comments-feed {
+  .resolution-box {
+    background: #dcfce7;
+    border: 2px solid #16a34a;
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+  }
+  .resolution-header {
     display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-  }
-  .comment-bubble-item {
-    display: flex;
-    gap: 0.65rem;
-    align-items: flex-start;
-    padding: 0.6rem 0.75rem;
-    background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    transition: background 0.15s ease;
-  }
-  .comment-bubble-item:hover {
-    background: #f1f5f9;
-  }
-  .comment-avatar-wrap {
-    width: 32px;
-    height: 32px;
-    border-radius: 9999px;
-    border: 1.5px solid var(--border-black);
-    box-shadow: 1px 1px 0 var(--border-black);
-    overflow: hidden;
-    background: var(--pastel-yellow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .comment-author-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .comment-author-avatar-fallback {
-    font-weight: 800;
-    font-size: 0.75rem;
-    color: var(--border-black);
-  }
-  .comment-content-col {
-    flex: 1;
-    min-width: 0;
-  }
-  .comment-header-row {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.2rem;
-  }
-  .comment-author-name {
-    font-weight: 800;
-    font-size: 0.78rem;
-    color: var(--border-black);
-  }
-  .comment-internal-pill {
-    font-size: 0.6rem;
-    font-family: var(--font-retro);
-    font-weight: 800;
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #f87171;
-  }
-  .comment-time {
-    font-size: 0.68rem;
-    color: #94a3b8;
-    font-family: monospace;
-  }
-  .comment-actions-cluster {
-    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    margin-left: auto;
-  }
-  .comment-action-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
     font-size: 0.75rem;
-    padding: 0.1rem 0.25rem;
-    border-radius: 4px;
-    opacity: 0.7;
-    transition: opacity 0.15s ease, transform 0.1s ease;
+    font-weight: 800;
+    color: #166534;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px dashed #86efac;
   }
-  .comment-action-btn:hover {
-    opacity: 1;
-    transform: scale(1.15);
-    background: #e2e8f0;
+  .resolution-text {
+    font-size: 0.8rem;
+    color: #14532d;
+    line-height: 1.5;
   }
-  .comment-body-text {
-    font-size: 0.75rem;
-    color: #334155;
-    line-height: 1.4;
-    word-break: break-word;
+  .timeline-logs-box {
+    margin-bottom: 1.25rem;
   }
   .logs-title {
-    font-family: var(--font-retro);
-    font-size: 0.72rem;
-    font-weight: 700;
-    margin-bottom: 0.6rem;
+    font-size: 0.82rem;
+    font-weight: 800;
     color: var(--border-black);
+    margin-bottom: 0.5rem;
   }
   .logs-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
-  .timeline-event-item {
-    font-size: 0.75rem;
-    padding: 0.5rem;
-    background: #fbf7f4;
-    border-left: 3px solid var(--pastel-pink);
-    border-radius: 0 4px 4px 0;
+  .log-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.65rem 0.75rem;
+    background: #fdfaf6;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
   }
-  .timeline-event-header {
+  .log-date {
+    font-size: 0.68rem;
+    color: #6b7280;
+    font-family: var(--font-retro);
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+  .log-message {
+    flex: 1;
+    color: var(--border-black);
+    line-height: 1.4;
+  }
+  .comments-section {
+    margin-top: 1.25rem;
+    border-top: 1.5px dashed #d1d5db;
+    padding-top: 1rem;
+  }
+  .comments-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+  .comment-item {
+    padding: 0.65rem 0.75rem;
+    background: #ffffff;
+    border: 1.5px solid var(--border-black);
+    border-radius: var(--radius-sm);
+    box-shadow: 1.5px 1.5px 0px var(--border-black);
+  }
+  .comment-author-row {
     display: flex;
     justify-content: space-between;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
+    align-items: center;
+    margin-bottom: 0.35rem;
+  }
+  .comment-author-name {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--border-black);
+  }
+  .comment-time {
+    font-size: 0.65rem;
+    color: #9ca3af;
+  }
+  .comment-text {
+    font-size: 0.78rem;
+    color: #374151;
+    line-height: 1.45;
   }
   .comment-input-box {
     display: flex;
     gap: 0.5rem;
-    align-items: stretch;
   }
   .comment-input-box input {
     flex: 1;
-    min-width: 0;
   }
   .modal-actions {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  /* Staff & Proctor Triage Panel */
-  .staff-triage-panel {
-    background: #fefce8;
-    border: 2px solid var(--border-black);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    margin-top: 1.25rem;
-    box-shadow: var(--shadow-neo-sm);
-  }
-  .staff-triage-header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1.5px dashed #ca8a04;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
-  @media (max-width: 520px) {
+  @keyframes pulseRing {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  @media (max-width: 640px) {
     .detail-modal-body {
       padding: 0.85rem;
-    }
-    .node-label {
-      font-size: 0.58rem;
-      white-space: normal;
-      text-align: center;
-      line-height: 1.1;
-    }
-    .node-circle {
-      width: 22px;
-      height: 22px;
-      font-size: 0.68rem;
-    }
-    .step-line {
-      top: -12px;
     }
     .detail-ticket-title {
       font-size: 1rem;
     }
+    .modal-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .modal-actions button {
+      width: 100%;
+      justify-content: center;
+    }
     .comment-input-box {
       flex-direction: column;
     }
-    .comment-input-box .retro-btn {
-      width: 100%;
-      justify-content: center;
-    }
-    .modal-actions {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .modal-actions .retro-btn {
-      width: 100%;
-      justify-content: center;
-      padding: 0.6rem;
-    }
   }
 </style>
-

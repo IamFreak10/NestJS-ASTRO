@@ -6,16 +6,4 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
   },
-  vite: {
-    build: {
-      cssMinify: true,
-      minify: 'esbuild',
-    },
-    esbuild: {
-      legalComments: 'none',
-      minifyWhitespace: true,
-      minifyIdentifiers: true,
-      minifySyntax: true,
-    },
-  },
 });

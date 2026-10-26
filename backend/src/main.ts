@@ -33,7 +33,10 @@ async function bootstrap() {
 
       const normalizedOrigin = origin.replace(/\/$/, '');
 
-      const isExplicitlyAllowed = allowedOrigins.includes(normalizedOrigin);
+      const isExplicitlyAllowed =
+        allowedOrigins.includes(normalizedOrigin) ||
+        allowedOrigins.includes('*') ||
+        /\.vercel\.app$/.test(normalizedOrigin);
       const isSubdomainAllowed =
         /^https:\/\/([a-z0-9-]+\.)*mahfuj-sends-greetings\.xyz$/.test(normalizedOrigin);
       const isLocalhost =

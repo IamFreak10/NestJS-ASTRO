@@ -4,8 +4,8 @@ import type {
   ComplaintStatus,
 } from '../types/complaint.js';
 
-const API_BASE_URL =
-  import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+const rawApiUrl = (import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api').trim().replace(/\/$/, '');
+const API_BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 
 interface ApiResponse<T> {
   success: boolean;

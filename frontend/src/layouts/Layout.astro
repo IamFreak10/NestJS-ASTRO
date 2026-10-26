@@ -69,7 +69,8 @@ const {
       import { TRANSLATIONS, toBengaliDigits, translateEntirePage } from '../lib/i18n.js';
       import { ICONS } from '../lib/icons.js';
 
-      const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+      const rawApiUrl = (import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api').trim().replace(/\/$/, '');
+      const API_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
       let currentActiveTicketId: number | null = null;
 
       // Toast Notification Helper

@@ -235,7 +235,8 @@ import { ICONS } from '../lib/icons.js';
   import { formatDate } from '../lib/date.js';
   import { toBengaliDigits, formatBengaliDate, translateStatus, translatePriority } from '../lib/i18n.js';
 
-  const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+  const rawApiUrl = (import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api').trim().replace(/\/$/, '');
+  const API_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
   const trackForm = document.getElementById('trackForm');
   const trackInput = document.getElementById('trackInput') as HTMLInputElement | null;
   const resultContainer = document.getElementById('trackResultContainer');
